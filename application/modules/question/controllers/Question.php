@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Class Users
+ * Class Question
  * @property Question_Model $question
  */
 class Question extends MY_Controller {
@@ -299,6 +299,7 @@ class Question extends MY_Controller {
 			{
 				$status=1;
             	setMessage("msg", "success", "Approved Successfuly");
+            	$this->question->update("question",array("approved_by"=>logged_in_user_id()),array("id"=>$id));
 			}
         	else if($result->status==1)
 			{

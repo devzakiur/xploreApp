@@ -335,6 +335,7 @@ class Library extends MY_Controller {
 			{
 				$status=1;
             	setMessage("msg", "success", "Approved Successfuly");
+            	$this->library->update("library",array("approved_by"=>logged_in_user_id()),array("id"=>$id));
 			}
         	else if($result->status==1)
 			{
