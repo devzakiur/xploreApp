@@ -1,0 +1,123 @@
+#invoice-POS {
+    box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+    padding: 2mm;
+    margin: 0 auto;
+    width: 80mm;
+    background: #FFF;    
+    min-height: 132mm;
+  }
+  #invoice-POS ::selection {
+    background: #f31544;
+    color: #FFF;
+  }
+  #invoice-POS ::moz-selection {
+    background: #f31544;
+    color: #FFF;
+  }
+  #invoice-POS h1 {
+    font-size: 1.5em;
+    color: #222;
+  }
+  #invoice-POS h2 {
+    font-size: .9em;
+  }
+  #invoice-POS h3 {
+    font-size: 1.2em;
+    font-weight: 300;
+    line-height: 2em;
+  }
+  #invoice-POS p {
+    font-size: .7em;
+    color: #666;
+    line-height: 1.2em;
+  }
+  #invoice-POS #top, #invoice-POS #mid, #invoice-POS #bot {
+    /* Targets all id with 'col-' */
+    border-bottom: 1px solid #EEE;
+  }
+  #invoice-POS #top {
+    margin: 0 auto;
+    text-align: center;
+}
+#invoice-POS #mid {
+    text-align: center;
+  }
+#invoice-POS #mid .cash_memo {
+    font-size: 10px;
+  }
+  #invoice-POS #bot {
+  }
+  #invoice-POS .company_name {
+   margin: 0px;
+  }
+  #invoice-POS .title_track {
+   margin: 0px;
+  }
+  #invoice-POS .invoice_mobile {
+   margin: 0px;
+  }
+  #invoice-POS .invoice_address {
+   margin: 0px;
+  }
+  #invoice-POS .info {
+  }
+  #invoice-POS .title {
+    float: right;
+  }
+  #invoice-POS .title p {
+    text-align: right;
+  }
+  #invoice-POS table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  #invoice-POS table td,#invoice-POS table th {
+    border: 1px solid #222;
+    font-size: 11px;
+    padding: 2px;
+  }
+  #invoice-POS .item {
+    width: 24mm;
+  }
+  #invoice-POS .inv_barcode {
+    width: 80%;
+  }
+  #invoice-POS .barcode_code {
+    position: absolute;
+    margin-left: 30px;
+    margin-top: -9px;
+    background: #fff;
+  }
+  #invoice-POS .itemtext {
+    font-size: .5em;
+  }
+  #invoice-POS #legalcopy {
+    margin-top: 5mm;
+    text-align: right;
+  }
+  .table_merge{
+      width: 80mm;
+      min-height: 25mm;
+  }
+  .table_left_info{
+      width: 40mm;
+      float: left;
+  }
+  .table_right_info{
+      width: 40mm;
+      float: left;
+  }
+  .table_left_info table td{
+      border: none !important;
+  }
+  #invoice-POS .payment_text{
+    text-align: right;
+    padding-right: 5px;
+  }
+  #invoice-POS .payment_status_text{
+    text-align: center;
+  }
+  #invoice-POS .word_text{
+    text-align: center;
+  }
