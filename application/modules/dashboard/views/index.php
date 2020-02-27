@@ -25,7 +25,7 @@
 			<?php if(hasPermission("total_pending_libray",VIEW)): ?>
 				<div class="col-md-4 col-sm-6 col-lg-3">
 					<div class="mini-stat clearfix bx-shadow">
-						<span class="mini-stat-icon bg-primary"><i class="fa  fa-bell"></i></span>
+						<span class="mini-stat-icon bg-success"><i class="fa  fa-bell"></i></span>
 						<div class="mini-stat-info text-right text-muted">
 							<span class="counter"><?= $total_pending_library; ?></span>
 							Total Pending Library
