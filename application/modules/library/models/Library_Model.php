@@ -170,7 +170,7 @@ class Library_Model extends MY_Model
 		$this->db->from('edit_history as EH');
 		$this->db->join('admin as A', 'EH.update_by = A.id', 'left');
 		$this->db->where('EH.slug', "library");
-		$this->db->where('EH.library_id', $library_id);
+		$this->db->where('EH.edit_id', $library_id);
 		$this->db->order_by('EH.id', 'desc');
 		return $this->db->get()->result_array();
 	}

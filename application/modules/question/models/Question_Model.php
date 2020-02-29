@@ -148,7 +148,7 @@ class Question_Model extends MY_Model
 		$this->db->from('edit_history as EH');
 		$this->db->join('admin as A', 'EH.update_by = A.id', 'left');
 		$this->db->where('EH.slug', "question");
-		$this->db->where('EH.question_id', $question_id);
+		$this->db->where('EH.edit_id', $question_id);
 		$this->db->order_by('EH.id', 'desc');
 		return $this->db->get()->result_array();
 	}

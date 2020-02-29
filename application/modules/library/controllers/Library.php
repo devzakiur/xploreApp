@@ -273,7 +273,7 @@ class Library extends MY_Controller {
 						 * edit history insert
 						 *
 						 */
-						$history_data['library_id']=$id;
+						$history_data['edit_id']=$id;
 						$history_data['update_by']=logged_in_user_id();
 						$history_data['slug']="library";
 						$history_data['created_at']=date("Y-m-d H:i:s");
