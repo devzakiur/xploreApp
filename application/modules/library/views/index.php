@@ -495,6 +495,7 @@
 												<th class="text-center">Topic</th>
 												<th class="text-center">Title</th>
 												<th class="text-center">Details</th>
+												<th class="text-center">History</th>
 												<th class="text-center">Action</th>
 											</tr>
 										</thead>
@@ -522,6 +523,25 @@
                     </div>
                     <div class="modal-body">
                        <div id="show_details">
+					   </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        </div>
+    </div><!-- /.modal -->
+  <div id="history-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <!-- <form id="item_add"> -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Library History View</h4>
+                    </div>
+                    <div class="modal-body">
+                       <div id="history_show_details">
+
 					   </div>
                     </div>
                     <div class="modal-footer">
@@ -744,6 +764,26 @@
 				 },
                 success:function(data){
 					$("#show_details").html(data);
+                	$("#overlay").fadeOut(300);
+                },
+				error:function (e) {
+					$.Notification.autoHideNotify('error', 'top right',"Something Wrong. Please try again");
+                	$("#overlay").fadeOut(300);
+				}
+            });
+		});
+        $("#library").on("click","#history_details_modal",function () {
+			var library_id=$(this).data("id");
+			 $.ajax({
+                url:"<?php echo base_url() ?>library/history_details_view",
+                type:"get",
+                dataType:"json",
+                data:{"library_id":library_id},
+				 beforeSend:function(){
+                	$("#overlay").fadeIn(300);　
+				 },
+                success:function(data){
+					$("#history_show_details").html(data);
                 	$("#overlay").fadeOut(300);
                 },
 				error:function (e) {

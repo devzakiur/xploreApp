@@ -163,6 +163,17 @@ class Library_Model extends MY_Model
 		$result['topic_name']=$this->get_topic_name($library_id);
 		return $result;
 	}
+
+	function get_library_history_details($library_id)
+	{
+		$this->db->select('EH.*,A.name as user_name');
+		$this->db->from('edit_history as EH');
+		$this->db->join('admin as A', 'EH.update_by = A.id', 'left');
+		$this->db->where('EH.slug', "library");
+		$this->db->where('EH.library_id', $library_id);
+		$this->db->order_by('EH.id', 'desc');
+		return $this->db->get()->result_array();
+	}
 	function get_category($library_id)
 	{
 		$this->db->select('C.name as category_name,C.id as category_id');

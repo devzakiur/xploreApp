@@ -156,6 +156,19 @@ class Library extends MY_Controller {
 			exit;
 		}
     }
+
+	public function history_details_view()
+	{
+		if($_GET)
+		{
+			$library_id=$this->input->get("library_id");
+			$result['history']=$this->library->get_library_history_details($library_id);
+			$html=$this->load->view("library-history-details",$result,true);
+//			debug_r($result);
+			echo json_encode($html);
+			exit;
+		}
+    }
 //    ajax topic relation
 	public function topic_relation()
 	{
@@ -255,6 +268,16 @@ class Library extends MY_Controller {
 							if(!empty($slide_data))
 							$this->library->insert_batch("library_image",$slide_data);
 						}
+						/**
+						 *
+						 * edit history insert
+						 *
+						 */
+						$history_data['library_id']=$id;
+						$history_data['update_by']=logged_in_user_id();
+						$history_data['slug']="library";
+						$history_data['created_at']=date("Y-m-d H:i:s");
+						$this->library->insert("edit_history",$history_data);
 						$this->library->trans_complete();
 						if($this->library->trans_status())
 						{
