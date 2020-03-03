@@ -617,7 +617,7 @@
 												<th class="text-center">Question Title</th>
 												<th class="text-center">Answer</th>
 												<th class="text-center">Details
-												<th class="text-center">History</th>
+												<th class="text-center">Edit History</th>
 												<th class="text-center">Action</th>
 											</tr>
 										</thead>

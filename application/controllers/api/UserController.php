@@ -1,9 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 use chriskacerguis\RestServer\RestController;
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-class UserController extends RestController
+class UserController extends MY_ApiController
 {
 	public function __construct($config = 'rest')
 	{
@@ -69,7 +67,13 @@ class UserController extends RestController
 
     public function users_post()
     {
-        $this->response($_POST,RestController::HTTP_OK);
+    	$_POST = json_decode(file_get_contents("php://input"), true);
+    	foreach ($_POST as $key=>$value)
+		{
+			$data[$key]['name']=$value['name'];
+			$data[$key]['type']=$value['type'];
+		}
+        $this->response($data,RestController::HTTP_OK);
     }
     public function login_post()
 	 {

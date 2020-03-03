@@ -326,7 +326,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = 'abgkG$khJHG$hl&jjh@hjgjhg754$hg%$';
+$config['encryption_key'] = 'h11FMo167TDJxY469WPQHG5nDeErC1kg';
 
 /*
 |--------------------------------------------------------------------------
@@ -527,6 +527,14 @@ $config['proxy_ips'] = '';
 $config['modules_locations'] = array(
     APPPATH.'modules/' => '../modules/',
 );
+spl_autoload_register(function($class)
+{
+    if(strpos($class, 'CI_') !== 0)
+    {
+        @include_once( APPPATH . 'core/'. $class . '.php' );
+    }
+});
+
 define('VENDOR_URL', $config['base_url'] . 'assets/vendors/');
 define('CSS_URL', $config['base_url'] . 'assets/css/');
 define('JS_URL', $config['base_url'] . 'assets/js/');
