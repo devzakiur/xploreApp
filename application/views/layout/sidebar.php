@@ -74,6 +74,13 @@
                     </ul>
                 </li>
 				<?php endif; ?>
+
+				<?php if (hasActive("content") && hasPermission("content", VIEW)) : ?>
+                <li>
+                    <a href="<?php echo site_url("content"); ?>" class="waves-effect <?php echo set_Topmenu("content"); ?>"><i class="ion ion-document"></i><span> Content </span></a>
+                </li>
+				<?php endif; ?>
+
 				<?php if (hasActive("administrator") && hasPermission("administrator", VIEW)) : ?>
                 <li class="has_sub">
                     <a href="#" class="waves-effect <?php echo set_Topmenu("administrator"); ?>"><i class="ion ion-android-sort"></i><span>Administrator </span><span class="pull-right"><i class="md md-add"></i></span></a>

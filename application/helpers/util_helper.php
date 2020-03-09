@@ -237,6 +237,32 @@ if(!function_exists("set_loging_agent")){
     }
 
 }
+if(!function_exists("generateNumericOTP")){
+	function generateNumericOTP($n) {
+
+		// Take a generator string which consist of
+		// all numeric digits
+		$generator = "1357902468";
+
+		// Iterate for n-times and pick a single character
+		// from generator and append it to $result
+
+		// Login for generating a random character from generator
+		//     ---generate a random number
+		//     ---take modulus of same with length of generator (say i)
+		//     ---append the character at place (i) from generator to result
+
+		$result = "";
+
+		for ($i = 1; $i <= $n; $i++) {
+			$result .= substr($generator, (rand()%(strlen($generator))), 1);
+		}
+
+		// Return result
+		return $result;
+	}
+
+}
 if(!function_exists("setting_info")){
     function setting_info()
     {
@@ -365,8 +391,14 @@ if (!function_exists('verify_request')) {
     	 $CI =& get_instance();
     	// Get all the headers
         $headers =  $CI->input->request_headers();
+        if(!isset($headers["Authorization"]))
+		{
+			$status = 401;
+            $response = ['status' => $status, 'message' => 'Header Missing'];
+            $CI->response($response, $status);
+		}
         // Extract the token
-        $token = $headers['Authorization'];
+		$token = $headers['Authorization'];
 
         // Use try-catch
         // JWT library throws exception if the token is not valid
@@ -384,14 +416,40 @@ if (!function_exists('verify_request')) {
 				if ($data->id):
 					return $data->id;
 				endif;
-				return false;
+				return 0;
 			}
         } catch (Exception $e) {
             // Token is invalid
             // Send the unathorized access message
             $status = 401;
-            $response = ['status' => $status, 'msg' => 'Unauthorized Access! '];
+            $response = ['status' => $status, 'message' => 'Unauthorized Access! '];
             $CI->response($response, $status);
         }
     }
+    if(!function_exists("custom_validation_error")){
+    	function custom_validation_error(){
+    		 $CI =& get_instance();
+    		$CI->response( [
+				'status' => false,
+				'status_code' => 422,
+				'message' => $CI->form_validation->error_array()
+			],HTTP_OK );
+		}
+	}
+    if(!function_exists("get_users")){
+    	function get_users($index_array,$select=''){
+    		$CI =& get_instance();
+    		if($select!='')
+			{
+				$CI->db->select(USER_DATA.",".$select);
+			}else{
+				$CI->db->select(USER_DATA);
+			}
+			$CI->db->from('users');
+			$CI->db->where($index_array);
+			$CI->db->order_by('id', 'desc');
+			$CI->db->limit(1);
+			return $CI->db->get()->row();
+		}
+	}
 }

@@ -60,3 +60,20 @@ $route['module'] = 'administrator/module';
 $route['module/mlist'] = 'administrator/module/mlist';
 $route['role-permission'] = 'administrator/role';
 $route['manage-user'] = 'administrator/users';
+
+/**
+ * Api Route
+ */
+$route['user/login'] = 'api/UserController/login';
+$route['user/register'] = 'api/UserController/register';
+$route['user/email-verification'] = 'api/UserController/email_verification';
+$route['user/email-resend'] = 'api/UserController/email_resend';
+$route['user/profile-setup'] = 'api/UserController/profile_setup';
+$route['user/phone-verification'] = 'api/UserController/phone_verification';
+$route['user/phone-resend'] = 'api/UserController/phone_resend';
+$route['user/toc'] = 'api/UserController/toc';
+$route['user/category-setup'] = 'api/UserController/category_setup';
+$route['user/device-info'] = 'api/UserController/device_info';
+
+$route['category-list'] = 'api/AuthController/categry_list';
+$route['subject-by-category'] = 'api/AuthController/subject_by_category';
