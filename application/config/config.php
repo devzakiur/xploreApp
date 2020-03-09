@@ -563,3 +563,6 @@ define('DELETE', 'can_delete');
 define('APP_NAME', 'Xplore');
 define('QUESTION_PER_PAGE', 10);
 define("USER_DATA",'id,email,name,display_name,phone,gender,dob,picture,cover_picture,email_status,phone_status,toc,status,category_id,subject_id');
+define("NOT_MATCHED",455);
+define("Expired",408);
+define("BLOCKED",456);

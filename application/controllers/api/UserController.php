@@ -4,7 +4,7 @@ use chriskacerguis\RestServer\RestController;
 
 /**
  * Class UserController
- * @property MY_Model $auth;
+ * @property MY_Model $user;
  */
 class UserController extends RestController
 {
@@ -13,7 +13,7 @@ class UserController extends RestController
 	{
 		parent::__construct($config);
 		date_default_timezone_set("Asia/Dhaka");
-		$this->load->model("MY_Model","auth",true);
+		$this->load->model("MY_Model","user",true);
 	}
 
 	/**
@@ -21,7 +21,7 @@ class UserController extends RestController
 	 */
 	public function toc_get()
 	{
-		$toc=$this->auth->get_single("content",array("slug"=>"toc"));
+		$toc=$this->user->get_single("content",array("slug"=>"toc"));
 		if($toc)
 		{
 			$toc->description=html_entity_decode($toc->description);
@@ -103,10 +103,9 @@ class UserController extends RestController
 	}
 	public function register_post()
 	{
-
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|xss_clean|callback_email');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
-		$this->form_validation->set_rules('toc', 'Terms & Condition', 'trim|xss_clean');
+		$this->form_validation->set_rules('toc', 'Terms & Condition', 'trim|xss_clean|required|callback_toc');
 		$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|xss_clean|matches[password]');
 		if($this->form_validation->run() === TRUE) {
         	$this->load->library('Enc_lib');
@@ -117,7 +116,13 @@ class UserController extends RestController
 			$this->data['email_status']=false;
 			$this->data['password']=$this->enc_lib->passHashEnc($this->input->post('password'));
 			$this->data['toc']=$this->input->post("toc");
-			$insert_id=$this->auth->insert("users",$this->data);
+			$check=$this->user->exits_check("users",array("email"=>$this->input->post("email"),"email_status"=>0));
+			if($check){
+				$this->user->update("users",$this->data,array("email"=>$this->input->post("email")));
+			}
+			else{
+				$this->user->insert("users",$this->data);
+			}
 			$send=$this->_send_email($code,$this->input->post("email"));
 			$this->response( [
 				'status' => true,
@@ -133,7 +138,7 @@ class UserController extends RestController
 	{
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|xss_clean');
 			if($this->form_validation->run() === TRUE) {
-				$user=$this->auth->get_single("users",array("email"=>$this->input->post("email")));
+				$user=$this->user->get_single("users",array("email"=>$this->input->post("email")));
 				if(!empty($user))
 				{
 					if($user->email_status)
@@ -148,7 +153,7 @@ class UserController extends RestController
 					$send=$this->_send_email($code,$this->input->post("email"));
 					$data['email_code']=$code;
 					$data['email_time']=date("Y-m-d H:i:s");
-					$this->auth->update("users",$data,array("id"=>$user->id));
+					$this->user->update("users",$data,array("id"=>$user->id));
 					$this->response( [
 						'status' => true,
 						'status_code' =>HTTP_OK,
@@ -196,7 +201,7 @@ class UserController extends RestController
 				{
 					$data['email_status']=1;
 					$data['status']=1;
-					$this->auth->update("users",$data,array("email"=>$email));
+					$this->user->update("users",$data,array("email"=>$email));
 					$user_data->email_time="";
 					$token_data=array(
 						"id"=>$user_data->id,
@@ -216,15 +221,15 @@ class UserController extends RestController
 				else{
 					$this->response( [
 						'status' => false,
-						'status_code' =>HTTP_NOT_FOUND,
+						'status_code' =>Expired,
 						'message' =>["Code Time Expired"]
 					], RestController::HTTP_OK );
 				}
 			}else{
 				$this->response( [
 					'status' => false,
-					'status_code' =>HTTP_NOT_FOUND,
-					'message' =>["Not register yet"]
+					'status_code' =>NOT_MATCHED,
+					'message' =>["Code Not Matched"]
 				], RestController::HTTP_OK );
 			}
 		}
@@ -240,7 +245,7 @@ class UserController extends RestController
 		$this->_prepare_form_validation();
 		if($this->form_validation->run() === TRUE) {
 			$data=$this->_get_posted_data();
-			$this->auth->update("users",$data,array("id"=>$this->id));
+			$this->user->update("users",$data,array("id"=>$this->id));
 			$user_data=get_users(array("id"=>$this->id));
 			$this->response( [
 				'status' => true,
@@ -280,7 +285,7 @@ class UserController extends RestController
 				if($minutes<=5)
 				{
 					$data['phone_status']=1;
-					$this->auth->update("users",$data,array("id"=>$this->id));
+					$this->user->update("users",$data,array("id"=>$this->id));
 					$user_data->phone_status=1;
 					$user_data->phone_time="";
 					$this->response( [
@@ -293,7 +298,7 @@ class UserController extends RestController
 				else{
 					$this->response( [
 						'status' => false,
-						'status_code' =>HTTP_NOT_FOUND,
+						'status_code' =>Expired,
 						'message' =>["Code Time Expired"]
 					], RestController::HTTP_OK );
 				}
@@ -330,7 +335,7 @@ class UserController extends RestController
 				$send=$this->_send_message($code,$this->input->post("phone"));
 				$data['phone_code']=$code;
 				$data['phone_time']=date("Y-m-d H:i:s");
-				$this->auth->update("users",$data,array("id"=>$this->id));
+				$this->user->update("users",$data,array("id"=>$this->id));
 				$this->response( [
 					'status' => true,
 					'status_code' =>HTTP_OK,
@@ -343,7 +348,7 @@ class UserController extends RestController
 	}
 
 	public function phone(){
-		$email = $this->auth->duplicate_check("users","phone",$this->input->post('phone'),$this->id);
+		$email = $this->user->duplicate_check("users","phone",$this->input->post('phone'),$this->id);
 		if ($email) {
 			$this->form_validation->set_message('phone', "Phone Already Exits");
 			return FALSE;
@@ -361,7 +366,7 @@ class UserController extends RestController
 		if($this->form_validation->run() === TRUE) {
 			$category_id=$this->input->post("category_id");
 			$subject_id=$this->input->post("subject_id");
-			$this->auth->update("users",array("category_id"=>$category_id,"subject_id"=>$subject_id),array("id"=>$this->id));
+			$this->user->update("users",array("category_id"=>$category_id,"subject_id"=>$subject_id),array("id"=>$this->id));
 			$user_data=get_users(array("id"=>$this->id));
 			$user_data->subject_id=explode(",",$user_data->subject_id);
 			$this->response( [
@@ -392,9 +397,13 @@ class UserController extends RestController
 			$this->data['manufacture']=$this->input->post("manufacture");
 			$this->data['version']=$this->input->post("version");
 			$this->data['fcm_token']=$this->input->post("fcm_token");
-			$exits=$this->auth->exits_check("device_info",array("device_id"=>$this->data['device_id']));
-			if()
-			$insert_id=$this->auth->insert("device_info",$this->data);
+			$exits=$this->user->exits_check("device_info",array("user_id"=>$this->id));
+			if($exits){
+				$this->data['updated_at']=date("Y-m-d H:i:s");
+				$this->user->update("device_info",$this->data,array("user_id"=>$this->id));
+			}else{
+				$this->user->insert("device_info",$this->data);
+			}
 			$this->response( [
 				'status' => true,
 				'status_code' =>HTTP_OK,
@@ -406,14 +415,29 @@ class UserController extends RestController
 		}
 	}
 
+	public function forgot_password()
+	{
+		
+	}
+
 	public function email(){
-		$email = $this->auth->duplicate_check("users","email",$this->input->post('email'));
+		$email = $this->user->exits_check("users",array("email"=>$this->input->post('email'),"email_status"=>1));
 		if ($email) {
 			$this->form_validation->set_message('email', "Email Already Exits");
 			return FALSE;
 		} else {
 			return TRUE;
 		}
+	}
+
+	public function toc()
+	{
+		$toc=$this->input->post("toc");
+		if($toc==1){
+			return true;
+		}
+		$this->form_validation->set_message('toc', "Please Check Terms Of Conditions");
+		return false;
 	}
 
 	/**
@@ -427,7 +451,7 @@ class UserController extends RestController
 		$this->form_validation->set_rules('phone', 'Phone', 'trim|xss_clean|required|callback_phone');
 		$this->form_validation->set_rules('gender', 'Gender', 'trim|xss_clean|required');
 		$this->form_validation->set_rules('dob', 'Date Of Birth', 'trim|xss_clean|required');
-		$this->form_validation->set_rules('picture', 'Picture', 'trim|xss_clean|required');
+		$this->form_validation->set_rules('picture', 'Picture', 'trim|xss_clean');
 		$this->form_validation->set_rules('cover_picture', 'Cover Picture', 'trim|xss_clean');
 	}
 
@@ -463,7 +487,7 @@ class UserController extends RestController
         $ext = end($arr);
         $imageName=APP_NAME.'_'.time()."U.$ext";
         $config['upload_path']          = './uploads/users';
-        $config['allowed_types']        = 'gif|jpg|jpeg|png';
+        $config['allowed_types']        = 'gif|jpg|jpeg';
         $config['file_name']            = $imageName;
         $config['max_size']             = 500;
         $this->load->library('upload');
@@ -473,7 +497,7 @@ class UserController extends RestController
         	$this->response( [
 				'status' => false,
 				'status_code' =>422,
-				'message' => $this->upload->display_errors()
+				'message' => [strip_tags($this->upload->display_errors())]
 			], RestController::HTTP_OK );
         }
         else
@@ -490,7 +514,7 @@ class UserController extends RestController
             if ($this->image_lib->resize()) {
                 $this->image_lib->clear();
             }
-			$prev_photo=$this->auth->get_single("users",array("id"=>$this->id))->picture;
+			$prev_photo=$this->user->get_single("users",array("id"=>$this->id))->picture;
 			@unlink($prev_photo);
             return $imageName;
         }

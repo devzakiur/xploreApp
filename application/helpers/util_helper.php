@@ -432,10 +432,21 @@ if (!function_exists('verify_request')) {
     		$CI->response( [
 				'status' => false,
 				'status_code' => 422,
-				'message' => $CI->form_validation->error_array()
+				'message' =>custom_error()
 			],HTTP_OK );
 		}
+		function custom_error(){
+    		 $CI =& get_instance();
+    		$error=$CI->form_validation->error_array();
+    		$error_data=array();
+    		foreach ($error as $value){
+    			$error_data[]=$value;
+			}
+    		return $error_data;
+
+		}
 	}
+
     if(!function_exists("get_users")){
     	function get_users($index_array,$select=''){
     		$CI =& get_instance();
