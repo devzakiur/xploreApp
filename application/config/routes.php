@@ -77,3 +77,9 @@ $route['user/device-info'] = 'api/UserController/device_info';
 
 $route['category-list'] = 'api/AuthController/categry_list';
 $route['subject-by-category'] = 'api/AuthController/subject_by_category';
+
+//question
+
+$route['question-list'] = 'api/ContentController/get_question_list';
+$route['get-section-by-subject'] = 'api/ContentController/get_section_by_subject';
+$route['get-topic-by-section'] = 'api/ContentController/get_topic_by_section';

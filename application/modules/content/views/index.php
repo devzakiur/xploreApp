@@ -18,7 +18,7 @@
 													<option value="toc">Terms Of Condition</option>
 													<option value="play">How To Play</option>
 													<option value="coin">How To Buy Coins</option>
-													<option value="about">About Explore</option>
+													<option value="about">About Xplore</option>
 												</select>
                                             </div>
                                         </div>

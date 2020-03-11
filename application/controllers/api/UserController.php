@@ -109,7 +109,7 @@ class UserController extends RestController
 		$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|xss_clean|matches[password]');
 		if($this->form_validation->run() === TRUE) {
         	$this->load->library('Enc_lib');
-			$code=generateNumericOTP(6);
+			$code=generateNumericOTP();
 			$this->data['email']=$this->input->post("email");
 			$this->data['email_code']=$code;
 			$this->data['email_time']=date("Y-m-d H:i:s");
@@ -149,7 +149,7 @@ class UserController extends RestController
 							'message' => ["Already Verified"]
 						], RestController::HTTP_OK );
 					}
-					$code=generateNumericOTP(6);
+					$code=generateNumericOTP();
 					$send=$this->_send_email($code,$this->input->post("email"));
 					$data['email_code']=$code;
 					$data['email_time']=date("Y-m-d H:i:s");
@@ -305,8 +305,8 @@ class UserController extends RestController
 			}else{
 				$this->response( [
 					'status' => false,
-					'status_code' =>HTTP_NOT_FOUND,
-					'message' =>["No User Found"]
+					'status_code' =>NOT_MATCHED,
+					'message' =>["Code Not Matched"]
 				], RestController::HTTP_OK );
 			}
 		}
@@ -331,7 +331,7 @@ class UserController extends RestController
 						'message' => ["Already Verified"]
 					], RestController::HTTP_OK );
 				}
-				$code=generateNumericOTP(6);
+				$code=generateNumericOTP();
 				$send=$this->_send_message($code,$this->input->post("phone"));
 				$data['phone_code']=$code;
 				$data['phone_time']=date("Y-m-d H:i:s");
@@ -339,7 +339,8 @@ class UserController extends RestController
 				$this->response( [
 					'status' => true,
 					'status_code' =>HTTP_OK,
-					'message' => ["Message Sent Successfully"]
+					'message' => ["Message Sent Successfully"],
+					"data"=>["phone_code"=>$code]
 				], RestController::HTTP_OK );
 			}else
 			{
@@ -368,7 +369,7 @@ class UserController extends RestController
 			$subject_id=$this->input->post("subject_id");
 			$this->user->update("users",array("category_id"=>$category_id,"subject_id"=>$subject_id),array("id"=>$this->id));
 			$user_data=get_users(array("id"=>$this->id));
-			$user_data->subject_id=explode(",",$user_data->subject_id);
+//			$user_data->subject_id=explode(",",$user_data->subject_id);
 			$this->response( [
 				'status' => true,
 				'status_code' =>HTTP_OK,
@@ -472,11 +473,7 @@ class UserController extends RestController
 			$data['picture'] ="uploads/users/".$image_name;
 		}
 //		$data['cover_picture']=$this->input->post("cover_picture");
-		$code=generateNumericOTP(6);
-		$data['phone_code']=$code;
-		$data['phone_time']=date("Y-m-d H:i:s");
 		$data['phone_status']=false;
-		$send=$this->_send_message($code,$this->input->post("phone"));
 		return $data;
 	}
 
@@ -487,7 +484,7 @@ class UserController extends RestController
         $ext = end($arr);
         $imageName=APP_NAME.'_'.time()."U.$ext";
         $config['upload_path']          = './uploads/users';
-        $config['allowed_types']        = 'gif|jpg|jpeg';
+        $config['allowed_types']        = 'gif|jpg|jpeg|png';
         $config['file_name']            = $imageName;
         $config['max_size']             = 500;
         $this->load->library('upload');
