@@ -1112,7 +1112,7 @@
             x--; //Decrement field counter
         });
      });
-    </script>
+</script>
 <!--category topic part-->
 <script>
      $(document).ready(function(){

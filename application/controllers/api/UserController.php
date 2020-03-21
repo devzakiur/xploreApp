@@ -416,11 +416,6 @@ class UserController extends RestController
 		}
 	}
 
-	public function forgot_password()
-	{
-		
-	}
-
 	public function email(){
 		$email = $this->user->exits_check("users",array("email"=>$this->input->post('email'),"email_status"=>1));
 		if ($email) {

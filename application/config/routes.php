@@ -83,3 +83,13 @@ $route['subject-by-category'] = 'api/AuthController/subject_by_category';
 $route['question-list'] = 'api/ContentController/get_question_list';
 $route['get-section-by-subject'] = 'api/ContentController/get_section_by_subject';
 $route['get-topic-by-section'] = 'api/ContentController/get_topic_by_section';
+$route['question/reports'] = 'api/ContentController/question_reports';
+$route['question/bookmark'] = 'api/ContentController/question_bookmark';
+
+//library
+$route['library-data'] = 'api/ContentController/get_library';
+
+//password change
+$route['forgot-password'] = 'api/PasswordController/forgot_password';
+$route['code-verification'] = 'api/PasswordController/reset_code_verification';
+$route['change-password'] = 'api/PasswordController/change_password';
