@@ -316,7 +316,8 @@
 																		<label for="code">Slide Image</label>
 																		<div class="input-group">
 																			<input type="file" name="slide_picture[]"   data-default-file="<?= base_url().$value['picture'] ?>" data-max-file-size="500K" data-allowed-file-extensions="jpg png"  id="slide_picture" >
-																			<input type="hidden" name="slide_picture_name[]" class="slide_picture_<?= $value['id'] ?>>"   value="<?= $value['picture'] ?>" >
+																			<input type="hidden" name="slide_picture_name[]" class="slide_picture_<?= $value['id'] ?>"   value="<?= $value['picture'] ?>" >
+																			<input type="hidden" name="slide_picture_id[]" class="slide_picture_id_<?= $value['id'] ?>"   value="<?= $value['id'] ?>" >
 																			<div class="input-group-btn">
 																				<?php if($key==0): ?>
 																				<button class="btn btn-info" id="image_add_button" type="button">
@@ -964,14 +965,17 @@
 </script>
 <?php if(isset($edit)): ?>
 	<script>
-		var category="<?= $single['category_id'] ?>"
-		var category_split_data=category.split(",");
-        $('#category_id option').each(function() {
-            if (jQuery.inArray($(this).val(), category_split_data) !== -1) {
-                this.selected = true;
-            }
-        });
-         $(".selectpicker").selectpicker('render').selectpicker('refresh');
+		$(document).ready(function () {
+			var category="<?= $single['category_id'] ?>"
+			var category_split_data=category.split(",");
+			$('#category_id option').each(function() {
+				if (jQuery.inArray($(this).val(), category_split_data) !== -1) {
+					this.selected = true;
+				}
+			});
+			 $(".selectpicker").selectpicker('render').selectpicker('refresh');
+
+		});
 	</script>
 <?php endif;?>
 

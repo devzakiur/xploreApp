@@ -60,6 +60,9 @@ $route['module'] = 'administrator/module';
 $route['module/mlist'] = 'administrator/module/mlist';
 $route['role-permission'] = 'administrator/role';
 $route['manage-user'] = 'administrator/users';
+//$route['users'] = 'users/UsersController/index';
+//$route['users/view'] = 'users/UsersController/view';
+//$route['user/control/(:num)'] = 'users/UsersController/control/$1';
 
 /**
  * Api Route
