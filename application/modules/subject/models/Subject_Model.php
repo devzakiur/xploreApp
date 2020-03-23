@@ -5,11 +5,14 @@ class Subject_Model extends MY_Model
 {
 	public function get_subject_list()
 	{
+		$this->db->distinct();
 		$this->db->select('AS.*,S.name as subject_name,S.status');
 		$this->db->from('subject as S');
 		$this->db->join('subject_assign as AS',"AS.subject_id=S.id","left");
-		$this->db->group_by('AS.subject_id');
+		$this->db->group_by('S.id');
 		$result=  $this->db->get()->result_array();
+
+//		debug_r($result);
 		$data=array();
 		if($result)
 		{

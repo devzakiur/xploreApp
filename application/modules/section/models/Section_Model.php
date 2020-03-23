@@ -17,7 +17,7 @@ class Section_Model extends MY_Model
 		if($category_id!=''){
 			$this->db->where('C.id', $category_id);
 		}
-		$this->db->group_by('AS.section_id');
+		$this->db->group_by('S.id');
 		$result=  $this->db->get()->result_array();
 		$data=array();
 		if($result)

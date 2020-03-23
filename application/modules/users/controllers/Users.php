@@ -71,23 +71,12 @@ class Users extends MY_Controller {
 	 */
 	public function delete($id = null)
     {
-        $result = $this->users->get_single("library", array("id" => $id));
+        $result = $this->users->get_single("users", array("id" => $id));
         if (isset($result)) {
             $this->users->trans_start();
-            $slide_result=$this->users->get_list("library_image",array("library_id"=>$id));
-			@unlink($result->cover_image);
-            $this->users->delete("library",array("id" => $id));
-            $this->users->delete("library_video",array("library_id" => $id));
-            $this->users->delete("library_image",array("library_id" => $id));
-            $this->users->delete("topic_library",array("library_id" => $id));
-				if($slide_result)
-				{
-					foreach ($slide_result as $value)
-					{
-						@unlink($value['picture']);
-
-					}
-				}
+            $this->users->delete("users",array("id" => $id));
+			@unlink($result->picture);
+			@unlink($result->cover_picture);
             $this->users->trans_complete();
             if($this->users->trans_status()){
             	setMessage("msg", "success", " Deleted Successfuly");

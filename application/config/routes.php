@@ -62,7 +62,8 @@ $route['role-permission'] = 'administrator/role';
 $route['manage-user'] = 'administrator/users';
 //$route['users'] = 'users/UsersController/index';
 //$route['users/view'] = 'users/UsersController/view';
-//$route['user/control/(:num)'] = 'users/UsersController/control/$1';
+$route['user/control/(:num)'] = 'users/Users/control/$1';
+$route['user/delete/(:num)'] = 'users/Users/delete/$1';
 
 /**
  * Api Route
@@ -91,6 +92,10 @@ $route['question/bookmark'] = 'api/ContentController/question_bookmark';
 
 //library
 $route['library-data'] = 'api/ContentController/get_library';
+$route['recently-learn'] = 'api/ContentController/get_recently_learn';
+
+//recently learn
+
 
 //password change
 $route['forgot-password'] = 'api/PasswordController/forgot_password';

@@ -68,6 +68,15 @@ class Ajax extends MY_Controller {
             echo json_encode($result);
         }
     }
+    public function get_section_by_subject_category()
+    {
+        if($_GET){
+            $subject_id=$this->input->get("subject_id");
+            $category_id=$this->input->get("category_id");
+            $result=$this->ajax->get_section_by_subject_category($category_id,$subject_id);
+            echo json_encode($result);
+        }
+    }
     public function get_topic_by_section()
     {
         if($_GET){

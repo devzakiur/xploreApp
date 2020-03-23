@@ -9,6 +9,9 @@
 				<?php if (hasPermission("users", DELETE)) : ?>
 						<a onclick="return confirm('Are You Sure?')" href="<?php echo site_url("user/control/" . $value['id']); ?>" title="<?php echo $value['status']==1?"Active":"Block" ?>" class="text-<?php echo $value['status']==1?"success":"danger" ?> btn  btn-xs  waves-effect tooltips" data-placement="top" data-toggle="tooltip" data-original-title="View" id=""><i class="fa fa-check-circle"></i></a>
 				<?php endif; ?>
+				<?php if (is_super_admin()) : ?>
+						<a onclick="return confirm('Are You Sure?')" href="<?php echo site_url("user/delete/" . $value['id']); ?>" title="Delete" class="text-danger btn  btn-xs  waves-effect tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Dlete" id=""><i class="fa fa-trash"></i></a>
+				<?php endif; ?>
             </td>
         </tr>
     <?php endforeach;?>

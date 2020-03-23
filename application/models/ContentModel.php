@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class ContentModel extends MY_Model
 {
 	private $options=[];
-	public function get_all_question($per_page='',$category_id=null,$subject_id=null,$section_id=null,$topic_id=null,$count=false)
+	public function get_all_question($per_page='',$category_id=null,$subject_id=null,$section_id=null,$topic_id=null,$user_id)
 	{
 		$this->db->select('Q.id,Q.title,Q.answer,Q.difficulty,Q.picture,Q.answer_explain,Q.option_1,Q.option_2,Q.option_3,Q.option_4');
 		$this->db->distinct();
@@ -35,10 +35,6 @@ class ContentModel extends MY_Model
 				$this->db->where('TQ.category_id', $category_id);
 			}
 		}
-		if($count)
-		{
-			return $this->db->count_all_results();
-		}
 		$this->db->order_by('Q.difficulty', 'RANDOM');
 		$this->db->limit($per_page);
 		$result=$this->db->get()->result_array();
@@ -58,6 +54,7 @@ class ContentModel extends MY_Model
 				$data[$key]['answer_explain']=html_entity_decode($value['answer_explain']);
 				$data[$key]['picture']=$value['picture'];
 				$data[$key]['difficulty']=$value['difficulty'];
+				$data[$key]['is_bookmarked']=$this->exits_check("question_bookmark",array("user_id"=>$user_id,"question_id"=>$value['id']));
 				$data[$key]['answer']=$value['answer']-1;
 			}
 		}
@@ -127,5 +124,18 @@ class ContentModel extends MY_Model
 			$result['recommended']=$this->get_single("library",array("position"=>$result['position']+1),"id,title");
 		}
 		return $result;
+	}
+
+	public function get_recently_learn($user_id)
+	{
+		$this->db->select('C.name as category_name,S.name as subject_name,SEC.name as section_name,T.name as topic_name');
+		$this->db->from('recently_learn as RL');
+		$this->db->join('category as C', 'RL.category_id = C.id', 'left');
+		$this->db->join('subject as S', 'RL.subject_id = S.id', 'left');
+		$this->db->join('section as SEC', 'RL.section_id = SEC.id', 'left');
+		$this->db->join('topic as T', 'RL.topic_id = T.id', 'left');
+		$this->db->order_by('RL.id', 'desc');
+		$this->db->limit(5);
+		return $this->db->get()->result_array();
 	}
 }

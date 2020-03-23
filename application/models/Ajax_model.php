@@ -21,6 +21,17 @@ class Ajax_model extends MY_Model {
 		$this->db->order_by('S.position',"asc");
 		return $this->db->get()->result_array();
 	}
+    function get_section_by_subject_category($category_id,$subject_id)
+	{
+		$this->db->select('S.id,S.name');
+		$this->db->from('section_assign as SA');
+		$this->db->join('section as S', 'SA.section_id = S.id', 'left');
+		$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id', 'left');
+		$this->db->where('SUBA.category_id', $category_id);
+		$this->db->where('SA.subject_id', $subject_id);
+		$this->db->order_by('S.position',"asc");
+		return $this->db->get()->result_array();
+	}
     function get_topic_by_section($section_id)
 	{
 		$this->db->select('T.id,T.name');

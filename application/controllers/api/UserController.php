@@ -447,8 +447,8 @@ class UserController extends RestController
 		$this->form_validation->set_rules('phone', 'Phone', 'trim|xss_clean|required|callback_phone');
 		$this->form_validation->set_rules('gender', 'Gender', 'trim|xss_clean|required');
 		$this->form_validation->set_rules('dob', 'Date Of Birth', 'trim|xss_clean|required');
-		$this->form_validation->set_rules('picture', 'Picture', 'trim|xss_clean');
-		$this->form_validation->set_rules('cover_picture', 'Cover Picture', 'trim|xss_clean');
+//		$this->form_validation->set_rules('picture', 'Picture', 'trim|xss_clean');
+//		$this->form_validation->set_rules('cover_picture', 'Cover Picture', 'trim|xss_clean');
 	}
 
 	public function _get_posted_data()
@@ -458,8 +458,8 @@ class UserController extends RestController
 		$data['phone']=$this->input->post("phone");
 		$data['gender']=$this->input->post("gender");
 		$data['dob']=$this->input->post("dob");
-		$data['picture']=$this->input->post("picture");
-		if ($_FILES['picture']['name']) {
+//		$data['picture']=$this->input->post("picture");
+		if (isset($_FILES['picture']['name'])) {
 			if (!is_dir('uploads/users')) {
 					mkdir('./uploads/users', 0777, TRUE);
 				}
