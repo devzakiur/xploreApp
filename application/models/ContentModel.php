@@ -138,4 +138,19 @@ class ContentModel extends MY_Model
 		$this->db->limit(5);
 		return $this->db->get()->result_array();
 	}
+
+	public function get_most_popular($category_id)
+	{
+		$this->db->select('C.name as category_name,S.name as subject_name,SEC.name as section_name,T.name as topic_name,SUM(RL.views) as total_views');
+		$this->db->from('recently_learn as RL');
+		$this->db->join('category as C', 'RL.category_id = C.id', 'left');
+		$this->db->join('subject as S', 'RL.subject_id = S.id', 'left');
+		$this->db->join('section as SEC', 'RL.section_id = SEC.id', 'left');
+		$this->db->join('topic as T', 'RL.topic_id = T.id', 'left');
+		$this->db->group_by('RL.topic_id');
+		$this->db->order_by('total_views',"desc");
+		$this->db->where('RL.category_id', $category_id);
+		$this->db->limit(5);
+		return $this->db->get()->result_array();
+	}
 }

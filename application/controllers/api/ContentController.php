@@ -119,20 +119,21 @@ class ContentController extends MY_ApiController
 				"section_id"=>$section_id,
 				"topic_id"=>$topic_id,
 			);
-			$extra_data=array("created_at"=>date("Y-m-d H:i:s"));
+			$extra_data=array("created_at"=>date("Y-m-d H:i:s"),"views"=>1);
 			$inserted_data=array_merge($condition,$extra_data);
 			$check_pre_data=$this->content->get_single("recently_learn",$condition);
 			if(!empty($check_pre_data))
 			{
-					$last_update=new DateTime($check_pre_data->created_at);
-					$now_date_diff=$last_update->diff(new DateTime("now"));
-					$minutes = $now_date_diff->days * 24 * 60;
-					$minutes += $now_date_diff->h * 60;
-					$minutes += $now_date_diff->i;
-					if($minutes>120)
-					{
-						$this->content->insert("recently_learn",$inserted_data);
-					}
+				$last_update=new DateTime($check_pre_data->created_at);
+				$now_date_diff=$last_update->diff(new DateTime("now"));
+				$minutes = $now_date_diff->days * 24 * 60;
+				$minutes += $now_date_diff->h * 60;
+				$minutes += $now_date_diff->i;
+				$views=$check_pre_data->views+1;
+				if($minutes>120)
+				{
+					$this->content->update("recently_learn",array("views"=>$views,"created_at"=>date("Y-m-d H:i:s")),$condition);
+				}
 			}else{
 				$this->content->insert("recently_learn",$inserted_data);
 			}
@@ -152,6 +153,17 @@ class ContentController extends MY_ApiController
 			'status' => true,
 			'status_code' =>HTTP_OK,
 			'message' => ["Recently Learn "],
+			"data"=>$result
+		], RestController::HTTP_OK );
+	}
+	public function get_most_popular_get()
+	{
+		$category_id=$this->input->get("category_id");
+		$result=$this->content->get_most_popular($category_id);
+		$this->response( [
+			'status' => true,
+			'status_code' =>HTTP_OK,
+			'message' => ["Most Popular"],
 			"data"=>$result
 		], RestController::HTTP_OK );
 	}

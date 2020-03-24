@@ -93,6 +93,7 @@ $route['question/bookmark'] = 'api/ContentController/question_bookmark';
 //library
 $route['library-data'] = 'api/ContentController/get_library';
 $route['recently-learn'] = 'api/ContentController/get_recently_learn';
+$route['most-popular'] = 'api/ContentController/get_most_popular';
 
 //recently learn
 
