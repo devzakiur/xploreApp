@@ -8,12 +8,10 @@ use chriskacerguis\RestServer\RestController;
  */
 class ContentController extends MY_ApiController
 {
-	public $id;
 	public function __construct($config = 'rest')
 	{
 		parent::__construct($config);
 		$this->load->model("ContentModel","content",true);
-		$this->id=verify_request();
 	}
 
 	public function get_question_list_post()

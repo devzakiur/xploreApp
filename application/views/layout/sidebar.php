@@ -80,6 +80,11 @@
                     <a href="<?php echo site_url("content"); ?>" class="waves-effect <?php echo set_Topmenu("content"); ?>"><i class="ion ion-document"></i><span> Content </span></a>
                 </li>
 				<?php endif; ?>
+				<?php if (hasActive("game_setting") && hasPermission("game_setting", VIEW)) : ?>
+                <li>
+                    <a href="<?php echo site_url("game"); ?>" class="waves-effect <?php echo set_Topmenu("game_setting"); ?>"><i class="fa fa-gamepad"></i><span>Game Setting </span></a>
+                </li>
+				<?php endif; ?>
 				<?php if (hasActive("users") && hasPermission("users", VIEW)) : ?>
                 <li>
                     <a href="<?php echo site_url("users"); ?>" class="waves-effect <?php echo set_Topmenu("users"); ?>"><i class="fa fa-users"></i><span>App Users </span></a>

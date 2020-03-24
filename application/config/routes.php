@@ -95,6 +95,10 @@ $route['library-data'] = 'api/ContentController/get_library';
 $route['recently-learn'] = 'api/ContentController/get_recently_learn';
 $route['most-popular'] = 'api/ContentController/get_most_popular';
 
+//game/challenge
+$route['game-challenge'] = 'api/GameController/game_challenge';
+$route['game-question'] = 'api/GameController/get_game_question';
+
 //recently learn
 
 
