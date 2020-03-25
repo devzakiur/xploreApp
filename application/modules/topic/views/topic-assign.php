@@ -165,19 +165,20 @@
 		});
 
 		$("#subject_id").on("change",function () {
-			var category_id=$(this).val();
+			var subject_id=$(this).val();
+			var category_id=$("#category_id").val();
 			$.ajax({
-                url:"<?php echo base_url() ?>ajax/get_subject_by_category",
+                url:"<?php echo base_url() ?>ajax/get_section_by_subject_category",
                 type:"get",
                 dataType:"json",
-                data:{"category_id":category_id},
+                data:{"category_id":category_id,"subject_id":subject_id},
                 success:function(data){
                 	$("#topic_id").selectpicker("val","");
                 	$("#topic_id").selectpicker("refresh");
 					var row='';
 					$.each(data,function(key,value){
 						row+='<div class="checkbox checkbox-primary">';
-							row+='<input id="'+key+'" required class="subject_checkbox" name="subject_id['+key+']" value="'+value.id+'" type="checkbox">';
+							row+='<input id="'+key+'" required class="section_checkbox" name="section_id['+key+']" value="'+value.id+'" type="checkbox">';
 							row+='<label for="'+key+'">'+value.name+'</label>';
 						row+='</div>';
 					});

@@ -316,7 +316,8 @@
 																		<label for="code">Slide Image</label>
 																		<div class="input-group">
 																			<input type="file" name="slide_picture[]"   data-default-file="<?= base_url().$value['picture'] ?>" data-max-file-size="500K" data-allowed-file-extensions="jpg png"  id="slide_picture" >
-																			<input type="hidden" name="slide_picture_name[]" class="slide_picture_<?= $value['id'] ?>>"   value="<?= $value['picture'] ?>" >
+																			<input type="hidden" name="slide_picture_name[]" class="slide_picture_<?= $value['id'] ?>"   value="<?= $value['picture'] ?>" >
+																			<input type="hidden" name="slide_picture_id[]" class="slide_picture_id_<?= $value['id'] ?>"   value="<?= $value['id'] ?>" >
 																			<div class="input-group-btn">
 																				<?php if($key==0): ?>
 																				<button class="btn btn-info" id="image_add_button" type="button">
@@ -495,6 +496,7 @@
 												<th class="text-center">Topic</th>
 												<th class="text-center">Title</th>
 												<th class="text-center">Details</th>
+												<th class="text-center">Edit History</th>
 												<th class="text-center">Action</th>
 											</tr>
 										</thead>
@@ -522,6 +524,25 @@
                     </div>
                     <div class="modal-body">
                        <div id="show_details">
+					   </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        </div>
+    </div><!-- /.modal -->
+  <div id="history-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <!-- <form id="item_add"> -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Library History View</h4>
+                    </div>
+                    <div class="modal-body">
+                       <div id="history_show_details">
+
 					   </div>
                     </div>
                     <div class="modal-footer">
@@ -752,6 +773,26 @@
 				}
             });
 		});
+        $("#library").on("click","#history_details_modal",function () {
+			var library_id=$(this).data("id");
+			 $.ajax({
+                url:"<?php echo base_url() ?>library/history_details_view",
+                type:"get",
+                dataType:"json",
+                data:{"library_id":library_id},
+				 beforeSend:function(){
+                	$("#overlay").fadeIn(300);　
+				 },
+                success:function(data){
+					$("#history_show_details").html(data);
+                	$("#overlay").fadeOut(300);
+                },
+				error:function (e) {
+					$.Notification.autoHideNotify('error', 'top right',"Something Wrong. Please try again");
+                	$("#overlay").fadeOut(300);
+				}
+            });
+		});
 
     //    search area
 		$("#search_category_id").on("change",function () {
@@ -924,14 +965,17 @@
 </script>
 <?php if(isset($edit)): ?>
 	<script>
-		var category="<?= $single['category_id'] ?>"
-		var category_split_data=category.split(",");
-        $('#category_id option').each(function() {
-            if (jQuery.inArray($(this).val(), category_split_data) !== -1) {
-                this.selected = true;
-            }
-        });
-         $(".selectpicker").selectpicker('render').selectpicker('refresh');
+		$(document).ready(function () {
+			var category="<?= $single['category_id'] ?>"
+			var category_split_data=category.split(",");
+			$('#category_id option').each(function() {
+				if (jQuery.inArray($(this).val(), category_split_data) !== -1) {
+					this.selected = true;
+				}
+			});
+			 $(".selectpicker").selectpicker('render').selectpicker('refresh');
+
+		});
 	</script>
 <?php endif;?>
 

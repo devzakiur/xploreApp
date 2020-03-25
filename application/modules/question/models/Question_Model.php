@@ -142,6 +142,16 @@ class Question_Model extends MY_Model
 
 		return $result;
 	}
+	function get_question_history_details($question_id)
+	{
+		$this->db->select('EH.*,A.name as user_name');
+		$this->db->from('edit_history as EH');
+		$this->db->join('admin as A', 'EH.update_by = A.id', 'left');
+		$this->db->where('EH.slug', "question");
+		$this->db->where('EH.edit_id', $question_id);
+		$this->db->order_by('EH.id', 'desc');
+		return $this->db->get()->result_array();
+	}
 	function get_all_relation($question_id)
 	{
 		$this->db->select('T.name as topic_name,S.name as section_name,SB.name as subject_name,C.name as category_name');

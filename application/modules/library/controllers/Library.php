@@ -156,6 +156,19 @@ class Library extends MY_Controller {
 			exit;
 		}
     }
+
+	public function history_details_view()
+	{
+		if($_GET)
+		{
+			$library_id=$this->input->get("library_id");
+			$result['history']=$this->library->get_library_history_details($library_id);
+			$html=$this->load->view("library-history-details",$result,true);
+//			debug_r($result);
+			echo json_encode($html);
+			exit;
+		}
+    }
 //    ajax topic relation
 	public function topic_relation()
 	{
@@ -199,62 +212,80 @@ class Library extends MY_Controller {
 				if ($this->form_validation->run() ==TRUE) {
 						 $data=$this->_get_posted_data();
 						 $this->library->trans_start();
-						 $this->library->update('library', $data,array("id"=>$id));
-           				 $this->library->delete("library_video",array("library_id" => $id));
-           				 $this->library->delete("topic_library",array("library_id" => $id));
-           				 $topic_id=$this->input->post("topic_id");
-						$library_topic_data=array();
-						$category_id=$this->input->post("category_id");
-						foreach ($category_id as $key=>$value)
-						{
-							$library_topic_data[$key]['category_id']=$value;
-							$library_topic_data[$key]['library_id']=$id;
-							$library_topic_data[$key]['topic_id']=$topic_id;
-						}
-						$this->library->insert_batch("topic_library",$library_topic_data);
-						$library_picture=$this->library->get_list("library_image",array("library_id"=>$id));
-						$slide_picture_name=array();
-						$slide_picture_name=$this->input->post("slide_picture_name");
-						if($library_picture)
-						{
-							foreach ($library_picture as $value)
+							 $this->library->update('library', $data,array("id"=>$id));
+							 $this->library->delete("library_video",array("library_id" => $id));
+							 $this->library->delete("topic_library",array("library_id" => $id));
+							 $topic_id=$this->input->post("topic_id");
+							$library_topic_data=array();
+							$category_id=$this->input->post("category_id");
+							foreach ($category_id as $key=>$value)
 							{
-								if(!in_array($value['picture'], $slide_picture_name))
+								$library_topic_data[$key]['category_id']=$value;
+								$library_topic_data[$key]['library_id']=$id;
+								$library_topic_data[$key]['topic_id']=$topic_id;
+							}
+							$this->library->insert_batch("topic_library",$library_topic_data);
+							$library_picture=$this->library->get_list("library_image",array("library_id"=>$id));
+							$slide_picture_name=array();
+							$slide_picture_name=$this->input->post("slide_picture_name");
+							$slide_picture_id=$this->input->post("slide_picture_id");
+
+							if($library_picture)
+							{
+								foreach ($library_picture as $value)
 								{
+									if(!in_array($value['picture'], $slide_picture_name))
+									{
+											$this->library->delete("library_image",array("id" => $value["id"]));
+											@unlink($value['picture']);
+									}
+								}
+							}
 
-									$this->library->delete("library_image",array("id" => $value['id']));
-									@unlink($value['picture']);
-
+							foreach ($slide_picture_name as $key=>$pre_image)
+							{
+								if ($pre_image!='' && !empty($_FILES['slide_picture']['name'][$key]))
+								{
+									$this->library->delete("library_image",array("id" => $slide_picture_id[$key]));
+									@unlink($pre_image);
+								}
+							}
+							$code=$this->input->post("video_url");
+							$library_video_data=array();
+							if($code[0]!='')
+							{
+								foreach ($code as $key=>$value)
+								{
+									$library_video_data[$key]['library_id']=$id;
+									$library_video_data[$key]['video_url']=$value;
+									$library_video_data[$key]['video_title']=$this->input->post("video_title")[$key];
 								}
 
+								$this->library->insert_batch("library_video",$library_video_data);
 							}
-						}
-						$code=$this->input->post("video_url");
-						$library_video_data=array();
-						if($code[0]!='')
-						{
-							foreach ($code as $key=>$value)
+							if(!empty($_FILES['slide_picture']['name']))
 							{
-								$library_video_data[$key]['library_id']=$id;
-								$library_video_data[$key]['video_url']=$value;
-								$library_video_data[$key]['video_title']=$this->input->post("video_title")[$key];
+								$slide_data=array();
+								$picture_name=$this->_upload_slide_picture();
+								foreach ($picture_name as $key=>$value)
+								{
+									$slide_data[$key]['library_id']=$id;
+									$slide_data[$key]['slide_picture_title']=$value['picture_title'];
+									$slide_data[$key]['picture']="uploads/library/slideimage/".$value['image_name'];
+								}
+								if(!empty($slide_data))
+								$this->library->insert_batch("library_image",$slide_data);
 							}
-
-							$this->library->insert_batch("library_video",$library_video_data);
-						}
-						if(!empty($_FILES['slide_picture']['name']))
-						{
-							$slide_data=array();
-							$picture_name=$this->_upload_slide_picture();
-							foreach ($picture_name as $key=>$value)
-							{
-								$slide_data[$key]['library_id']=$id;
-								$slide_data[$key]['slide_picture_title']=$value['picture_title'];
-								$slide_data[$key]['picture']="uploads/library/slideimage/".$value['image_name'];
-							}
-							if(!empty($slide_data))
-							$this->library->insert_batch("library_image",$slide_data);
-						}
+							/**
+							 *
+							 * edit history insert
+							 *
+							 */
+							$history_data['edit_id']=$id;
+							$history_data['update_by']=logged_in_user_id();
+							$history_data['slug']="library";
+							$history_data['created_at']=date("Y-m-d H:i:s");
+						$this->library->insert("edit_history",$history_data);
 						$this->library->trans_complete();
 						if($this->library->trans_status())
 						{
@@ -335,6 +366,7 @@ class Library extends MY_Controller {
 			{
 				$status=1;
             	setMessage("msg", "success", "Approved Successfuly");
+            	$this->library->update("library",array("approved_by"=>logged_in_user_id()),array("id"=>$id));
 			}
         	else if($result->status==1)
 			{

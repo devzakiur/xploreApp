@@ -616,7 +616,8 @@
 												<th class="text-center">Sl.</th>
 												<th class="text-center">Question Title</th>
 												<th class="text-center">Answer</th>
-												<th class="text-center">Details</th>
+												<th class="text-center">Details
+												<th class="text-center">Edit History</th>
 												<th class="text-center">Action</th>
 											</tr>
 										</thead>
@@ -644,6 +645,25 @@
                     </div>
                     <div class="modal-body">
                        <div id="show_details">
+
+					   </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        </div>
+    </div><!-- /.modal -->
+  <div id="history-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <!-- <form id="item_add"> -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Question History View</h4>
+                    </div>
+                    <div class="modal-body">
+                       <div id="history_show_details">
 
 					   </div>
                     </div>
@@ -909,6 +929,26 @@
 				}
             });
 		});
+        $("#question").on("click","#history_details_modal",function () {
+			var question_id=$(this).data("id");
+			 $.ajax({
+                url:"<?php echo base_url() ?>question/history_details_view",
+                type:"get",
+                dataType:"json",
+                data:{"question_id":question_id},
+				 beforeSend:function(){
+                	$("#overlay").fadeIn(300);　
+				 },
+                success:function(data){
+					$("#history_show_details").html(data);
+                	$("#overlay").fadeOut(300);
+                },
+				error:function (e) {
+					$.Notification.autoHideNotify('error', 'top right',"Something Wrong. Please try again");
+                	$("#overlay").fadeOut(300);
+				}
+            });
+		});
 
     //    search area
 		$("#search_category_id").on("change",function () {
@@ -1072,7 +1112,7 @@
             x--; //Decrement field counter
         });
      });
-    </script>
+</script>
 <!--category topic part-->
 <script>
      $(document).ready(function(){

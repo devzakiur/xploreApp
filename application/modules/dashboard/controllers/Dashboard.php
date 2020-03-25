@@ -2,6 +2,10 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Class Question
+ * @property Dashboard_model $dashboard
+ */
 class Dashboard extends MY_Controller {
     public $data=array();
     
@@ -18,6 +22,8 @@ class Dashboard extends MY_Controller {
     public function index($id=null)
     {
         $this->layout->title("Dashboard");
+        $this->data['total_pending_question']=$this->dashboard->count_all("question",array("status"=>0));
+        $this->data['total_pending_library']=$this->dashboard->count_all("library",array("status"=>0));
         $this->layout->view('index',$this->data);
        
     }

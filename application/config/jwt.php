@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 // Store your secret key here
 // Make sure you use better, long, more random key than this
-$config['jwt_key'] = 'ingDLMRuGe9UKHRNjs7asdcYckS2yul4lc@df$asdj&3';
+$config['jwt_key'] = 'ingDLMRuGe9UKajhjhHRNjs$k@kk&7asdcYckS2yul4lc@df$asdj&3';
 /*Generated token will expire in 1 minute for sample code
 * Increase this value as per requirement for production
 */

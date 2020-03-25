@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Class Users
+ * Class Question
  * @property Question_Model $question
  */
 class Question extends MY_Controller {
@@ -161,6 +161,20 @@ class Question extends MY_Controller {
 			exit;
 		}
     }
+
+
+	public function history_details_view()
+	{
+		if($_GET)
+		{
+			$question_id=$this->input->get("question_id");
+			$result['history']=$this->question->get_question_history_details($question_id);
+			$html=$this->load->view("question-history-details",$result,true);
+//			debug_r($result);
+			echo json_encode($html);
+			exit;
+		}
+    }
 //    ajax topic relation
 	public function topic_relation()
 	{
@@ -232,6 +246,17 @@ class Question extends MY_Controller {
 							}
 							$this->question->insert_batch("question_batch_year",$question_batch_year_data);
 						}
+						/**
+						 *
+						 * edit history insert
+						 *
+						 */
+							$history_data['edit_id']=$id;
+							$history_data['update_by']=logged_in_user_id();
+							$history_data['slug']="question";
+							$history_data['created_at']=date("Y-m-d H:i:s");
+							$this->question->insert("edit_history",$history_data);
+
 						$this->question->trans_complete();
 						if($this->question->trans_status())
 						{
@@ -299,6 +324,7 @@ class Question extends MY_Controller {
 			{
 				$status=1;
             	setMessage("msg", "success", "Approved Successfuly");
+            	$this->question->update("question",array("approved_by"=>logged_in_user_id()),array("id"=>$id));
 			}
         	else if($result->status==1)
 			{

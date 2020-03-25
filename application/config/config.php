@@ -27,6 +27,11 @@ $config[ 'base_url' ]    =    ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ==
 $config[ 'base_url' ]    .=  "://".$_SERVER['HTTP_HOST'];
 $config[ 'base_url' ]    .=  str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
 
+/**
+ * web mail
+ */
+
+$config['webmail'] = 'test@gmpire.com';
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -225,7 +230,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 2;
 
 /*
 |--------------------------------------------------------------------------
@@ -326,7 +331,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = 'abgkG$khJHG$hl&jjh@hjgjhg754$hg%$';
+$config['encryption_key'] = 'h11FMo167TDJxY46asd#dfg$bdhgkjlbdfb&hmfjm8fgsd#fdfg%9WPQHG5nDeErC1kg';
 
 /*
 |--------------------------------------------------------------------------
@@ -527,6 +532,14 @@ $config['proxy_ips'] = '';
 $config['modules_locations'] = array(
     APPPATH.'modules/' => '../modules/',
 );
+spl_autoload_register(function($class)
+{
+    if(strpos($class, 'CI_') !== 0)
+    {
+        @include_once( APPPATH . 'core/'. $class . '.php' );
+    }
+});
+
 define('VENDOR_URL', $config['base_url'] . 'assets/vendors/');
 define('CSS_URL', $config['base_url'] . 'assets/css/');
 define('JS_URL', $config['base_url'] . 'assets/js/');
@@ -549,3 +562,7 @@ define('DELETE', 'can_delete');
 
 define('APP_NAME', 'Xplore');
 define('QUESTION_PER_PAGE', 10);
+define("USER_DATA",'id,email,name,display_name,phone,gender,dob,picture,cover_picture,email_status,phone_status,toc,status,category_id,subject_id');
+define("NOT_MATCHED",455);
+define("Expired",408);
+define("BLOCKED",456);
