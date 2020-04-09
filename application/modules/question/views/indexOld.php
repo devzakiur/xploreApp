@@ -18,22 +18,37 @@
 									<div class="panel-body">
 										<form id="question_add" enctype="multipart/form-data">
 											<div class="row">
-												<div class="col-sm-6">
+												<div class="col-sm-4">
+													<div class="form-group">
+														<label for="subject_id">Subject</label>
+														<select id="subject_id"  name="subject_id" class="form-control selectpicker"  data-cotainer="body" data-live-search="true">
+															<option value="">--Select--</option>
+															<?php if(count($subject)>0): ?>
+																<?php foreach($subject as $value):?>
+																	<option value="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></option>
+																<?php endforeach;?>
+															<?php endif;?>
+														</select>
+													</div>
+												</div>
+												<div class="col-sm-4">
+													<div class="form-group">
+													<label for="section_id">Section</label>
+													<select id="section_id"  name="section_id" class="form-control selectpicker"  data-cotainer="body" data-live-search="true">
+															<option value="">--Select--</option>
+													</select>
+													</div>
+												</div>
+												<div class="col-sm-4">
 													<div class="form-group">
 														<label for="title">Title</label><small class="req"> *</small>
 														<input type="text" name="title" placeholder="Title" class="form-control" required id="title" >
 													</div>
 												</div>
-												<div class="col-sm-6">
-													<div class="form-group">
-														<label for="picture">Picture</label>(<code>JPG,PNG MAX SIZE 500 KB</code>)
-														<input type="file"  id="picture" data-max-file-size="500K" data-allowed-file-extensions="jpg png" name="picture" class="form-control">
-													</div>
-												</div>
 												<div class="col-sm-3">
 													<div class="form-group">
 														<label for="option_a">Option A</label><small class="req"> *</small>
-														<input type="text"  name="option_a" placeholder="Option A" class="form-control" required id="option_a" >
+														<input type="text" name="option_a" placeholder="Option A" class="form-control" required id="option_a" >
 													</div>
 												</div>
 												<div class="col-sm-3">
@@ -45,16 +60,16 @@
 												<div class="col-sm-3">
 													<div class="form-group">
 														<label for="option_c">Option C</label><small class="req"> *</small>
-														<input type="text"  name="option_c" placeholder="Option C" class="form-control" required id="option_c" >
+														<input type="text" name="option_c" placeholder="Option C" class="form-control" required id="option_c" >
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<div class="form-group">
 														<label for="option_d">Option D</label><small class="req"> *</small>
-														<input type="text"  name="option_d" placeholder="Option D" class="form-control" required id="option_d" >
+														<input type="text" name="option_d" placeholder="Option D" class="form-control" required id="option_d" >
 													</div>
 												</div>
-												<div class="col-sm-4">
+												<div class="col-sm-2">
 													<div class="form-group">
 													<label for="answer">Answer</label><small class="req"> *</small>
 														<select id="answer" required name="answer" class="form-control selectpicker">
@@ -66,7 +81,7 @@
 														</select>
 													</div>
 												</div>
-												<div class="col-sm-4">
+												<div class="col-sm-2">
 													<div class="form-group">
 													<label for="difficulty">Level</label><small class="req"> *</small>
 														<select id="difficulty" required name="difficulty" class="form-control selectpicker">
@@ -77,37 +92,22 @@
 														</select>
 													</div>
 												</div>
-												<div class="col-sm-4">
-														<div class="form-group">
-															<label for="name">Position</label><small class="req"> *</small>
-															<input type="number" name="position" placeholder="Position"  class="form-control" required id="position" >
-														</div>
+												<div class="col-sm-3">
+													<div class="form-group">
+														<label for="picture">Picture</label>(<code>JPG,PNG MAX SIZE 500 KB</code>)
+														<input type="file"  id="picture" data-max-file-size="500K" data-allowed-file-extensions="jpg png" name="picture" class="form-control">
+													</div>
 												</div>
-												<div class="col-sm-12">
+												<div class="col-sm-2">
+													<div class="form-group">
+														<label for="name">Position</label><small class="req"> *</small>
+														<input type="number" name="position" placeholder="Position"  class="form-control" required id="position" >
+													</div>
+												</div>
+												<div class="col-sm-6">
 													<div id="category_part">
 														<div class="category_append" id="1">
-															<div class="col-sm-3">
-																<div class="form-group">
-																	<label for="subject_id">Subject</label>
-																	<select id="subject_id"  name="subject_id" class="form-control selectpicker"  data-cotainer="body" data-live-search="true">
-																		<option value="">--Select--</option>
-																		<?php if(count($subject)>0): ?>
-																			<?php foreach($subject as $value):?>
-																				<option value="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></option>
-																			<?php endforeach;?>
-																		<?php endif;?>
-																	</select>
-																</div>
-															</div>
-															<div class="col-sm-3">
-																<div class="form-group">
-																<label for="section_id">Section</label>
-																<select id="section_id"  name="section_id" class="form-control selectpicker"  data-cotainer="body" data-live-search="true">
-																		<option value="">--Select--</option>
-																</select>
-																</div>
-															</div>
-															<div class="col-sm-3">
+															<div class="col-sm-6">
 																<div class="form-group">
 																	<label for="topic_id">Topic</label><small class="req"> *</small>
 																	<input type="hidden" name="topic_hidden_id[]" id="topic_hidden" value="1">
@@ -124,7 +124,7 @@
 																	</div>
 																</div>
 															</div>
-															<div class="col-sm-3">
+															<div class="col-sm-6">
 																<div class="form-group">
 																	<label for="category_id">Category</label><small class="req"> *</small>
 																	<div class="input-group">
@@ -141,7 +141,7 @@
 														</div>
 													</div>
 												</div>
-												<div class="col-sm-12">
+												<div class="col-sm-6">
 													<div id="bsc_part">
 														<div class="col-sm-6">
 															<div class="form-group">
@@ -220,17 +220,33 @@
 									<!-- <form id="find"> -->
 									<?php echo form_open_multipart("question/edit/".$single->id); ?>
 										<div class="row">
-											<div class="col-sm-6">
+											<div class="col-sm-4">
+												<div class="form-group">
+													<label for="subject_id">Subject</label>
+													<select id="subject_id"  name="subject_id" class="form-control selectpicker"  data-cotainer="body" data-live-search="true">
+														<option value="">--Select--</option>
+														<?php if(count($subject)>0): ?>
+															<?php foreach($subject as $value):?>
+																<option value="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></option>
+															<?php endforeach;?>
+														<?php endif;?>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-4">
+												<div class="form-group">
+												<label for="section_id">Section</label>
+												<select id="section_id"  name="section_id" class="form-control selectpicker"  data-cotainer="body" data-live-search="true">
+														<option value="">--Select--</option>
+												</select>
+												</div>
+											</div>
+
+											<div class="col-sm-4">
 												<div class="form-group">
 													<label for="title">Title</label><small class="req"> *</small>
 													<input type="text" value="<?= $single->title ?>" name="title" placeholder="Title" class="form-control" required id="title" >
 													<input type="hidden" value="<?= $single->id ?>" name="id">
-												</div>
-											</div>
-											<div class="col-sm-6">
-												<div class="form-group">
-													<label for="picture">Picture</label>(<code>JPG,PNG MAX SIZE 500 KB</code>)
-													<input type="file"  id="picture" data-max-file-size="500K"  data-default-file="<?= base_url().$single->picture ?>" data-allowed-file-extensions="jpg png" name="picture" class="form-control">
 												</div>
 											</div>
 											<div class="col-sm-3">
@@ -257,7 +273,7 @@
 													<input type="text" value="<?= $single->option_4 ?>" name="option_d" placeholder="Option D" class="form-control" required id="option_d" >
 												</div>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sm-2">
 												<div class="form-group">
 												<label for="answer">Answer</label><small class="req"> *</small>
 													<select id="answer" required name="answer" class="form-control selectpicker">
@@ -269,7 +285,7 @@
 													</select>
 												</div>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sm-2">
 												<div class="form-group">
 												<label for="difficulty">Level</label><small class="req"> *</small>
 													<select id="difficulty" required name="difficulty" class="form-control selectpicker">
@@ -280,41 +296,26 @@
 													</select>
 												</div>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sm-3">
+												<div class="form-group">
+													<label for="picture">Picture</label>(<code>JPG,PNG MAX SIZE 500 KB</code>)
+													<input type="file"  id="picture" data-max-file-size="500K"  data-default-file="<?= base_url().$single->picture ?>" data-allowed-file-extensions="jpg png" name="picture" class="form-control">
+												</div>
+											</div>
+											<div class="col-sm-2">
 												<div class="form-group">
 													<label for="name">Position</label><small class="req"> *</small>
 													<input type="number" name="position" placeholder="Position" value="<?= $single->position ?>" class="form-control" required id="position" >
 												</div>
 											</div>
-											<div class="col-sm-12">
+											<div class="col-sm-6">
 												<?php $i=1; ?>
 												<?php if(count($topic_id)>0): ?>
 													<div id="category_part">
 													<?php foreach ($topic_id as $key=>$s_value):?>
 														<div class="category_append" id="<?= $i ?>">
 															<div class="category_append_2">
-																<div class="col-sm-3">
-																	<div class="form-group">
-																		<label for="subject_id">Subject</label>
-																		<select id="subject_id"  name="subject_id" class="form-control selectpicker"  data-cotainer="body" data-live-search="true">
-																			<option value="">--Select--</option>
-																			<?php if(count($subject)>0): ?>
-																				<?php foreach($subject as $value):?>
-																					<option  value="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></option>
-																				<?php endforeach;?>
-																			<?php endif;?>
-																		</select>
-																	</div>
-																</div>
-																<div class="col-sm-3">
-																	<div class="form-group">
-																	<label for="section_id">Section</label>
-																	<select id="section_id"  name="section_id" class="form-control selectpicker"  data-cotainer="body" data-live-search="true">
-																			<option value="">--Select--</option>
-																	</select>
-																	</div>
-																</div>
-																<div class="col-sm-3">
+																<div class="col-sm-6">
 																	<div class="form-group">
 																	<label for="topic_id">Topic</label><small class="req"> *</small>
 																		<input type="hidden" name="topic_hidden_id[]" value="<?= $i ?>">
@@ -335,7 +336,7 @@
 																		</div>
 																	</div>
 																</div>
-																<div class="col-sm-3">
+																<div class="col-sm-6">
 																	<div class="form-group">
 																		<label for="category_id">Category</label><small class="req"> *</small>
 																		<div class="input-group">
@@ -366,7 +367,7 @@
 													</div>
 												<?php endif; ?>
 											</div>
-											<div class="col-sm-12">
+											<div class="col-sm-6">
 												<?php if(count($batch_year_list)>0): ?>
 													<div id="bsc_part">
 													<?php foreach ($batch_year_list as $key=>$s_value): ?>
@@ -772,8 +773,31 @@
 				$("#question_year").attr("required",true);
 			}
 		}
-		function topic_append(topic_id,category_id,id){
-			var section_id=$("#"+id+" #section_id").val();
+		///subject id change
+          $("#subject_id").on("change",function(){
+			var subject_id=$(this).val();
+			$.ajax({
+                url:"<?php echo base_url() ?>ajax/get_section_by_subject",
+                type:"get",
+                dataType:"json",
+                data:{"subject_id":subject_id},
+                success:function(data){
+					 $("#section_id").find('option').remove();
+					 $("#section_id").append('<option value="">--Select--</option>');
+					$.each(data,function(key,value){
+						$("#section_id").append('<option value="'+ value.id +'">'+ value.name +'</option>');
+					});
+					$(".selectpicker").selectpicker('render').selectpicker('refresh');
+                }
+            });
+		});
+          $("#section_id").on("change",function(){
+          	var topic_id=$("#topic_id");
+          	var category_id=$("#category_id");
+			topic_append(topic_id,category_id);
+		});
+		function topic_append(topic_id,category_id){
+			var section_id=$("#section_id").val();
 			$.ajax({
                 url:"<?php echo base_url() ?>ajax/get_topic_by_section",
                 type:"get",
@@ -791,72 +815,17 @@
             });
 		}
 
-		///subject id change
-          $("#category_part").on("change","#subject_id",function(){
-			  var id=$(this).closest(".category_append").attr("id");
-			var subject_id=$(this).val();
-			$.ajax({
-                url:"<?php echo base_url() ?>ajax/get_section_by_subject",
-                type:"get",
-                dataType:"json",
-                data:{"subject_id":subject_id},
-                success:function(data){
-                	 var section_id=$("#"+id+" #section_id");
-					 $(section_id).find('option').remove();
-					 $(section_id).append('<option value="">--Select--</option>');
-					$.each(data,function(key,value){
-						$(section_id).append('<option value="'+ value.id +'">'+ value.name +'</option>');
-					});
-					$(".selectpicker").selectpicker('render').selectpicker('refresh');
-                }
-            });
-		});
-          $("#category_part").on("change","#section_id",function(){
-			var id=$(this).closest(".category_append").attr("id");
-          	var topic_id=$("#"+id+" #topic_id");
-          	var category_id=$("#"+id+" #category_id");
-			topic_append(topic_id,category_id,id);
-		});
-
-		//reload option
-		$("#category_part").on("click",'#topic_reload',function(){
-			var id=$(this).closest(".category_append").attr("id");
-          	var topic_id=$("#"+id+" #topic_id");
-          	var category_id=$("#"+id+" #category_id");
-			topic_append(topic_id,category_id,id);
-		});
-		$("#bsc_part").on("click",'#batch_reload',function(){
-			var batch_id=$(this).closest('.input-group').find("#question_batch");
-			batch_append(batch_id);
-		});
-		function batch_append(batch_id) {
-			$.ajax({
-                url:"<?php echo base_url() ?>ajax/get_all_batch",
-                type:"get",
-                dataType:"json",
-                data:{"batch":"s"},
-                success:function(data){
-					 batch_id.find('option').remove();
-					 batch_id.append('<option value="">--Select--</option>');
-					$.each(data,function(key,value){
-						batch_id.append('<option value="'+ value.id +'">'+ value.name +'</option>');
-					});
-					$(".selectpicker").selectpicker('render').selectpicker('refresh');
-                }
-            });
-		}
-
           $("#category_part").on("change",'#topic_id',function(){
-			var id=$(this).closest(".category_append").attr("id");
+			  var id=$(this).closest(".category_append").attr("id");
 			var topic_id=$(this).val();
 			$.ajax({
-				url:"<?php echo base_url() ?>question/topic_relation",
-				type:"get",
-				dataType:"json",
-				data:{"topic_id":topic_id},
-				success:function(data){
-				   $("#topic_realtion tbody").html(data.html_data);
-					 var category_id=$("#"+id+" #category_id");
+                url:"<?php echo base_url() ?>question/topic_relation",
+                type:"get",
+                dataType:"json",
+                data:{"topic_id":topic_id},
+                success:function(data){
+                   $("#topic_realtion tbody").html(data.html_data);
+               		 var category_id=$("#"+id+" #category_id");
 					 $(category_id).find('option').remove();
 					$(category_id).selectpicker("refresh");
 					if(data.category_data!=''){
@@ -865,7 +834,7 @@
 						});
 						$(category_id).selectpicker('render').selectpicker('refresh');
 					}
-				}
+                }
             });
 
 		});
@@ -1042,6 +1011,32 @@
 		$("#search_topic_id,#search_batch_id,#search_year").on("change",function () {
 			get_view(false);
 		});
+		//reload option
+		$("#category_part").on("click",'#topic_reload',function(){
+			var topic_id=$(this).closest('.input-group').find("#topic_id");
+			var category_id=$(this).closest('.category_append').find("#category_id");
+			topic_append(topic_id,category_id);
+		});
+		$("#bsc_part").on("click",'#batch_reload',function(){
+			var batch_id=$(this).closest('.input-group').find("#question_batch");
+			batch_append(batch_id);
+		});
+		function batch_append(batch_id) {
+			$.ajax({
+                url:"<?php echo base_url() ?>ajax/get_all_batch",
+                type:"get",
+                dataType:"json",
+                data:{"batch":"s"},
+                success:function(data){
+					 batch_id.find('option').remove();
+					 batch_id.append('<option value="">--Select--</option>');
+					$.each(data,function(key,value){
+						batch_id.append('<option value="'+ value.id +'">'+ value.name +'</option>');
+					});
+					$(".selectpicker").selectpicker('render').selectpicker('refresh');
+                }
+            });
+		}
     });
 </script>
 <script>
@@ -1159,68 +1154,43 @@
 		{
 			var row="";
 			row+='<div class="category_append" id="'+x+'">';
-				row+='<div class="category_append_2"">';
-
-					row+='<div class="col-sm-3">';
-						row+='<div class="form-group">';
-							row+='<label for="subject_id">Subject</label>';
-							row+='<select id="subject_id"  name="subject_id" class="form-control selectpicker"  data-cotainer="body" data-live-search="true">';
-								row+='<option value="">--Select--</option>';
-								<?php if(count($subject)>0): ?>
-									<?php foreach($subject as $value):?>
-										row+='<option value="<?php echo $value['id']; ?>"><?php echo $value['name']; ?></option>';
-									<?php endforeach;?>
-								<?php endif;?>
-							row+='</select>';
-						row+='</div>';
-					row+='</div>';
-
-					row+='<div class="col-sm-3">';
-						row+='<div class="form-group">';
-						row+='<label for="section_id">Section</label>';
-						row+='<select id="section_id"  name="section_id" class="form-control selectpicker"  data-cotainer="body" data-live-search="true">';
-								row+='<option value="">--Select--</option>';
+			row+='<div class="category_append_2"">';
+			row+='<div class="col-sm-6">';
+					row+='<div class="form-group">';
+						row+='<label for="topic_id">Topic</label><small class="req"> *</small>';
+						row+='<input type="hidden" name="topic_hidden_id[]" id="topic_hidden" value="'+x+'">';
+						row+='<div class="input-group">';
+						row+='<select name="topic_id_'+x+'" id="topic_id"  required class="form-control selectpicker topic_id" data-live-search="true" data-container="body">';
+							row+='<option value="">--Select--</option>';
+							if(data!=''){
+							$.each(data,function(key,value){
+									row+='<option value="'+ value.id +'">'+ value.name +'</option>'
+								});
+							}
 						row+='</select>';
-						row+='</div>';
-					row+='</div>';
-
-					row+='<div class="col-sm-3">';
-							row+='<div class="form-group">';
-								row+='<label for="topic_id">Topic</label><small class="req"> *</small>';
-								row+='<input type="hidden" name="topic_hidden_id[]" id="topic_hidden" value="'+x+'">';
-								row+='<div class="input-group">';
-								row+='<select name="topic_id_'+x+'" id="topic_id"  required class="form-control selectpicker topic_id" data-live-search="true" data-container="body">';
-									row+='<option value="">--Select--</option>';
-									if(data!=''){
-									$.each(data,function(key,value){
-											row+='<option value="'+ value.id +'">'+ value.name +'</option>'
-										});
-									}
-								row+='</select>';
-									row+='<div class="input-group-btn">';
-										row+='<button class="btn btn-success" id="topic_reload" type="button">';
-											row+='<i class="md  md-autorenew"></i>';
-										row+='</button>';
-									row+='</div>';
-								row+='</div>';
-							row+='</div>';
-						row+='</div>';
-
-						row+='<div class="col-sm-3">';
-							row+='<div class="form-group">';
-									row+='<label for="category_id">Category</label><small class="req"> *</small>';
-									row+='<div class="input-group">';
-										row+='<select name="category_id_'+x+'[]" id="category_id" required multiple class="form-control selectpicker">';
-										row+='</select>';
-										row+='<div class="input-group-btn">';
-											row+='<button class="btn btn-danger category_remove_button" id="" type="button">';
-												row+='<i class="fa fa-minus"></i>';
-											row+='</button>';
-										row+='</div>';
-									row+='</div>';
+							row+='<div class="input-group-btn">';
+								row+='<button class="btn btn-success" id="topic_reload" type="button">';
+									row+='<i class="md  md-autorenew"></i>';
+								row+='</button>';
 							row+='</div>';
 						row+='</div>';
 					row+='</div>';
+				row+='</div>';
+				row+='<div class="col-sm-6">';
+				row+='<div class="form-group">';
+						row+='<label for="category_id">Category</label><small class="req"> *</small>';
+						row+='<div class="input-group">';
+						row+='<select name="category_id_'+x+'[]" id="category_id" required multiple class="form-control selectpicker">';
+							row+='</select>';
+							row+='<div class="input-group-btn">';
+								row+='<button class="btn btn-danger category_remove_button" id="" type="button">';
+									row+='<i class="fa fa-minus"></i>';
+								row+='</button>';
+							row+='</div>';
+							row+='</div>';
+					row+='</div>';
+				row+='</div>';
+				row+='</div>';
 				row+='</div>';
 				return row;
 		}

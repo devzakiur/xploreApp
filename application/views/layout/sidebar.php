@@ -61,6 +61,12 @@
 						<?php if (hasPermission("question", VIEW)) : ?>
                         <li class="<?php echo set_Submenu("question"); ?>"><a href="<?php echo site_url("question"); ?>">Question</a></li>
 						<?php endif; ?>
+						<?php if (hasPermission("user_question", VIEW)) : ?>
+                        <li class="<?php echo set_Submenu("user_question"); ?>"><a href="<?php echo site_url("question/user_question"); ?>">User Question</a></li>
+						<?php endif; ?>
+						<?php if (hasPermission("report_question", VIEW)) : ?>
+                        <li class="<?php echo set_Submenu("report_question"); ?>"><a href="<?php echo site_url("question/report_question"); ?>">Report Question</a></li>
+						<?php endif; ?>
                     </ul>
                 </li>
 				<?php endif; ?>
@@ -83,6 +89,11 @@
 				<?php if (hasActive("game_setting") && hasPermission("game_setting", VIEW)) : ?>
                 <li>
                     <a href="<?php echo site_url("game"); ?>" class="waves-effect <?php echo set_Topmenu("game_setting"); ?>"><i class="fa fa-gamepad"></i><span>Game Setting </span></a>
+                </li>
+				<?php endif; ?>
+				<?php if (hasActive("social") && hasPermission("social", VIEW)) : ?>
+                <li>
+                    <a href="<?php echo site_url("social"); ?>" class="waves-effect <?php echo set_Topmenu("social"); ?>"><i class="fa fa-share"></i><span>Social Setting </span></a>
                 </li>
 				<?php endif; ?>
 				<?php if (hasActive("users") && hasPermission("users", VIEW)) : ?>

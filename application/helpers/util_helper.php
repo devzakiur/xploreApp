@@ -365,47 +365,79 @@ if (!function_exists('category_option_selected')) {
     	return "";
     }
 }
-if (!function_exists('verify_request')) {
+if (!function_exists('subject_option_selected')) {
 
-    function verify_request(){
+    function subject_option_selected($topic_id,$id){
     	 $CI =& get_instance();
-    	// Get all the headers
-        $headers =  $CI->input->request_headers();
-        if(!isset($headers["Authorization"]))
-		{
-			$status = 401;
-            $response = ['status' => $status, 'message' => 'Header Missing'];
-            $CI->response($response, $status);
-		}
-        // Extract the token
-		$token = $headers['Authorization'];
-
-        // Use try-catch
-        // JWT library throws exception if the token is not valid
-        try {
-            // Validate the token
-            // Successfull validation will return the decoded user data else returns false
-            $data = AUTHORIZATION::validateToken($token);
-			if ($data === false) {
-				$status = 401;
-				$response = ['status' => $status, 'msg' => 'Unauthorized Access!'];
-				$CI->response($response, $status);
-
-				exit();
-			} else {
-				if ($data->id):
-					return $data->id;
-				endif;
-				return 0;
-			}
-        } catch (Exception $e) {
-            // Token is invalid
-            // Send the unathorized access message
-            $status = 401;
-            $response = ['status' => $status, 'message' => 'Unauthorized Access! '];
-            $CI->response($response, $status);
-        }
+		$this->db->select();
+		$this->db->from('topic_assign as TA');
+		$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id');
+		$this->db->where('TA.topic_id', $topic_id);
+		$this->db->limit(1);
     }
+}
+	if (!function_exists('verify_request')) {
+
+		function verify_request(){
+			 $CI =& get_instance();
+			// Get all the headers
+			$headers =  $CI->input->request_headers();
+			if(!isset($headers["Authorization"]))
+			{
+				$status = 401;
+				$response = ['status' => $status, 'message' => 'Header Missing'];
+				$CI->response($response, $status);
+			}
+			// Extract the token
+			$token = $headers['Authorization'];
+
+			// Use try-catch
+			// JWT library throws exception if the token is not valid
+			try {
+				// Validate the token
+				// Successfull validation will return the decoded user data else returns false
+				$data = AUTHORIZATION::validateToken($token);
+				if ($data === false) {
+					$status = 401;
+					$response = ['status' => $status, 'message' => 'Unauthorized Access!'];
+					$CI->response($response, $status);
+
+					exit();
+				} else {
+					if (isset($data->id) && isset($data->token_key)):
+						 $CI =& get_instance();
+						 $result=$CI->db->get_where("users",array("id"=>$data->id,"status"=>1))->row();
+						if(isset($result)&& !empty($result))
+						{
+							if($result->token_key===$data->token_key)
+							{
+								return $data->id;
+							}
+							else{
+								$status = 401;
+								$response = ['status' => $status, 'message' => 'Invalid Token'];
+								$CI->response($response, $status);
+							}
+						}else{
+							$status = 401;
+							$response = ['status' => $status, 'message' => 'Blocked User or Deleted User !'];
+							$CI->response($response, $status);
+						}
+					endif;
+					$status = 401;
+					$response = ['status' => $status, 'message' => 'Invalid Token '];
+					$CI->response($response, $status);
+				}
+			} catch (Exception $e) {
+				// Token is invalid
+				// Send the unathorized access message
+				$status = 401;
+				$response = ['status' => $status, 'message' => 'Unauthorized Access! '];
+				$CI->response($response, $status);
+			}
+		}
+	}
+
     if(!function_exists("custom_validation_error")){
     	function custom_validation_error(){
     		 $CI =& get_instance();
@@ -443,4 +475,19 @@ if (!function_exists('verify_request')) {
 			return $CI->db->get()->row();
 		}
 	}
-}
+    if(!function_exists("get_performance_title"))
+	{
+		function get_performance_title($percent){
+			$title='';
+			if($percent>=90){
+				$title="Super Performance";
+			}elseif ($percent>=71){
+				$title="Good Performance";
+			}elseif ($percent>=60 ){
+				$title="Average Performance";
+			}else{
+				$title="Week Performance";
+			}
+			return $title;
+		}
+	}

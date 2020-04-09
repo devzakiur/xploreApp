@@ -14,12 +14,13 @@ class UserController extends RestController
 		parent::__construct($config);
 		date_default_timezone_set("Asia/Dhaka");
 		$this->load->model("MY_Model","user",true);
+		$this->load->helper('string');
 	}
 
 	/**
 	 * get request
 	 */
-	public function toc_get()
+	public function terms_condition_get()
 	{
 		$toc=$this->user->get_single("content",array("slug"=>"toc"));
 		if($toc)
@@ -45,7 +46,7 @@ class UserController extends RestController
 		if($this->form_validation->run() === TRUE) {
 			$email = $this->input->post('email');
 			$password =$this->input->post('password');
-			$check_email=get_users(array("email"=>$email),"password");
+			$check_email=get_users(array("email"=>$email),"password,token_key");
 			if($check_email)
 			{
 				if($check_email->status==1)
@@ -54,13 +55,17 @@ class UserController extends RestController
                         $password_verify=$this->enc_lib->passHashDyc($password,$check_email->password);
                         if($password_verify)
                         {
+                        	$token_key=random_string("alpha",10);
+                        	$this->user->update("users",array("token_key"=>$token_key),array("id"=>$check_email->id));
                            //login successfull
 							$token_data=array(
 								"id"=>$check_email->id,
 								"email"=>$check_email->email,
+								"token_key"=>$token_key,
 								"timestamp"=>time()
 							);
 							$check_email->password="";
+							$check_email->token_key="";
 							$this->response( [
 								'status' => true,
 								'status_code' => 200,
@@ -114,6 +119,7 @@ class UserController extends RestController
 			$this->data['email_code']=$code;
 			$this->data['email_time']=date("Y-m-d H:i:s");
 			$this->data['email_status']=false;
+			$this->data['token_key']=random_string('alpha', 10);
 			$this->data['password']=$this->enc_lib->passHashEnc($this->input->post('password'));
 			$this->data['toc']=$this->input->post("toc");
 			$check=$this->user->exits_check("users",array("email"=>$this->input->post("email"),"email_status"=>0));
@@ -180,7 +186,7 @@ class UserController extends RestController
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|xss_clean');
 		if($this->form_validation->run() === TRUE) {
 			$email=$this->input->post("email");
-			$user_data=get_users(array("email"=>$email,"email_code"=>$this->input->post("code")),"email_time");
+			$user_data=get_users(array("email"=>$email,"email_code"=>$this->input->post("code")),"email_time,token_key");
 			if(!empty($user_data)){
 				if($user_data->email_status)
 				{
@@ -206,9 +212,11 @@ class UserController extends RestController
 					$token_data=array(
 						"id"=>$user_data->id,
 						"email"=>$user_data->email,
+						"token_key"=>$user_data->token_key,
 						"timestamp"=>time()
 						);
 					$user_data->email_status=1;
+					$user_data->token_key="";
 					$user_data->status=1;
 					$this->response( [
 						'status' => true,
@@ -541,4 +549,17 @@ class UserController extends RestController
 	{
 		return true;
     }
+
+    // need api token
+	public function logout_get()
+	{
+		$this->id=verify_request();
+		$this->user->update("users",array("token_key"=>random_string("alpha",10)),array("id"=>$this->id));
+		$this->response( [
+				'status' => true,
+				'status_code' =>HTTP_OK,
+				'message' => ["Logout Successfully"],
+			], RestController::HTTP_OK );
+    }
+
 }

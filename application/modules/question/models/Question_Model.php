@@ -106,16 +106,16 @@ class Question_Model extends MY_Model
 				$data[$key]['id']=$value['id'];
 				$data[$key]['status']=$value['status'];
 				$data[$key]['title']=$value['title'];
-				$data[$key]['answer']=$this->get_answer($value['id'],$value['answer']);
+				$data[$key]['answer']=$this->get_answer("question",$value['id'],$value['answer']);
 			}
 		}
 		return $data;
 	}
 
-	public function get_answer($question_id,$answer)
+	public function get_answer($table_name,$question_id,$answer)
 	{
 		$this->db->select("option_".$answer);
-		$this->db->from('question');
+		$this->db->from($table_name);
 		$this->db->where('id', $question_id);
 		return $this->db->get()->row_array()["option_".$answer];
 	}
@@ -127,7 +127,7 @@ class Question_Model extends MY_Model
 		$this->db->where('Q.id', $question_id);
 		$result=$this->db->get()->row_array();
 		$data=array();
-		$result['answer']=$this->get_answer($result['id'],$result['answer']);
+		$result['answer']=$this->get_answer("question",$result['id'],$result['answer']);
 
 		$all_relation=$this->get_all_relation($result['id']);
 
@@ -248,6 +248,7 @@ class Question_Model extends MY_Model
 		$data['question_year']=implode("/",array_unique($question_year));
 		return $data;
 	}
+
 	public function get_user()
     {
         $this->db->select('A.*,A.id as admin_id,R.name as role_name');
@@ -257,6 +258,127 @@ class Question_Model extends MY_Model
         $this->db->where('R.name!=',"Super Admin");
         return $this->db->get()->result_array();
     }
+
+	public function get_user_question($per_page='',$offset='',$search_key=null,$category_id=null,$subject_id=null,$section_id=null,$topic_id=null,$count=false)
+	{
+		$this->db->select('Q.id,Q.title,Q.answer');
+		$this->db->distinct();
+		$this->db->from('user_question as Q');
+		if($category_id!='')
+		{
+			$this->db->join('user_topics_questions TQ', 'Q.id = TQ.question_id', 'left');
+			if($topic_id!='')
+			{
+				$this->db->where('TQ.topic_id', $topic_id);
+			}
+			else if($section_id!='')
+			{
+				$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id', 'left');
+				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id', 'left');
+				$this->db->where('SA.section_id', $section_id);
+			}
+			else if($subject_id!='')
+			{
+				$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id', 'left');
+				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id', 'left');
+				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id', 'left');
+				$this->db->where('SUBA.subject_id', $subject_id);
+			}
+			else
+			{
+				$this->db->where('TQ.category_id', $category_id);
+			}
+		}
+		if($search_key)
+		{
+			$this->db->where("Q.title LIKE '%$search_key%' ");
+		}
+		if($count)
+		{
+			return $this->db->count_all_results();
+		}
+		$this->db->order_by('Q.id', 'desc');
+		$this->db->limit($per_page,$offset);
+		$result=$this->db->get()->result_array();
+		$data=array();
+		if($result)
+		{
+			foreach($result as $key=>$value)
+			{
+				$data[$key]['id']=$value['id'];
+				$data[$key]['title']=$value['title'];
+				$data[$key]['answer']=$this->get_answer("user_question",$value['id'],$value['answer']);
+			}
+		}
+		return $data;
+    }
+
+	public function get_user_question_details($question_id)
+	{
+		$this->db->select('');
+		$this->db->from('user_question as Q');
+		$this->db->where('Q.id', $question_id);
+		$result=$this->db->get()->row_array();
+		$data=array();
+		$result['answer']=$this->get_answer("user_question",$result['id'],$result['answer']);
+
+		$all_relation=$this->get_all_relation($result['id']);
+
+		$result['topic']=$all_relation['topic_name'];
+		$result['section']=$all_relation['section_name'];
+		$result['subject']=$all_relation['subject_name'];
+		$result['category']=$all_relation['category_name'];
+		$result['difficulty']=$this->get_question_level($result['difficulty']);
+
+		return $result;
+	}
+
+	public function get_user_question_report($per_page='',$offset='',$filter_by=null,$count=false)
+	{
+		$this->db->select('QR.*,Q.title,U.name as user_name');
+		$this->db->distinct();
+		$this->db->from('question_reports as QR');
+		$this->db->join('users as U', 'QR.user_id = U.id', 'left');
+		$this->db->join('question as Q', 'QR.question_id = Q.id', 'left');
+		if($filter_by!='')
+		{
+			$this->db->where("QR.status",$filter_by);
+		}
+		if($count)
+		{
+			return $this->db->count_all_results();
+		}
+		$this->db->order_by('Q.id', 'desc');
+		$this->db->limit($per_page,$offset);
+		$result=$this->db->get()->result_array();
+		$data=array();
+		if($result)
+		{
+			foreach($result as $key=>$value)
+			{
+				$data[$key]['id']=$value['id'];
+				$data[$key]['user_name']=$value['user_name'];
+				$data[$key]['title']=$value['title'];
+				$data[$key]['type']=$this->get_error_type_details($value['type']);
+				$data[$key]['details']=$value['details'];
+				$data[$key]['status']=$value['status'];
+			}
+		}
+		return $data;
+	}
+
+	public function get_error_type_details($type)
+	{
+		switch ($type)
+		{
+			case 1:
+				return "Question has an error";
+			case 2:
+				return "Answer choices has an error";
+			default:
+				return "Others";
+		}
+	}
 }
 
 /* End of file .php */
