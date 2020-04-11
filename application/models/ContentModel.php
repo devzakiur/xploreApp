@@ -81,8 +81,8 @@ class ContentModel extends MY_Model
 
 	public function get_all_library($category_id=null,$subject_id=null,$section_id=null,$topic_id=null,$count=false)
 	{
-		$this->db->select('L.*');
 		$this->db->distinct();
+		$this->db->select('L.*,TL.topic_id');
 		$this->db->from('library as L');
 		$this->db->join('topic_library as TL', 'L.id = TL.library_id', 'left');
 		$this->db->join('category as C', 'TL.category_id = C.id', 'left');
@@ -129,7 +129,7 @@ class ContentModel extends MY_Model
 	public function get_recently_learn($user_id)
 	{
 		$this->db->distinct();
-		$this->db->select('C.name as category_name,S.name as subject_name,SEC.name as section_name,T.name as topic_name');
+		$this->db->select('T.id as topic_id,C.name as category_name,S.name as subject_name,SEC.name as section_name,T.name as topic_name');
 		$this->db->from('recently_learn as RL');
 		$this->db->join('category as C', 'RL.category_id = C.id', 'left');
 		$this->db->join('subject as S', 'RL.subject_id = S.id', 'left');
@@ -143,7 +143,7 @@ class ContentModel extends MY_Model
 
 	public function get_most_popular($category_id)
 	{
-		$this->db->select('C.name as category_name,S.name as subject_name,SEC.name as section_name,T.name as topic_name,SUM(RL.views) as total_views');
+		$this->db->select('T.id as topic_id,C.name as category_name,S.name as subject_name,SEC.name as section_name,T.name as topic_name,SUM(RL.views) as total_views');
 		$this->db->from('recently_learn as RL');
 		$this->db->join('category as C', 'RL.category_id = C.id', 'left');
 		$this->db->join('subject as S', 'RL.subject_id = S.id', 'left');
@@ -154,5 +154,49 @@ class ContentModel extends MY_Model
 		$this->db->where('RL.category_id', $category_id);
 		$this->db->limit(5);
 		return $this->db->get()->result_array();
+	}
+	public function get_all_favourite_question($per_page='',$offset='',$user_id,$subject_id='',$section_id='',$topic_id='',$count=false)
+	{
+		$this->db->select('Q.id,Q.title,Q.answer,Q.difficulty,Q.picture,Q.answer_explain,Q.option_1,Q.option_2,Q.option_3,Q.option_4');
+		$this->db->from('question_bookmark as QB');
+		$this->db->join('question as Q', 'QB.question_id = Q.id');
+
+		if($subject_id!='')
+		$this->db->where('QB.subject_id', $subject_id);
+
+		if($section_id!='')
+		$this->db->where('QB.section_id', $section_id);
+
+		if($topic_id!='')
+		$this->db->where('QB.topic_id', $topic_id);
+
+		$this->db->where('QB.user_id', $user_id);
+		if($count)
+		{
+			return $this->db->count_all_results();
+		}
+		$this->db->order_by('Q.id', 'desc');
+		$this->db->limit($per_page,$offset);
+		$result=$this->db->get()->result_array();
+		$data=array();
+		if($result)
+		{
+			foreach($result as $key=>$value)
+			{
+				$data[$key]['id']=$value['id'];
+				$data[$key]['title']=$value['title'];
+				$data[$key]['options']=[
+					"0"=>$value['option_1'],
+					"1"=>$value['option_2'],
+					"2"=>$value['option_3'],
+					"3"=>$value['option_4'],
+				];
+				$data[$key]['answer_explain']=html_entity_decode($value['answer_explain']);
+				$data[$key]['picture']=$value['picture'];
+				$data[$key]['difficulty']=$value['difficulty'];
+				$data[$key]['answer']=$value['answer']-1;
+			}
+		}
+		return $data;
 	}
 }

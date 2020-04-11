@@ -101,6 +101,7 @@ class ContentController extends MY_ApiController
 			return TRUE;
 		}
 	}
+
 	public function get_library_post()
 	{
 		$category_id=$this->input->post("category_id");
@@ -119,21 +120,24 @@ class ContentController extends MY_ApiController
 			);
 			$extra_data=array("created_at"=>date("Y-m-d H:i:s"),"views"=>1);
 			$inserted_data=array_merge($condition,$extra_data);
-			$check_pre_data=$this->content->get_single("recently_learn",$condition);
-			if(!empty($check_pre_data))
+			if($subject_id!='' && $section_id!='')
 			{
-				$last_update=new DateTime($check_pre_data->created_at);
-				$now_date_diff=$last_update->diff(new DateTime("now"));
-				$minutes = $now_date_diff->days * 24 * 60;
-				$minutes += $now_date_diff->h * 60;
-				$minutes += $now_date_diff->i;
-				$views=$check_pre_data->views+1;
-				if($minutes>120)
+				$check_pre_data=$this->content->get_single("recently_learn",$condition);
+				if(!empty($check_pre_data))
 				{
-					$this->content->update("recently_learn",array("views"=>$views,"created_at"=>date("Y-m-d H:i:s")),$condition);
+					$last_update=new DateTime($check_pre_data->created_at);
+					$now_date_diff=$last_update->diff(new DateTime("now"));
+					$minutes = $now_date_diff->days * 24 * 60;
+					$minutes += $now_date_diff->h * 60;
+					$minutes += $now_date_diff->i;
+					$views=$check_pre_data->views+1;
+					if($minutes>120)
+					{
+						$this->content->update("recently_learn",array("views"=>$views,"created_at"=>date("Y-m-d H:i:s")),$condition);
+					}
+				}else{
+					$this->content->insert("recently_learn",$inserted_data);
 				}
-			}else{
-				$this->content->insert("recently_learn",$inserted_data);
 			}
 		}
 		$this->response( [
@@ -141,6 +145,48 @@ class ContentController extends MY_ApiController
 				'status_code' =>HTTP_OK,
 				'message' => ["Library"],
 				"data"=>$library_data
+			], RestController::HTTP_OK );
+	}
+
+
+	public function get_all_favourite_question_post()
+	{
+		$page=$this->input->post("page");
+		$subject_id=$this->input->post("subject_id");
+		$section_id=$this->input->post("section_id");
+		$topic_id=$this->input->post("topic_id");
+		$total_rows=$this->content->get_all_favourite_question("","",$this->id,$subject_id,$section_id,$topic_id,true);
+		if($total_rows>0)
+		{
+			$per_page=10;
+			$total_page=ceil($total_rows/$per_page);
+			if ($page>=$total_page)
+			{
+				$page=$total_page;
+				$next_page=0;
+			}elseif($page<=0)
+			{
+				$page=1;
+				$next_page=2;
+			}
+			else{
+				$next_page=$page+1;
+			}
+			$offset=($page-1)*$per_page;
+			$result=$this->content->get_all_favourite_question($per_page,$offset,$this->id,$subject_id,$section_id,$topic_id);
+			$data['data']=$result;
+
+			$data['next_page']=$next_page;
+		}
+		else{
+			$data['data']=null;
+			$data['next_page']=0;
+		}
+			$this->response( [
+				'status' => true,
+				'status_code' =>HTTP_OK,
+				'message' => ["Favourite Question"],
+				"data"=>$data
 			], RestController::HTTP_OK );
 	}
 

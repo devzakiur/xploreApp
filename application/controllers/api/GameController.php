@@ -234,9 +234,49 @@ class GameController extends MY_ApiController
 		], RestController::HTTP_OK );
 	}
 
-	public function get_profile_game_type()
+	public function get_game_solution_post()
 	{
+		$slug=$this->input->post("slug");
+		$page=$this->input->post("page");
+		$game_id=$this->input->post("game_id");
+		$type=$this->input->post("type");
+		$subject_id=$this->input->post("subject_id");
+		$section_id=$this->input->post("section_id");
+		$topic_id=$this->input->post("topic_id");
+		$difficulty=$this->input->post("difficulty");
+		$total_rows=$this->game->get_game_solution("","",$this->id,$game_id,$type,$subject_id,$section_id,$topic_id,$difficulty,$slug,true);
+		if($total_rows>0)
+		{
+			$per_page=10;
+			$total_page=ceil($total_rows/$per_page);
+			if ($page>=$total_page)
+			{
+				$page=$total_page;
+				$next_page=0;
+			}elseif($page<=0)
+			{
+				$page=1;
+				$next_page=2;
+			}
+			else{
+				$next_page=$page+1;
+			}
+			$offset=($page-1)*$per_page;
+			$result=$this->game->get_game_solution($per_page,$offset,$this->id,$game_id,$type,$subject_id,$section_id,$topic_id,$difficulty,$slug);
+			$data['data']=$result;
 
+			$data['next_page']=$next_page;
+		}
+		else{
+			$data['data']=null;
+			$data['next_page']=0;
+		}
+			$this->response( [
+				'status' => true,
+				'status_code' =>HTTP_OK,
+				'message' => ["Game Solution"],
+				"data"=>$data
+			], RestController::HTTP_OK );
 	}
 
 }

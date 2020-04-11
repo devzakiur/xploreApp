@@ -284,6 +284,82 @@ class GameModel extends MY_Model {
 		return $data;
 	}
 
+	public function get_game_solution($per_page='',$offset='',$user_id,$game_id='',$type='',$subject_id='',$section_id='',$topic_id='',$difficulty='',$slug='',$count=false)
+	{
+		$game_ids=array();
+		if($slug=="profile")
+		{
+			$game_result=$this->get_list("game_result",array("user_id",$user_id),"id");
+			if(!empty($game_result))
+			{
+				foreach ($game_result as $value)
+				{
+					$game_ids[]=$value['id'];
+				}
+			}
+		}
+		$this->db->select('Q.id,Q.title,Q.answer,Q.difficulty,Q.picture,Q.answer_explain,Q.option_1,Q.option_2,Q.option_3,Q.option_4,GRQ.answer_type');
+		$this->db->from('game_result_question as GRQ');
+		$this->db->join('game_result as GR', 'GRQ.game_table_id = GR.id');
+		$this->db->join('subject as S', 'GRQ.subject_id = S.id');
+		$this->db->join('section as SEC', 'GRQ.section_id = SEC.id');
+		$this->db->join('topic as T', 'GRQ.topic_id = T.id');
+		$this->db->join('question as Q', 'GRQ.question_id = Q.id');
+		if(!empty($game_ids))
+		{
+			$this->db->where_id('GRQ.game_table_id', $game_ids);
+		}else{
+			$this->db->where('GR.user_id', $user_id);
+			if($game_id!='')
+			$this->db->where('GRQ.game_table_id', $game_id);
+		}
+
+		if($type!='')
+		$this->db->where('GRQ.answer_type', $type);
+
+		if($subject_id!='')
+		$this->db->where('GRQ.subject_id', $subject_id);
+
+		if($section_id!='')
+		$this->db->where('GRQ.section_id', $section_id);
+
+		if($topic_id!='')
+		$this->db->where('GRQ.topic_id', $topic_id);
+
+		if($difficulty!='')
+		$this->db->where('Q.difficulty', $difficulty);
+
+		if($count)
+		{
+			return $this->db->count_all_results();
+		}
+		$this->db->order_by('Q.id', 'desc');
+		$this->db->limit($per_page,$offset);
+		$result=$this->db->get()->result_array();
+		$data=array();
+		if($result)
+		{
+			foreach($result as $key=>$value)
+			{
+				$data[$key]['id']=$value['id'];
+				$data[$key]['title']=$value['title'];
+				$data[$key]['options']=[
+					"0"=>$value['option_1'],
+					"1"=>$value['option_2'],
+					"2"=>$value['option_3'],
+					"3"=>$value['option_4'],
+				];
+				$data[$key]['answer_explain']=html_entity_decode($value['answer_explain']);
+				$data[$key]['picture']=$value['picture'];
+				$data[$key]['difficulty']=$value['difficulty'];
+				$data[$key]['is_bookmarked']=$this->exits_check("question_bookmark",array("user_id"=>$user_id,"question_id"=>$value['id']));
+				$data[$key]['answer']=$value['answer']-1;
+				$data[$key]['answer_type']=$value['answer_type'];
+			}
+		}
+		return $data;
+	}
+
 }
 
 /* End of file Auth_model.php */

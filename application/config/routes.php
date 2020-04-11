@@ -91,6 +91,7 @@ $route['get-topic-by-section'] = 'api/ContentController/get_topic_by_section';
 $route['question/reports'] = 'api/ContentController/question_reports';
 $route['question/bookmark'] = 'api/ContentController/question_bookmark';
 $route['question-add'] = 'api/ContentController/user_question_add';
+$route['get-all-favourite-question'] = 'api/ContentController/get_all_favourite_question';
 
 //library
 $route['library-data'] = 'api/ContentController/get_library';
@@ -105,6 +106,7 @@ $route['subject-performance'] = 'api/GameController/get_subject_performance';
 $route['game-result-summary'] = 'api/GameController/game_result_summary';
 $route['game-performance-summary'] = 'api/GameController/performance_summary';
 $route['performance-history'] = 'api/GameController/performance_history';
+$route['get-game-solution'] = 'api/GameController/get_game_solution';
 
 
 
@@ -116,4 +118,7 @@ $route['change-password'] = 'api/PasswordController/change_password';
 
 $route['get-content'] = 'api/AuthController/content';
 $route['get-batch'] = 'api/AuthController/batch_list';
+
+$route['game-subject-section-topic'] = 'api/AuthController/game_subject_section_topic';
+
 

@@ -385,8 +385,8 @@ if (!function_exists('subject_option_selected')) {
 			if(!isset($headers["Authorization"]))
 			{
 				$status = 401;
-				$response = ['status' => $status, 'message' => 'Header Missing'];
-				$CI->response($response, $status);
+				$response = ['status' => false,"code"=>$status,'message' => 'Header Missing'];
+				$CI->response($response, 200);
 			}
 			// Extract the token
 			$token = $headers['Authorization'];
@@ -399,8 +399,8 @@ if (!function_exists('subject_option_selected')) {
 				$data = AUTHORIZATION::validateToken($token);
 				if ($data === false) {
 					$status = 401;
-					$response = ['status' => $status, 'message' => 'Unauthorized Access!'];
-					$CI->response($response, $status);
+					$response = ['status' => false,"code"=>$status, 'message' => 'Unauthorized Access!'];
+					$CI->response($response, 200);
 
 					exit();
 				} else {
@@ -415,25 +415,25 @@ if (!function_exists('subject_option_selected')) {
 							}
 							else{
 								$status = 401;
-								$response = ['status' => $status, 'message' => 'Invalid Token'];
-								$CI->response($response, $status);
+								$response = ['status' => false,"code"=>$status,'message' => 'Invalid Token'];
+								$CI->response($response, 200);
 							}
 						}else{
 							$status = 401;
-							$response = ['status' => $status, 'message' => 'Blocked User or Deleted User !'];
-							$CI->response($response, $status);
+							$response = ['status' => false,"code"=>$status,'message' => 'Blocked User or Deleted User !'];
+							$CI->response($response, 200);
 						}
 					endif;
 					$status = 401;
-					$response = ['status' => $status, 'message' => 'Invalid Token '];
-					$CI->response($response, $status);
+					$response = ['status' => false,"code"=>$status,'message' => 'Invalid Token '];
+					$CI->response($response, 200);
 				}
 			} catch (Exception $e) {
 				// Token is invalid
 				// Send the unathorized access message
 				$status = 401;
-				$response = ['status' => $status, 'message' => 'Unauthorized Access! '];
-				$CI->response($response, $status);
+				$response = ['status' => false,"code"=>$status,'message' => 'Unauthorized Access! '];
+				$CI->response($response, 200);
 			}
 		}
 	}

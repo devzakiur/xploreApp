@@ -33,6 +33,17 @@
 					</div>
 				</div>
 			<?php endif; ?>
+			<?php if(hasPermission("total_report_question",VIEW)): ?>
+				<div class="col-md-4 col-sm-6 col-lg-3">
+					<div class="mini-stat clearfix bx-shadow">
+						<span class="mini-stat-icon bg-danger"><i class="fa  fa-bug"></i></span>
+						<div class="mini-stat-info text-right text-muted">
+							<span class="counter"><?= $total_question_report; ?></span>
+							Total Report Question
+						</div>
+					</div>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div> <!-- container -->
 </div>

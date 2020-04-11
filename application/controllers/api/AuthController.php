@@ -73,4 +73,16 @@ class AuthController extends MY_ApiController
 				"data"=>$batch_list
 			], RestController::HTTP_OK );
 	}
+
+	public function game_subject_section_topic_get()
+	{
+		$game_id=$this->input->get("game_id");
+		$result=$this->ajax->game_subject_section_topic($game_id,$this->id);
+		$this->response( [
+			'status' => true,
+			'status_code' =>HTTP_OK,
+			'message' => ["Game Subject,Section,Topic List"],
+			"data"=>$result
+		], RestController::HTTP_OK );
+	}
 }
