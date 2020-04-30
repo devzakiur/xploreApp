@@ -7,7 +7,7 @@ class GameModel extends MY_Model {
 	public function game_question($question_limit,$category_id)
 	{
 		$this->db->select('Q.id,Q.title,Q.answer,Q.difficulty,Q.picture,Q.answer_explain,Q.option_1,Q.option_2,Q.option_3,Q.option_4,
-		TQ.topic_id,SA.section_id,SA.subject_id');
+		TQ.topic_id,SA.section_id,SA.subject_id,Q.is_math');
 		$this->db->distinct();
 		$this->db->from('question as Q');
 		if($category_id!='')
@@ -41,6 +41,7 @@ class GameModel extends MY_Model {
 				$data[$key]['topic_id']=$value['topic_id'];
 				$data[$key]['section_id']=$value['section_id'];
 				$data[$key]['subject_id']=$value['subject_id'];
+				$data[$key]['is_math']=$value['is_math'];
 			}
 		}
 		return $data;
@@ -251,6 +252,17 @@ class GameModel extends MY_Model {
 		$this->db->limit(1);
 		$performance['worst_performance']=$this->db->get()->row_array();
 
+		$this->db->select("id");
+		$this->db->from('game_result');
+		$this->db->order_by('id', 'desc');
+		$this->db->where('user_id', $user_id);
+		$this->db->limit(1);
+		$result=$this->db->get()->row_array();
+		if($result){
+			$performance['recent_game_id']=$result['id'];
+		}else{
+			$performance['recent_game_id']=0;
+		}
 		return $performance;
 	}
 
@@ -284,7 +296,7 @@ class GameModel extends MY_Model {
 		return $data;
 	}
 
-	public function get_game_solution($per_page='',$offset='',$user_id,$game_id='',$type='',$subject_id='',$section_id='',$topic_id='',$difficulty='',$slug='',$count=false)
+	public function get_game_solution($per_page='',$offset='',$user_id,$game_id='',$type='',$subject_id='',$section_id='',$topic_id='',$batch_id='',$difficulty='',$slug='',$count=false)
 	{
 		$game_ids=array();
 		if($slug=="profile")
@@ -305,6 +317,11 @@ class GameModel extends MY_Model {
 		$this->db->join('section as SEC', 'GRQ.section_id = SEC.id');
 		$this->db->join('topic as T', 'GRQ.topic_id = T.id');
 		$this->db->join('question as Q', 'GRQ.question_id = Q.id');
+		if($batch_id!='')
+		{
+			$this->db->join('question_batch_year as QBY', 'QBY.question_id = Q.id');
+			$this->db->where('QBY.batch_id', $batch_id);
+		}
 		if(!empty($game_ids))
 		{
 			$this->db->where_id('GRQ.game_table_id', $game_ids);

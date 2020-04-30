@@ -152,10 +152,14 @@ class Question_Model extends MY_Model
 		$this->db->order_by('EH.id', 'desc');
 		return $this->db->get()->result_array();
 	}
-	function get_all_relation($question_id)
+	function get_all_relation($question_id,$slug="admin")
 	{
 		$this->db->select('T.name as topic_name,S.name as section_name,SB.name as subject_name,C.name as category_name');
-		$this->db->from('topics_questions as TQ');
+		if($slug=="user"){
+			$this->db->from('user_topics_questions as TQ');
+		}else{
+			$this->db->from('topics_questions as TQ');
+		}
 		$this->db->join('topic as T', 'TQ.topic_id = T.id', 'left');
 
 		$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id', 'left');
@@ -261,7 +265,7 @@ class Question_Model extends MY_Model
 
 	public function get_user_question($per_page='',$offset='',$search_key=null,$category_id=null,$subject_id=null,$section_id=null,$topic_id=null,$count=false)
 	{
-		$this->db->select('Q.id,Q.title,Q.answer');
+		$this->db->select('Q.id,Q.title,Q.answer,Q.created_at');
 		$this->db->distinct();
 		$this->db->from('user_question as Q');
 		if($category_id!='')
@@ -307,6 +311,7 @@ class Question_Model extends MY_Model
 			{
 				$data[$key]['id']=$value['id'];
 				$data[$key]['title']=$value['title'];
+				$data[$key]['created_at']=$value['created_at'];
 				$data[$key]['answer']=$this->get_answer("user_question",$value['id'],$value['answer']);
 			}
 		}
@@ -315,14 +320,14 @@ class Question_Model extends MY_Model
 
 	public function get_user_question_details($question_id)
 	{
-		$this->db->select('');
+		$this->db->select('Q.*');
 		$this->db->from('user_question as Q');
 		$this->db->where('Q.id', $question_id);
 		$result=$this->db->get()->row_array();
 		$data=array();
 		$result['answer']=$this->get_answer("user_question",$result['id'],$result['answer']);
 
-		$all_relation=$this->get_all_relation($result['id']);
+		$all_relation=$this->get_all_relation($result['id'],"user");
 
 		$result['topic']=$all_relation['topic_name'];
 		$result['section']=$all_relation['section_name'];

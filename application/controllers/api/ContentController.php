@@ -20,7 +20,11 @@ class ContentController extends MY_ApiController
 		$subject_id=$this->input->post("subject_id");
 		$section_id=$this->input->post("section_id");
 		$topic_id=$this->input->post("topic_id");
-		$question_list= $this->content->get_all_question(QUESTION_PER_PAGE,$category_id,$subject_id,$section_id,$topic_id,$this->id);
+
+		$batch_id=$this->input->post("batch_id");
+		$difficulty=$this->input->post("difficulty");
+
+		$question_list= $this->content->get_all_question(QUESTION_PER_PAGE,$category_id,$subject_id,$section_id,$topic_id,$batch_id,$difficulty,$this->id);
 		$this->response( [
 				'status' => true,
 				'status_code' =>HTTP_OK,
@@ -155,7 +159,9 @@ class ContentController extends MY_ApiController
 		$subject_id=$this->input->post("subject_id");
 		$section_id=$this->input->post("section_id");
 		$topic_id=$this->input->post("topic_id");
-		$total_rows=$this->content->get_all_favourite_question("","",$this->id,$subject_id,$section_id,$topic_id,true);
+		$batch_id=$this->input->post("batch_id");
+		$difficulty=$this->input->post("difficulty");
+		$total_rows=$this->content->get_all_favourite_question("","",$this->id,$subject_id,$section_id,$topic_id,$batch_id,$difficulty,true);
 		if($total_rows>0)
 		{
 			$per_page=10;
@@ -173,7 +179,7 @@ class ContentController extends MY_ApiController
 				$next_page=$page+1;
 			}
 			$offset=($page-1)*$per_page;
-			$result=$this->content->get_all_favourite_question($per_page,$offset,$this->id,$subject_id,$section_id,$topic_id);
+			$result=$this->content->get_all_favourite_question($per_page,$offset,$this->id,$subject_id,$section_id,$topic_id,$batch_id,$difficulty);
 			$data['data']=$result;
 
 			$data['next_page']=$next_page;

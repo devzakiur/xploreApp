@@ -5,7 +5,7 @@ class Topic_Model extends MY_Model
 {
 	public function get_topic_list($category_id=null,$subject_id=null,$section_id=null)
 	{
-		$this->db->select('TA.*,T.name as topic_name,T.status');
+		$this->db->select('T.name as topic_name,T.status,T.id as topic_id');
 		$this->db->from('topic as T');
 		$this->db->join('topic_assign as TA',"TA.topic_id=T.id","left");
 		$this->db->join('section_assign as AS',"TA.section_id=AS.section_id","left");

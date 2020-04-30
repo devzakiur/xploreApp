@@ -182,6 +182,7 @@ class Library_Model extends MY_Model
 		$this->db->where('TL.library_id', $library_id);
 		 $result=$this->db->get()->result_array();
 		 $data=array();
+		 $category_id=array();
 		 foreach ($result as $value)
 		 {
 		 	$data[]=$value['category_name'];

@@ -54,7 +54,7 @@
 														<input type="text"  name="option_d" placeholder="Option D" class="form-control" required id="option_d" >
 													</div>
 												</div>
-												<div class="col-sm-4">
+												<div class="col-sm-3">
 													<div class="form-group">
 													<label for="answer">Answer</label><small class="req"> *</small>
 														<select id="answer" required name="answer" class="form-control selectpicker">
@@ -66,7 +66,7 @@
 														</select>
 													</div>
 												</div>
-												<div class="col-sm-4">
+												<div class="col-sm-3">
 													<div class="form-group">
 													<label for="difficulty">Level</label><small class="req"> *</small>
 														<select id="difficulty" required name="difficulty" class="form-control selectpicker">
@@ -77,11 +77,21 @@
 														</select>
 													</div>
 												</div>
-												<div class="col-sm-4">
+												<div class="col-sm-3">
 														<div class="form-group">
 															<label for="name">Position</label><small class="req"> *</small>
 															<input type="number" name="position" placeholder="Position"  class="form-control" required id="position" >
 														</div>
+												</div>
+												<div class="col-sm-3">
+													<div class="form-group">
+													<label for="is_math">Is Math?</label><small class="req"> *</small>
+														<select id="is_math" required name="is_math" class="form-control selectpicker">
+															<option value="">--Select--</option>
+															<option value="1">Yes</option>
+															<option value="0">No</option>
+														</select>
+													</div>
 												</div>
 												<div class="col-sm-12">
 													<div id="category_part">
@@ -257,7 +267,7 @@
 													<input type="text" value="<?= $single->option_4 ?>" name="option_d" placeholder="Option D" class="form-control" required id="option_d" >
 												</div>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="form-group">
 												<label for="answer">Answer</label><small class="req"> *</small>
 													<select id="answer" required name="answer" class="form-control selectpicker">
@@ -269,7 +279,7 @@
 													</select>
 												</div>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="form-group">
 												<label for="difficulty">Level</label><small class="req"> *</small>
 													<select id="difficulty" required name="difficulty" class="form-control selectpicker">
@@ -280,10 +290,20 @@
 													</select>
 												</div>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="form-group">
 													<label for="name">Position</label><small class="req"> *</small>
 													<input type="number" name="position" placeholder="Position" value="<?= $single->position ?>" class="form-control" required id="position" >
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="form-group">
+												<label for="is_math">Is Math?</label><small class="req"> *</small>
+													<select id="is_math" required name="is_math" class="form-control selectpicker">
+														<option value="">--Select--</option>
+														<option <?php if($single->is_math==1) echo "selected" ?> value="1">Yes</option>
+														<option <?php if($single->is_math==0) echo "selected" ?> value="0">No</option>
+													</select>
 												</div>
 											</div>
 											<div class="col-sm-12">
@@ -749,7 +769,6 @@
                 	$("#overlay").fadeOut(300);　
                 },
 				error:function () {
-                	log(e);
 					$.Notification.autoHideNotify('error', 'top right',"Something Wrong. Please try again");
                 	$("#overlay").fadeOut(300);　
 				}

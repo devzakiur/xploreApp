@@ -4,7 +4,7 @@ use chriskacerguis\RestServer\RestController;
 
 /**
  * Class UserController
- * @property MY_Model $user;
+ * @property Auth_model $user;
  */
 class UserController extends RestController
 {
@@ -13,7 +13,7 @@ class UserController extends RestController
 	{
 		parent::__construct($config);
 		date_default_timezone_set("Asia/Dhaka");
-		$this->load->model("MY_Model","user",true);
+		$this->load->model("Auth_model","user",true);
 		$this->load->helper('string');
 	}
 
@@ -372,10 +372,15 @@ class UserController extends RestController
 
 		$this->form_validation->set_rules('category_id', 'Category', 'trim|xss_clean');
 		$this->form_validation->set_rules('subject_id', 'Subject', 'trim|xss_clean');
+		$this->form_validation->set_rules('notification', 'Notification', 'trim|xss_clean');
 		if($this->form_validation->run() === TRUE) {
-			$category_id=$this->input->post("category_id");
-			$subject_id=$this->input->post("subject_id");
-			$this->user->update("users",array("category_id"=>$category_id,"subject_id"=>$subject_id),array("id"=>$this->id));
+			$data['category_id']=$this->input->post("category_id");
+			$data['subject_id']=$this->input->post("subject_id");
+			if($this->input->post("notification")!='')
+			{
+				$data['notification']=$this->input->post("notification");
+			}
+			$this->user->update("users",$data,array("id"=>$this->id));
 			$user_data=get_users(array("id"=>$this->id));
 //			$user_data->subject_id=explode(",",$user_data->subject_id);
 			$this->response( [
@@ -476,7 +481,9 @@ class UserController extends RestController
 			$data['picture'] ="uploads/users/".$image_name;
 		}
 //		$data['cover_picture']=$this->input->post("cover_picture");
-		$data['phone_status']=false;
+		$phone=$this->user->get_single("users",array("id"=>$this->id))->phone;
+		if($phone!=$data['phone'])
+			$data['phone_status']=false;
 		return $data;
 	}
 
@@ -549,7 +556,118 @@ class UserController extends RestController
 	{
 		return true;
     }
+	//social login
 
+	public function fb_social_login_post()
+	{
+		$data['name']=$this->input->post("name");
+		$data['phone']=$this->input->post("phone");
+		$data['email']=$this->input->post("email");
+		$data['gender']=$this->input->post("gender");
+		$data['fb_id']=$this->input->post("fb_id");
+		$user=get_users(array("fb_id"=>$data['fb_id']),"token_key");
+		if($user)
+		{
+			$token_data=array(
+				"id"=>$user->id,
+				"email"=>$user->email,
+				"token_key"=>$user->token_key,
+				"timestamp"=>time()
+			);
+			$this->response( [
+				'status' => true,
+				'status_code' =>200,
+				'message' =>["User Information"],
+				'token'=>AUTHORIZATION::generateToken($token_data),
+				"data"=>$user
+			], RestController::HTTP_OK );
+		}else{
+			$data['token_key']=random_string('alpha', 10);
+			$data['email_status']=1;
+			$data['phone_status']=1;
+			$data['status']=1;
+			$data['toc']=1;
+			$exits=$this->user->login_check($data['email'],$data['phone']);
+			if($exits)
+			{
+				$id=$exits->id;
+				$this->user->update("users",array("fb_id"=>$data['fb_id'],"token_key"=>$data['token_key']),array("id"=>$exits->id));
+			}else{
+				$insert_id=$this->user->insert("users",$data);
+				$id=$insert_id;
+			}
+			$user=get_users(array("id"=>$id));
+			$token_data=array(
+				"id"=>$id,
+				"email"=>$data['email'],
+				"token_key"=>$data['token_key'],
+				"timestamp"=>time()
+			);
+			$this->response( [
+				'status' => true,
+				'status_code' =>200,
+				'message' =>["User Information"],
+				'token'=>AUTHORIZATION::generateToken($token_data),
+				"data"=>$user
+			], RestController::HTTP_OK );
+		}
+    }
+
+	public function google_social_login_post()
+	{
+		$data['name']=$this->input->post("name");
+		$data['phone']=$this->input->post("phone");
+		$data['email']=$this->input->post("email");
+		$data['gender']=$this->input->post("gender");
+		$data['google_id']=$this->input->post("google_id");
+		$user=get_users(array("google_id"=>$data['google_id']),"token_key");
+		if($user)
+		{
+			$token_data=array(
+				"id"=>$user->id,
+				"email"=>$user->email,
+				"token_key"=>$user->token_key,
+				"timestamp"=>time()
+			);
+			$this->response( [
+				'status' => true,
+				'status_code' =>200,
+				'message' =>["User Information"],
+				'token'=>AUTHORIZATION::generateToken($token_data),
+				"data"=>$user
+			], RestController::HTTP_OK );
+		}else{
+			$data['token_key']=random_string('alpha', 10);
+			$data['email_status']=1;
+			$data['phone_status']=1;
+			$data['status']=1;
+			$data['toc']=1;
+			$exits=$this->user->login_check($data['email'],$data['phone']);
+			if($exits)
+			{
+				$id=$exits->id;
+				$this->user->update("users",array("google_id"=>$data['google_id'],"token_key"=>$data['token_key']),array("id"=>$exits->id));
+			}else{
+				$insert_id=$this->user->insert("users",$data);
+				$id=$insert_id;
+			}
+			$user=get_users(array("id"=>$id));
+			$token_data=array(
+				"id"=>$id,
+				"email"=>$data['email'],
+				"token_key"=>$data['token_key'],
+				"timestamp"=>time()
+			);
+			$this->response( [
+				'status' => true,
+				'status_code' =>200,
+				'message' =>["User Information"],
+				'token'=>AUTHORIZATION::generateToken($token_data),
+				"data"=>$user
+			], RestController::HTTP_OK );
+		}
+    }
+    
     // need api token
 	public function logout_get()
 	{
@@ -559,6 +677,18 @@ class UserController extends RestController
 				'status' => true,
 				'status_code' =>HTTP_OK,
 				'message' => ["Logout Successfully"],
+			], RestController::HTTP_OK );
+    }
+    // server time check
+	public function get_time_get()
+	{
+		$this->response( [
+				'status' => true,
+				'status_code' =>HTTP_OK,
+				'message' => ["Server Time"],
+				'data' =>[
+					"time"=>date("Y-m-d H:i:s")
+				],
 			], RestController::HTTP_OK );
     }
 

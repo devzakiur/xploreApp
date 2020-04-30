@@ -121,4 +121,38 @@ $route['get-batch'] = 'api/AuthController/batch_list';
 
 $route['game-subject-section-topic'] = 'api/AuthController/game_subject_section_topic';
 
+/**
+ * news route
+ */
+$route['get-news-category'] = 'api/NewsController/get_news_category';
+$route['get-news-list'] = 'api/NewsController/get_news_list';
 
+/**
+ * find_us
+ */
+$route['find-us'] = 'api/ContactController/find_us';
+/**
+ * contact us
+ */
+
+$route['contact-us'] = 'api/ContactController/contact_us';
+/**
+ * invive friends
+ */
+$route['invite-friends'] = 'api/ContactController/invite_friends';
+
+//social login
+
+$route['facebook-login'] = 'api/UserController/fb_social_login';
+$route['google-login'] = 'api/UserController/google_social_login';
+
+//get server time
+$route['server-time'] = 'api/UserController/get_time';
+
+//get model test
+
+$route['check-model-test'] = 'api/ModelTestController/check_model_test';
+$route['model-test-register'] = 'api/ModelTestController/model_test_register';
+
+//getnotification
+$route['get-all-notification'] = 'api/NotificationController/get_notification';

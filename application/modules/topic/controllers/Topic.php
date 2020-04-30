@@ -111,6 +111,7 @@ class Topic extends MY_Controller {
     {
         $result = $this->topic->get_single("topic", array("id" => $id));
         if (isset($result)) {
+        	if($this->topic->get_single("topic_", array("id" => $id)))
             setMessage("msg", "success", " Deleted Successfuly");
             $this->topic->delete("topic",array("id" => $id));
         }

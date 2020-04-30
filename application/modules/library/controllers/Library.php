@@ -455,6 +455,7 @@ class Library extends MY_Controller {
 		}
         $data['details']=htmlentities($this->input->post("details"));
         $data['gist']=htmlentities($this->input->post("gist"));
+        $data['is_math']=$this->input->post("is_math");
         if ($_FILES['picture']['name']) {
 			$image_name=$this->_upload_picture();
 			$data['cover_image'] ="uploads/library/coverimage/".$image_name;

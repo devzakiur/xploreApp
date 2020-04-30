@@ -6,9 +6,11 @@
             <td class="text-center"><?php echo $value['topic_name']; ?></td>
             <td class="text-center"><?php echo $value['title']; ?></td>
 			<td class="text-center"><button type="button" class="btn btn-success btn-sm" id="details_modal" data-toggle="modal" data-id="<?= $value['id'] ?>" data-target="#con-close-modal"><i class="ion ion-android-drawer"></i></button></td>
+			<td class="text-center">
 			<?php if (hasPermission("library_edit_history", VIEW)) : ?>
-				<td class="text-center"><button type="button" class="btn btn-info btn-xs" id="history_details_modal" data-toggle="modal" data-id="<?= $value['id'] ?>" data-target="#history-close-modal"><i class="md md-history"></i></button></td>
+					<button type="button" class="btn btn-info btn-xs" id="history_details_modal" data-toggle="modal" data-id="<?= $value['id'] ?>" data-target="#history-close-modal"><i class="md md-history"></i></button>
 			<?php endif; ?>
+			</td>
             <td class="actions btn-group-xs text-center">
 				<?php if (hasPermission("library", EDIT)) : ?>
 						<a  href="<?php echo site_url("library/edit/" . $value['id']); ?>" title="Edit" class="text-info btn btn-default  btn-xs  waves-effect tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit" id=""><i class="fa fa-edit"></i></a>

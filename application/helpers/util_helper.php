@@ -385,8 +385,8 @@ if (!function_exists('subject_option_selected')) {
 			if(!isset($headers["Authorization"]))
 			{
 				$status = 401;
-				$response = ['status' => false,"code"=>$status,'message' => 'Header Missing'];
-				$CI->response($response, 200);
+				$response = ['status' => false,"status_code"=>$status,'message' => ['Unauthorized Access!']];
+				$CI->response($response, HTTP_UNAUTHORIZED);
 			}
 			// Extract the token
 			$token = $headers['Authorization'];
@@ -399,8 +399,8 @@ if (!function_exists('subject_option_selected')) {
 				$data = AUTHORIZATION::validateToken($token);
 				if ($data === false) {
 					$status = 401;
-					$response = ['status' => false,"code"=>$status, 'message' => 'Unauthorized Access!'];
-					$CI->response($response, 200);
+					$response = ['status' => false,"status_code"=>$status, 'message' => ['Unauthorized Access!']];
+					$CI->response($response, HTTP_UNAUTHORIZED);
 
 					exit();
 				} else {
@@ -415,25 +415,25 @@ if (!function_exists('subject_option_selected')) {
 							}
 							else{
 								$status = 401;
-								$response = ['status' => false,"code"=>$status,'message' => 'Invalid Token'];
-								$CI->response($response, 200);
+								$response = ['status' => false,"status_code"=>$status,'message' => ['Session Expried']];
+								$CI->response($response, HTTP_UNAUTHORIZED);
 							}
 						}else{
 							$status = 401;
-							$response = ['status' => false,"code"=>$status,'message' => 'Blocked User or Deleted User !'];
-							$CI->response($response, 200);
+							$response = ['status' => false,"status_code"=>$status,'message' => ['Blocked User or Deleted User !']];
+							$CI->response($response, HTTP_UNAUTHORIZED);
 						}
 					endif;
 					$status = 401;
-					$response = ['status' => false,"code"=>$status,'message' => 'Invalid Token '];
-					$CI->response($response, 200);
+					$response = ['status' => false,"status_code"=>$status,'message' => ['Session Expried ']];
+					$CI->response($response, HTTP_UNAUTHORIZED);
 				}
 			} catch (Exception $e) {
 				// Token is invalid
 				// Send the unathorized access message
 				$status = 401;
-				$response = ['status' => false,"code"=>$status,'message' => 'Unauthorized Access! '];
-				$CI->response($response, 200);
+				$response = ['status' => false,"status_code"=>$status,'message' => ['Unauthorized Access! ']];
+				$CI->response($response, HTTP_UNAUTHORIZED);
 			}
 		}
 	}

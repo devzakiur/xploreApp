@@ -27,10 +27,17 @@ class AuthController extends MY_ApiController
 	public function subject_by_category_get()
 	{
 		$category_id=$this->input->get("category_id");
-		$check=$this->ajax->exits_check("category",array("id"=>$category_id,"subject_show"=>1));
-		if(!$check)
+		$slug=$this->input->get("slug");
+		if($slug=="profile")
 		{
-			$subject_list=[];
+			$check=$this->ajax->exits_check("category",array("id"=>$category_id,"subject_show"=>1));
+			if(!$check)
+			{
+				$subject_list=[];
+			}
+			else{
+				$subject_list=$this->ajax->get_subject_by_category($category_id);
+			}
 		}
 		else{
 			$subject_list=$this->ajax->get_subject_by_category($category_id);

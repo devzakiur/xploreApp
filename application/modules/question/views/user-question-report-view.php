@@ -8,7 +8,7 @@
 
 			<td class="text-center"><button type="button" class="btn btn-success btn-sm" id="details_modal" data-toggle="modal" data-id="<?= $value['id'] ?>" data-target="#con-close-modal"><i class="ion ion-android-drawer"></i></button></td>
             <td class="actions btn-group-xs text-center">
-				<?php if (hasPermission("report_question", DELETE)) : ?>
+				<?php if (hasPermission("report_question", ADD)) : ?>
 					<a onclick="return confirm('Are You Sure?')" href="<?php echo site_url("question/report_question_approve/" . $value['id']); ?>" title="View" class="text-<?php echo $value['status']==1?"success":"pink"; ?> btn  btn-xs  waves-effect tooltips" data-placement="top" data-toggle="tooltip" data-original-title="View" id=""><i class="fa fa-check-circle"></i></a>
 				<?php endif; ?>
 				<?php if (is_admin() || is_super_admin()) : ?>

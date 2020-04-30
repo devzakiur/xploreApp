@@ -83,6 +83,7 @@
 												<th class="text-center">Sl.</th>
 												<th class="text-center">Question Title</th>
 												<th class="text-center">Answer</th>
+												<th class="text-center">Submited</th>
 												<th class="text-center">Details</th>
 												<th class="text-center">Action</th>
 											</tr>

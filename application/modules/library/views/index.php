@@ -71,10 +71,20 @@
 														<input type="file"  id="picture" data-max-file-size="500K"  data-allowed-file-extensions="jpg png" name="picture" class="form-control">
 													</div>
 												</div>
-												<div class="col-sm-4">
+												<div class="col-sm-2">
 													<div class="form-group">
 														<label for="name">Position</label><small class="req"> *</small>
 														<input type="number" name="position" placeholder="Position"  class="form-control" required id="position" >
+													</div>
+												</div>
+												<div class="col-sm-2">
+													<div class="form-group">
+													<label for="is_math">Is Math?</label><small class="req"> *</small>
+														<select id="is_math" required name="is_math" class="form-control selectpicker">
+															<option value="">--Select--</option>
+															<option value="1">Yes</option>
+															<option value="0">No</option>
+														</select>
 													</div>
 												</div>
 												<div class="col-sm-6">
@@ -227,10 +237,20 @@
 													<input type="file"  id="picture" data-max-file-size="500K" data-allowed-file-extensions="jpg png" data-default-file="<?= base_url().$single['cover_image'] ?>" name="picture" class="form-control">
 												</div>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sm-2">
 												<div class="form-group">
 													<label for="name">Position</label><small class="req"> *</small>
 													<input type="number" name="position" placeholder="Position" value="<?= $single['position'] ?>" class="form-control" required id="position" >
+												</div>
+											</div>
+											<div class="col-sm-2">
+												<div class="form-group">
+												<label for="is_math">Is Math?</label><small class="req"> *</small>
+													<select id="is_math" required name="is_math" class="form-control selectpicker">
+														<option value="">--Select--</option>
+														<option <?php if($single["is_math"]==1) echo "selected" ?> value="1">Yes</option>
+														<option <?php if($single["is_math"]==0) echo "selected" ?> value="0">No</option>
+													</select>
 												</div>
 											</div>
 											<div class="col-sm-6">

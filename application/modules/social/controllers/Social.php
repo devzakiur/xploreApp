@@ -63,10 +63,10 @@ class Social extends MY_Controller
     private function _prepare_validation()
     {
         $this->form_validation->set_error_delimiters('<div class="error-message" style="color: red;">', '</div>');
-        $this->form_validation->set_rules('facebook', "Facebook", 'trim|required');
-        $this->form_validation->set_rules('twitter', "Twitter", 'trim|required');
-        $this->form_validation->set_rules('linked_in', "Linked In", 'trim|required');
-        $this->form_validation->set_rules('youtube', "Youtube", 'trim|required');
+        $this->form_validation->set_rules('facebook', "Facebook", 'trim');
+        $this->form_validation->set_rules('twitter', "Twitter", 'trim');
+        $this->form_validation->set_rules('linked_in', "Linked In", 'trim');
+        $this->form_validation->set_rules('youtube', "Youtube", 'trim');
     }
     /** ***************Function _get_posted_data**********************************
      * @type            : Function

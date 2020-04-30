@@ -25,7 +25,7 @@ class Game extends MY_Controller
 
         $this->layout->title("Manage Game");
         $this->data['add']=true;
-        $this->data['game_type']=$this->game->get_list("game_type",array("type"=>"challenge"),"","","","position","asc");
+        $this->data['game_type']=$this->game->get("game_type","","position","asc");
         $this->layout->view('index',$this->data);
     }
 

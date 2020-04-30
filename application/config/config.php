@@ -32,6 +32,15 @@ $config[ 'base_url' ]    .=  str_replace(basename($_SERVER['SCRIPT_NAME']), "", 
  */
 
 $config['webmail'] = 'test@gmpire.com';
+
+/**
+ * app link
+ */
+$config['app_link'] = 'test@gmpire.com';
+/**
+ * server key
+ */
+$config['server_key'] = 'key=AAAAQyImRGI:APA91bH2C3V5UP08rv3hq3znaSmx4_Ax48C3AGgRw10fie5qVxfvKRxkZuRRVBOrmLZ6PNJCCcMAetU96-l7nlku-LQBQZQsp9G5vcaobyE2dK1Bi-xnSyaoz2SC0_qoM6MAyUQIZB6X';
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -230,7 +239,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 2;
+$config['log_threshold'] =0;
 
 /*
 |--------------------------------------------------------------------------
@@ -562,7 +571,7 @@ define('DELETE', 'can_delete');
 
 define('APP_NAME', 'Xplore');
 define('QUESTION_PER_PAGE', 10);
-define("USER_DATA",'id,email,name,display_name,phone,gender,dob,picture,cover_picture,email_status,phone_status,toc,status,category_id,subject_id,created_at as join_date');
+define("USER_DATA",'id,email,name,display_name,phone,gender,dob,picture,cover_picture,email_status,phone_status,toc,status,category_id,subject_id,created_at as join_date,notification');
 define("NOT_MATCHED",455);
 define("Expired",408);
 define("BLOCKED",456);

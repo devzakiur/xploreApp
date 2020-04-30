@@ -82,8 +82,8 @@ class GameController extends MY_ApiController
 	public function game_finish_post()
 	{
 		$_POST = json_decode(file_get_contents("php://input"), true);
-
 		$questions=$this->input->post("questions");
+		$total_question=count($questions);
 		$correct_answer=0;
 		$wrong_answer=0;
 		$un_answer=0;
@@ -91,7 +91,7 @@ class GameController extends MY_ApiController
 		$get_challenge_data=$this->game->get_single("game_setting",array("game_type_id"=>$this->input->post("type")));
 		$game_table_data['user_id']=$this->id;
 		$game_table_data['challenge_id']=$this->input->post("type");
-		$game_table_data['total_question']=$get_challenge_data->question_number;
+		$game_table_data['total_question']=$total_question;
 		$game_table_data['total_time']=($this->input->post("time"));
 		$game_table_data['total_point']=$get_challenge_data->total_point;
 		$game_date=date("Y-m-d H:i:s");
@@ -121,7 +121,7 @@ class GameController extends MY_ApiController
 		$game_table_data['correct_question']=$correct_answer;
 		$game_table_data['wrong_question']=$wrong_answer;
 		$game_table_data['unanswer_question']=$un_answer;
-		$game_table_data['performance']=$this->game->get_percent($get_challenge_data->question_number,$correct_answer);
+		$game_table_data['performance']=$this->game->get_percent($total_question,$correct_answer);
 		$game_table_data['get_point']=$get_challenge_data->correct*$correct_answer-$get_challenge_data->wrong*$wrong_answer;
 		$this->game->update("game_result",$game_table_data,array("id"=>$game_table_id));
 		$this->game->insert_batch("game_result_question",$game_question_data);
@@ -138,7 +138,7 @@ class GameController extends MY_ApiController
 			$data['un_answer']=$un_answer;
 			$data['total_point']=$get_challenge_data->total_point;
 			$data['total_time']=$this->input->post("time");
-			$data['total_question']=$get_challenge_data->question_number;
+			$data['total_question']=$total_question;
 			$data['get_point']=$game_table_data['get_point'];
 			$data['game_date']=$game_date;
 			$data['subject_based_performance']=$subject_based;
@@ -243,8 +243,9 @@ class GameController extends MY_ApiController
 		$subject_id=$this->input->post("subject_id");
 		$section_id=$this->input->post("section_id");
 		$topic_id=$this->input->post("topic_id");
+		$batch_id=$this->input->post("batch_id");
 		$difficulty=$this->input->post("difficulty");
-		$total_rows=$this->game->get_game_solution("","",$this->id,$game_id,$type,$subject_id,$section_id,$topic_id,$difficulty,$slug,true);
+		$total_rows=$this->game->get_game_solution("","",$this->id,$game_id,$type,$subject_id,$section_id,$topic_id,$batch_id,$difficulty,$slug,true);
 		if($total_rows>0)
 		{
 			$per_page=10;
@@ -262,7 +263,7 @@ class GameController extends MY_ApiController
 				$next_page=$page+1;
 			}
 			$offset=($page-1)*$per_page;
-			$result=$this->game->get_game_solution($per_page,$offset,$this->id,$game_id,$type,$subject_id,$section_id,$topic_id,$difficulty,$slug);
+			$result=$this->game->get_game_solution($per_page,$offset,$this->id,$game_id,$type,$subject_id,$section_id,$topic_id,$batch_id,$difficulty,$slug);
 			$data['data']=$result;
 
 			$data['next_page']=$next_page;

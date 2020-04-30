@@ -404,6 +404,7 @@ class Question extends MY_Controller {
         $data['option_3']=$this->input->post("option_c");
         $data['option_4']=$this->input->post("option_d");
         $data['answer']=$this->input->post("answer");
+        $data['is_math']=$this->input->post("is_math");
         if($this->input->post("position")!=''){
         	$data['position']=$this->input->post("position");
 		}else{
@@ -698,6 +699,7 @@ class Question extends MY_Controller {
 
 	public function report_question_approve($id)
 	{
+		checkPermission("report_question",ADD);
 		$single=$this->question->get_single("question_reports",array("id"=>$id));
 		if($single)
 		{

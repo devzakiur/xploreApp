@@ -70,6 +70,10 @@ class Ajax_model extends MY_Model {
 			$final['section_list']=$game_section['section_list'];
 			$final['topic_list']=$game_topic;
 		}
+		if(empty($final))
+		{
+			return null;
+		}
 		return $final;
 	}
 	public function game_section($game_id,array $subject_id)
