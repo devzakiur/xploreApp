@@ -71,7 +71,8 @@ class ModelTestController extends MY_ApiController
 					"question_number"=>$model_test->total_question,
 					"duration"=>$model_test->duration,
 					"question"=>$model_question,
-					"model_type_id"=>$model_type_id
+					"model_type_id"=>$model_type_id,
+					"model_test_id"=>$model_test_id
 				]
 			], RestController::HTTP_OK );
 
@@ -86,5 +87,61 @@ class ModelTestController extends MY_ApiController
 
 	}
 
+	/**
+	 * leaderboard
+	 */
+	public function get_model_test_get()
+	{
+		$category_id=$this->input->get("category_id");
+		$medeltest=$this->modeltest->get_model_test($category_id);
+		$this->response( [
+				'status' => true,
+				'status_code' =>200,
+				'message' => ["Model Test"],
+				"data"=>$medeltest
+			], RestController::HTTP_OK );
+	}
 
+	public function get_leaderboard_post()
+	{
+		$page=$this->input->post("page");
+		$model_test_id=$this->input->post("model_test_id");
+
+		$total_rows=$this->modeltest->get_leader_board("","",$model_test_id,true);
+		if($total_rows>0)
+		{
+			$per_page=10;
+			$total_page=ceil($total_rows/$per_page);
+			if ($page>=$total_page)
+			{
+				$page=$total_page;
+				$next_page=0;
+			}elseif($page<=0)
+			{
+				$page=1;
+				$next_page=2;
+			}
+			else{
+				$next_page=$page+1;
+			}
+			$offset=($page-1)*$per_page;
+			$result=$this->modeltest->get_leader_board($per_page,$offset,$model_test_id);
+			$my_position=$this->modeltest->get_my_position($model_test_id,$this->id);
+			$data['leader_board']=$result;
+			$data['my_position']=$my_position;
+
+			$data['next_page']=$next_page;
+		}
+		else{
+			$data['leader_board']=null;
+			$data['next_page']=0;
+			$data['my_position']=null;
+		}
+		$this->response( [
+			'status' => true,
+			'status_code' =>HTTP_OK,
+			'message' => ["LeaderBoard"],
+			"data"=>$data
+		], RestController::HTTP_OK );
+	}
 }

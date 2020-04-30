@@ -44,7 +44,7 @@ class Modeltest extends MY_Controller {
                 $data=$this->_get_posted_data();
                 $this->modeltest->trans_start();
                 $insert_id=$this->modeltest->insert('model_test', $data);
-                $subject_ids=$this->input->post("subject_id");
+				$subject_ids=$this->input->post("subject_id");
                 $get_question_data=$this->modeltest->get_question($data['category_id'],$subject_ids,$data['total_question'],$insert_id);
                 $this->modeltest->insert_batch("model_test_question",$get_question_data);
                 $this->modeltest->trans_complete();
@@ -85,6 +85,10 @@ class Modeltest extends MY_Controller {
 
         $single=$this->modeltest->get_single("model_test",array("id"=>$id));
         if($single){
+			if($single->status!=0)
+			{
+				show_404();
+			}
         	if($_POST)
         	{
 				$this->_prepare_validation();
@@ -113,7 +117,11 @@ class Modeltest extends MY_Controller {
     public function delete($id = null)
     {
     	checkPermission("model_test",DELETE);
-        $result = $this->modeltest->get_single("model_test", array("id" => $id));
+		$result = $this->modeltest->get_single("model_test", array("id" => $id));
+		if($result->status!=0)
+		{
+			show_404();
+		}
         $status = 0;
         if (isset($result)) {
             setMessage("msg", "success", " Deleted Successfuly");
@@ -197,8 +205,11 @@ class Modeltest extends MY_Controller {
 	public function addquestion($id=null)
 	{
 		checkPermission("model_test",VIEW);
-
-        $result = $this->modeltest->get_single("model_test", array("id" => $id));
+		$result = $this->modeltest->get_single("model_test", array("id" => $id));
+		if($result->status!=0)
+		{
+			show_404();
+		}
         if($result)
 		{
         	$this->layout->title("Manage Model Test");

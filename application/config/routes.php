@@ -156,3 +156,8 @@ $route['model-test-register'] = 'api/ModelTestController/model_test_register';
 
 //getnotification
 $route['get-all-notification'] = 'api/NotificationController/get_notification';
+
+//loaderboard
+
+$route['get-played-model-test'] = 'api/ModelTestController/get_model_test';
+$route['get-leaderboard'] = 'api/ModelTestController/get_leaderboard';

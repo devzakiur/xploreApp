@@ -44,6 +44,78 @@ class ModelTestModel extends MY_Model {
 		return $data;
 	}
 
+	public function get_leader_board($per_page='',$offset='',$model_test_id,$count=false)
+	{
+		$this->db->select('U.name,GR.total_point,GR.get_point,GR.total_time');
+		$this->db->from('game_result as GR');
+		$this->db->join('users as U', 'GR.user_id = U.id');
+		$this->db->order_by('GR.get_point', 'desc');
+		$this->db->order_by('GR.total_time', 'asc');
+		$this->db->where('GR.slug', "model_test");
+		$this->db->where('GR.model_test_id', $model_test_id);
+		if($count)
+		{
+			return $this->db->count_all_results();
+		}
+		$this->db->limit($per_page,$offset);
+		return $this->db->get()->result_array();
+	}
+
+	public function get_my_position($model_test_id,$id)
+	{
+		$this->db->select('GR.user_id,U.name,GR.total_point,GR.get_point,GR.total_time');
+		$this->db->from('game_result as GR');
+		$this->db->join('users as U', 'GR.user_id = U.id');
+		$this->db->order_by('GR.get_point', 'desc');
+		$this->db->order_by('GR.total_time', 'asc');
+		$this->db->where('GR.slug', "model_test");
+		$this->db->where('GR.model_test_id', $model_test_id);
+		$result=$this->db->get()->result_array();
+		$position=0;
+		$data=array();
+		if($result)
+		{
+			foreach ($result as $key=>$value)
+			{
+				if($value['user_id']==$id)
+				{
+					$data['name']=$value['name'];
+					$data['total_point']=$value['total_point'];
+					$data['get_point']=$value['get_point'];
+					$data['total_time']=$value['total_time'];
+					$data['position']=$key+1;
+					break;
+				}
+			}
+		}
+		if(empty($data))
+		{
+			return null;
+		}
+		return $data;
+	}
+
+	public function get_model_test($category_id)
+	{
+		$this->db->select('');
+		$this->db->from('model_test');
+		$this->db->where('category_id', $category_id);
+		$this->db->where('is_played', true);
+		$this->db->order_by("id","desc");
+		$result=$this->db->get()->result_array();
+		$data=array();
+		if($result)
+		{
+			foreach ($result as $key=>$value)
+			{
+				$data[$key]['id']=$value['id'];
+				$data[$key]['title']=$value['title'];
+				$data[$key]['total_participate']=$this->count_all("model_test_register_users",array("model_test_id"=>$value['id']));
+			}
+		}
+		return $data;
+	}
+
 }
 
 /* End of file Auth_model.php */

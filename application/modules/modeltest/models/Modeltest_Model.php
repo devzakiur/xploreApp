@@ -5,29 +5,42 @@ class Modeltest_Model extends MY_Model
 {
 	public function get_question($category_id,$subject_ids,$total_question,$model_test_id)
 	{
-		$this->db->select('Q.id,Q.title,SA.subject_id,SA.section_id,TQ.topic_id,TQ.category_id');
-		$this->db->from('question as Q');
-		$this->db->join('topics_questions as TQ', 'Q.id = TQ.question_id');
-		$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id');
-		$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id');
-		$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id');
-		$this->db->group_by("Q.title");
-		$this->db->where('TQ.category_id', $category_id);
-		$this->db->where_in('SUBA.subject_id', $subject_ids);
-		$this->db->limit($total_question);
-		$result=$this->db->get()->result_array();
-		if($result)
+		$data=array();
+		$j=0;
+		$total_subject=count($subject_ids);
+		$per_limit=floor($total_question/$total_subject);
+		$first_time_limit=$per_limit+($total_question-($per_limit*$total_subject));
+		for($i=0;$i<count($subject_ids);$i++)
 		{
-			foreach ($result as $key=>$value)
-			{
-				$data[$key]['model_test_id ']=$model_test_id;
-				$data[$key]['question_id']=$value['id'];
-				$data[$key]['subject_id']=$value['subject_id'];
-				$data[$key]['section_id']=$value['section_id'];
-				$data[$key]['topic_id']=$value['topic_id'];
+			$this->db->select('Q.id,Q.title,SA.subject_id,SA.section_id,TQ.topic_id,TQ.category_id');
+			$this->db->from('question as Q');
+			$this->db->join('topics_questions as TQ', 'Q.id = TQ.question_id');
+			$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id');
+			$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id');
+			$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id');
+			$this->db->group_by("Q.title");
+			$this->db->where('TQ.category_id', $category_id);
+			$this->db->where('SUBA.subject_id', $subject_ids[$i]);
+			$this->db->order_by('Q.id', 'RANDOM');
+			if($i==0){
+				$this->db->limit($first_time_limit);
+			}else{
+				$this->db->limit($per_limit);
+			}
+			$result=$this->db->get()->result_array();
+			if($result){
+				foreach ($result as $key=>$value)
+				{
+					$data[$j]['model_test_id ']=$model_test_id;
+					$data[$j]['question_id']=$value['id'];
+					$data[$j]['subject_id']=$value['subject_id'];
+					$data[$j]['section_id']=$value['section_id'];
+					$data[$j]['topic_id']=$value['topic_id'];
+					$j++;
+				}
 			}
 		}
-		return $data;
+		return array_map("unserialize", array_unique(array_map("serialize", $data)));
 	}
 
 	public function get_all_model_test()

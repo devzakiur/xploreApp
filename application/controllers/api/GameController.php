@@ -83,6 +83,11 @@ class GameController extends MY_ApiController
 	{
 		$_POST = json_decode(file_get_contents("php://input"), true);
 		$questions=$this->input->post("questions");
+		$slug=$this->input->post("slug");
+		if($slug=="model_test")
+		{
+			$this->game->update("model_test",array("is_played"=>true),array("id"=>$this->input->post("model_test_id")));
+		}
 		$total_question=count($questions);
 		$correct_answer=0;
 		$wrong_answer=0;
@@ -95,6 +100,9 @@ class GameController extends MY_ApiController
 		$game_table_data['total_time']=($this->input->post("time"));
 		$game_table_data['total_point']=$get_challenge_data->total_point;
 		$game_date=date("Y-m-d H:i:s");
+		$game_table_data['created_at']=$game_date;
+		$game_table_data['slug']=$slug?$slug:null;
+		$game_table_data['model_test_id']=$this->input->post("model_test_id")?$this->input->post("model_test_id"):0;
 		$game_table_data['created_at']=$game_date;
 
 		$this->game->trans_start();

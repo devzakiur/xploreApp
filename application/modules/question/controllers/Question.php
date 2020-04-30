@@ -199,7 +199,7 @@ class Question extends MY_Controller {
 		$final['category_name']=implode(', ',array_unique($category_name));
 		$html=$this->load->view("topic-relation",$final,true);
 		$send_data["html_data"]=$html;
-		$send_data["category_data"]=array_map("unserialize", array_unique(array_map("serialize", $category)));;
+		$send_data["category_data"]=array_map("unserialize", array_unique(array_map("serialize", $category)));
 		echo json_encode($send_data);
 		exit;
 	}
