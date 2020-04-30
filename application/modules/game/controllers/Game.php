@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Class Game
- * @property MY_Model game
+ * @property MY_Model $game
  */
 
 class Game extends MY_Controller
