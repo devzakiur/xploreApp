@@ -5,7 +5,7 @@ use chriskacerguis\RestServer\RestController;
 
 /**
  * Class AuthController
- * @property ContentModel $content;
+ * @property-read ContentModel $content;
  */
 class ContentController extends MY_ApiController
 {
@@ -90,6 +90,24 @@ class ContentController extends MY_ApiController
 				'status' => true,
 				'status_code' => HTTP_OK,
 				'message' => ["Bookmark Successfully "]
+			], RestController::HTTP_OK);
+		} else {
+			custom_validation_error();
+		}
+	}
+	public function question_unbookmark_post()
+	{
+		$this->form_validation->set_rules('question_id', 'Bookmark Question', 'trim|xss_clean|required');
+		if ($this->form_validation->run() === TRUE) {
+			$this->data['question_id'] = $this->input->post("question_id");
+			$this->data['user_id'] = $this->id;
+			$check = $this->content->exits_check("question_bookmark", $this->data);
+			if ($check)
+				$this->content->delete("question_bookmark", $this->data);
+			$this->response([
+				'status' => true,
+				'status_code' => HTTP_OK,
+				'message' => ["UnBookmark Successfully "]
 			], RestController::HTTP_OK);
 		} else {
 			custom_validation_error();
@@ -189,7 +207,8 @@ class ContentController extends MY_ApiController
 
 	public function get_recently_learn_get()
 	{
-		$result = $this->content->get_recently_learn($this->id);
+		$category_id = $this->input->get("category_id");
+		$result = $this->content->get_recently_learn($this->id,$category_id);
 		$this->response([
 			'status' => true,
 			'status_code' => HTTP_OK,

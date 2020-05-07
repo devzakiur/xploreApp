@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -90,6 +90,7 @@ $route['get-section-by-subject'] = 'api/ContentController/get_section_by_subject
 $route['get-topic-by-section'] = 'api/ContentController/get_topic_by_section';
 $route['question/reports'] = 'api/ContentController/question_reports';
 $route['question/bookmark'] = 'api/ContentController/question_bookmark';
+$route['question/unbookmark'] = 'api/ContentController/question_unbookmark';
 $route['question-add'] = 'api/ContentController/user_question_add';
 $route['get-all-favourite-question'] = 'api/ContentController/get_all_favourite_question';
 
