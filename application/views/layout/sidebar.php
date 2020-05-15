@@ -61,6 +61,12 @@
 						<?php if (hasPermission("question", VIEW)) : ?>
                         <li class="<?php echo set_Submenu("question"); ?>"><a href="<?php echo site_url("question"); ?>">Question</a></li>
 						<?php endif; ?>
+						<?php if (hasPermission("user_question", VIEW)) : ?>
+                        <li class="<?php echo set_Submenu("user_question"); ?>"><a href="<?php echo site_url("question/user_question"); ?>">User Question</a></li>
+						<?php endif; ?>
+						<?php if (hasPermission("report_question", VIEW)) : ?>
+                        <li class="<?php echo set_Submenu("report_question"); ?>"><a href="<?php echo site_url("question/report_question"); ?>">Report Question</a></li>
+						<?php endif; ?>
                     </ul>
                 </li>
 				<?php endif; ?>
@@ -74,15 +80,43 @@
                     </ul>
                 </li>
 				<?php endif; ?>
+				<?php if (hasActive("news_setup") && hasPermission("news_setup", VIEW)) : ?>
+                <li class="has_sub">
+                    <a href="#" class="waves-effect <?php echo set_Topmenu("news_setup"); ?>"><i class="fa  fa-file-text"></i><span>News Setup </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                    <ul class="list-unstyled">
+						<?php if (hasPermission("news_category", VIEW)) : ?>
+                        <li class="<?php echo set_Submenu("news_category"); ?>"><a href="<?php echo site_url("news/news_category"); ?>">News Category</a></li>
+						<?php endif; ?>
+						<?php if (hasPermission("news", VIEW)) : ?>
+                        <li class="<?php echo set_Submenu("news"); ?>"><a href="<?php echo site_url("news"); ?>">News</a></li>
+						<?php endif; ?>
+                    </ul>
+                </li>
+				<?php endif; ?>
 
 				<?php if (hasActive("content") && hasPermission("content", VIEW)) : ?>
                 <li>
                     <a href="<?php echo site_url("content"); ?>" class="waves-effect <?php echo set_Topmenu("content"); ?>"><i class="ion ion-document"></i><span> Content </span></a>
                 </li>
 				<?php endif; ?>
+				<?php if (hasActive("model_test") && hasPermission("model_test", VIEW)) : ?>
+                <li>
+                    <a href="<?php echo site_url("modeltest"); ?>" class="waves-effect <?php echo set_Topmenu("model_test"); ?>"><i class="fa  fa-calendar"></i><span> Model Test </span></a>
+                </li>
+				<?php endif; ?>
 				<?php if (hasActive("game_setting") && hasPermission("game_setting", VIEW)) : ?>
                 <li>
                     <a href="<?php echo site_url("game"); ?>" class="waves-effect <?php echo set_Topmenu("game_setting"); ?>"><i class="fa fa-gamepad"></i><span>Game Setting </span></a>
+                </li>
+				<?php endif; ?>
+				<?php if (hasActive("notification") && hasPermission("notification", VIEW)) : ?>
+                <li>
+                    <a href="<?php echo site_url("notification"); ?>" class="waves-effect <?php echo set_Topmenu("notification"); ?>"><i class="fa fa-bell"></i><span>Notification </span></a>
+                </li>
+				<?php endif; ?>
+				<?php if (hasActive("social") && hasPermission("social", VIEW)) : ?>
+                <li>
+                    <a href="<?php echo site_url("social"); ?>" class="waves-effect <?php echo set_Topmenu("social"); ?>"><i class="fa fa-share"></i><span>Social Setting </span></a>
                 </li>
 				<?php endif; ?>
 				<?php if (hasActive("users") && hasPermission("users", VIEW)) : ?>

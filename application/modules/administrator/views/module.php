@@ -206,7 +206,7 @@
                                                         <th>Enable View</th>
                                                         <th>Enable Add</th>
                                                         <th>Enable Edit</th>
-                                                        <th>Enable Delete</th>
+                                                        <th>Enable Publish Permission</th>
                                                         <th>Delete</th>
                                                     </tr>
                                                 </thead>

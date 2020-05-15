@@ -24,22 +24,38 @@ class Install extends MY_Controller {
     }
 
     public function truncate() {
-          	$this->db->truncate("category");
             $this->db->truncate("batch");
-            $this->db->truncate("subject");
-            $this->db->truncate("subject_assign");
-            $this->db->truncate("section");
-            $this->db->truncate("section_assign");
-            $this->db->truncate("topic");
-            $this->db->truncate("topic_assign");
-            $this->db->truncate("question");
-            $this->db->truncate("topics_questions");
-            $this->db->truncate("question_batch_year");
+          	$this->db->truncate("category");
+            $this->db->truncate("ci_sessions");
+            $this->db->truncate("content");
+            $this->db->truncate("device_info");
+            $this->db->truncate("edit_history");
+            $this->db->truncate("game_result");
+            $this->db->truncate("game_result_question");
+            $this->db->truncate("game_setting");
             $this->db->truncate("library");
             $this->db->truncate("library_image");
             $this->db->truncate("library_video");
+            $this->db->truncate("question");
+            $this->db->truncate("question_batch_year");
+            $this->db->truncate("question_bookmark");
+            $this->db->truncate("question_reports");
+            $this->db->truncate("question_year");
+            $this->db->truncate("recently_learn");
+//            $this->db->truncate("roles_permissions");
+            $this->db->truncate("section");
+            $this->db->truncate("section_assign");
+            $this->db->truncate("subject");
+            $this->db->truncate("subject_assign");
+            $this->db->truncate("topic");
+            $this->db->truncate("topic_assign");
+            $this->db->truncate("topics_questions");
             $this->db->truncate("topic_library");
-            $this->db->truncate("ci_sessions");
+            $this->db->truncate("users");
+            $this->db->truncate("user_balance");
+            $this->db->truncate("user_question");
+            $this->db->truncate("user_question_count");
+            $this->db->truncate("user_topics_questions");
     }
     /*
     |===============

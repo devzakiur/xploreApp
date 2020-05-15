@@ -120,7 +120,7 @@
             });
         });
 
-        $(".category_checkbox").on("click",function () {
+        $(".form-group").on("click",".category_checkbox",function () {
         	checkboxValidation();
 		});
 

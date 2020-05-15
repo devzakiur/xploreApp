@@ -186,7 +186,7 @@
                 }
             });
 		});
-        $(".section_checkbox").on("click",function () {
+        $(".form-group").on("click",".section_checkbox",function () {
         	checkboxValidation();
 		});
 

@@ -6,7 +6,7 @@ class Section_Model extends MY_Model
 	public function get_section_list($category_id=null,$subject_id=null)
 	{
 
-		$this->db->select('AS.*,S.name as section_name,S.status');
+		$this->db->select('S.name as section_name,S.status,S.id as section_id');
 		$this->db->from('section as S');
 		$this->db->join('section_assign as AS',"AS.section_id=S.id","left");
 		$this->db->join('subject_assign as SUBA',"AS.subject_id=SUBA.subject_id","left");

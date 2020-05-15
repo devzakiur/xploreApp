@@ -7,7 +7,8 @@ application/logs/*
 !application/logs/index.html
 
 !application/*/.htaccess
-
+.idea
+.vscode
 composer.lock
 
 user_guide_src/build/*
@@ -29,3 +30,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
+.vscode/sftp.json
+request.http

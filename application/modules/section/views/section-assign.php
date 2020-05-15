@@ -135,7 +135,7 @@
             });
         });
 
-        $(".subject_checkbox").on("click",function () {
+        $(".form-group").on("click",".subject_checkbox",function () {
         	checkboxValidation();
 		});
 

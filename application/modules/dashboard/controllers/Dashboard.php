@@ -24,6 +24,7 @@ class Dashboard extends MY_Controller {
         $this->layout->title("Dashboard");
         $this->data['total_pending_question']=$this->dashboard->count_all("question",array("status"=>0));
         $this->data['total_pending_library']=$this->dashboard->count_all("library",array("status"=>0));
+        $this->data['total_question_report']=$this->dashboard->count_all("question_reports",array("status"=>0));
         $this->layout->view('index',$this->data);
        
     }

@@ -15,7 +15,8 @@ class TestController extends CI_Controller {
     }
 	public function index()
 	{
-
+		$re=array("name"=>"shipan","sds"=>"s");
+		 debug_r(array_values(serialize($re)));
 	}
 
 }

@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -69,13 +69,14 @@ $route['user/delete/(:num)'] = 'users/Users/delete/$1';
  * Api Route
  */
 $route['user/login'] = 'api/UserController/login';
+$route['user/logout'] = 'api/UserController/logout';
 $route['user/register'] = 'api/UserController/register';
 $route['user/email-verification'] = 'api/UserController/email_verification';
 $route['user/email-resend'] = 'api/UserController/email_resend';
 $route['user/profile-setup'] = 'api/UserController/profile_setup';
 $route['user/phone-verification'] = 'api/UserController/phone_verification';
 $route['user/phone-resend'] = 'api/UserController/phone_resend';
-$route['user/toc'] = 'api/UserController/toc';
+$route['user/toc'] = 'api/UserController/terms_condition';
 $route['user/category-setup'] = 'api/UserController/category_setup';
 $route['user/device-info'] = 'api/UserController/device_info';
 
@@ -89,6 +90,9 @@ $route['get-section-by-subject'] = 'api/ContentController/get_section_by_subject
 $route['get-topic-by-section'] = 'api/ContentController/get_topic_by_section';
 $route['question/reports'] = 'api/ContentController/question_reports';
 $route['question/bookmark'] = 'api/ContentController/question_bookmark';
+$route['question/unbookmark'] = 'api/ContentController/question_unbookmark';
+$route['question-add'] = 'api/ContentController/user_question_add';
+$route['get-all-favourite-question'] = 'api/ContentController/get_all_favourite_question';
 
 //library
 $route['library-data'] = 'api/ContentController/get_library';
@@ -98,11 +102,63 @@ $route['most-popular'] = 'api/ContentController/get_most_popular';
 //game/challenge
 $route['game-challenge'] = 'api/GameController/game_challenge';
 $route['game-question'] = 'api/GameController/get_game_question';
+$route['game-finish'] = 'api/GameController/game_finish';
+$route['subject-performance'] = 'api/GameController/get_subject_performance';
+$route['game-result-summary'] = 'api/GameController/game_result_summary';
+$route['game-performance-summary'] = 'api/GameController/performance_summary';
+$route['performance-history'] = 'api/GameController/performance_history';
+$route['get-game-solution'] = 'api/GameController/get_game_solution';
 
-//recently learn
 
 
 //password change
 $route['forgot-password'] = 'api/PasswordController/forgot_password';
 $route['code-verification'] = 'api/PasswordController/reset_code_verification';
 $route['change-password'] = 'api/PasswordController/change_password';
+
+
+$route['get-content'] = 'api/AuthController/content';
+$route['get-batch'] = 'api/AuthController/batch_list';
+
+$route['game-subject-section-topic'] = 'api/AuthController/game_subject_section_topic';
+
+/**
+ * news route
+ */
+$route['get-news-category'] = 'api/NewsController/get_news_category';
+$route['get-news-list'] = 'api/NewsController/get_news_list';
+
+/**
+ * find_us
+ */
+$route['find-us'] = 'api/ContactController/find_us';
+/**
+ * contact us
+ */
+
+$route['contact-us'] = 'api/ContactController/contact_us';
+/**
+ * invive friends
+ */
+$route['invite-friends'] = 'api/ContactController/invite_friends';
+
+//social login
+
+$route['facebook-login'] = 'api/UserController/fb_social_login';
+$route['google-login'] = 'api/UserController/google_social_login';
+
+//get server time
+$route['server-time'] = 'api/UserController/get_time';
+
+//get model test
+
+$route['check-model-test'] = 'api/ModelTestController/check_model_test';
+$route['model-test-register'] = 'api/ModelTestController/model_test_register';
+
+//getnotification
+$route['get-all-notification'] = 'api/NotificationController/get_notification';
+
+//loaderboard
+
+$route['get-played-model-test'] = 'api/ModelTestController/get_model_test';
+$route['get-leaderboard'] = 'api/ModelTestController/get_leaderboard';

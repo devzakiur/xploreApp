@@ -6,7 +6,7 @@ class Subject_Model extends MY_Model
 	public function get_subject_list()
 	{
 		$this->db->distinct();
-		$this->db->select('AS.*,S.name as subject_name,S.status');
+		$this->db->select('S.name as subject_name,S.status,S.id as subject_id');
 		$this->db->from('subject as S');
 		$this->db->join('subject_assign as AS',"AS.subject_id=S.id","left");
 		$this->db->group_by('S.id');

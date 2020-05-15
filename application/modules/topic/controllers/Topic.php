@@ -109,11 +109,23 @@ class Topic extends MY_Controller {
 	 */
 	public function delete($id = null)
     {
+    	$this->topic->trans_start();
         $result = $this->topic->get_single("topic", array("id" => $id));
         if (isset($result)) {
-            setMessage("msg", "success", " Deleted Successfuly");
-            $this->topic->delete("topic",array("id" => $id));
+        	$question_add=$this->topic->get_single("topics_questions", array("topic_id" => $id));
+        	if($question_add){
+            	setMessage("msg", "warning", " First Delete Question");
+			}else{
+				setMessage("msg", "success", " Deleted Successfuly");
+				@$this->topic->delete("topic",array("id" => $id));
+				@$this->topic->delete("topic_assign",array("topic_id" => $id));
+				@$this->topic->delete("section_assign",array("topic_id" => $id));
+			}
         }
+        $this->topic->trans_complete();
+        if(!$this->topic->trans_status()){
+        	setMessage("msg", "warning", " Server Error");
+		}
         redirect('topic');
     }
     public function control($id = null)
