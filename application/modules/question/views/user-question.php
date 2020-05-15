@@ -48,11 +48,11 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-2 m-b-10">
-
-							</div>
-							<div class="col-md-2 m-b-10">
-
+							<div class="col-md-4 m-b-10">
+								<div class="form-group">
+									<label for="date">Date</label>
+									<input type="date" name="date" placeholder="<?= date("Y-m-d") ?>" id="date" class="form-control">
+								</div>
 							</div>
 							<div class="col-md-2 m-b-10">
 
@@ -148,9 +148,16 @@
 		cursor: pointer;
 	}
 </style>
+<script src="<?php echo VENDOR_URL; ?>timepicker/bootstrap-datepicker.js"></script>
 <script>
 	$(document).ready(function() {
-		$("#search_key").on("change", function() {
+		// jQuery('#date').datepicker({
+		// 	format: 'yyyy-mm-dd',
+		// 	todayBtn: true,
+		// 	todayHighlight: true,
+		// 	autoclose: true
+		// });
+		$("#search_key,#date").on("change", function() {
 			get_view(false);
 			return false;
 		});
@@ -173,6 +180,7 @@
 		get_view(false);
 
 		function get_view(page_url) {
+			var date = $("#date").val();
 			var category_id = $("#search_category_id").val();
 			var subject_id = $("#search_subject_id").val();
 			var section_id = $("#search_section_id").val();
@@ -194,6 +202,7 @@
 					"subject_id": subject_id,
 					"section_id": section_id,
 					"topic_id": topic_id,
+					"date": date,
 				},
 				beforeSend: function() {
 					$("#question_loading").fadeIn(300);

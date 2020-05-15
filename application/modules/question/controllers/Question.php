@@ -359,10 +359,10 @@ class Question extends MY_Controller
 		$this->form_validation->set_rules('option_b', 'Option B Required', 'trim|required');
 		$this->form_validation->set_rules('option_c', 'Option C Required', 'trim');
 		$this->form_validation->set_rules('option_d', 'Option D Required', 'trim');
-		$this->form_validation->set_rules('option_e', 'Option E Required', 'trim');
-		$this->form_validation->set_rules('option_f', 'Option F Required', 'trim');
-		$this->form_validation->set_rules('option_g', 'Option G Required', 'trim');
-		$this->form_validation->set_rules('option_h', 'Option H Required', 'trim');
+		// $this->form_validation->set_rules('option_e', 'Option E Required', 'trim');
+		// $this->form_validation->set_rules('option_f', 'Option F Required', 'trim');
+		// $this->form_validation->set_rules('option_g', 'Option G Required', 'trim');
+		// $this->form_validation->set_rules('option_h', 'Option H Required', 'trim');
 		$this->form_validation->set_rules('answer_explain', 'Answer Explain Required', 'trim|required');
 	}
 	/** ***************Function _get_posted_data**********************************
@@ -479,6 +479,7 @@ class Question extends MY_Controller
 	public function user_question_view()
 	{
 		if ($_POST) {
+			$date = trim($this->input->post("date"));
 			$search_key = trim($this->input->post("search_key"));
 			$category_id = trim($this->input->post("category_id"));
 			$subject_id = trim($this->input->post("subject_id"));
@@ -488,7 +489,7 @@ class Question extends MY_Controller
 			$offset = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 			$this->load->library('pagination');
 			$config['base_url']    = base_url('question/user_question_view');
-			$config['total_rows']  = $this->question->get_user_question("", "", $search_key, $category_id, $subject_id, $section_id, $topic_id, true);
+			$config['total_rows']  = $this->question->get_user_question("", "", $search_key, $category_id, $subject_id, $section_id, $topic_id, $date, true);
 			$config['per_page']    = QUESTION_PER_PAGE;
 			$config['full_tag_open'] = '<ul class="pagination">';
 			$config['full_tag_close'] = '</ul>';
@@ -507,7 +508,7 @@ class Question extends MY_Controller
 			$config['attributes'] = array('class' => 'page-link');
 
 			$this->pagination->initialize($config);
-			$this->data['all_question'] = $this->question->get_user_question(QUESTION_PER_PAGE, $offset, $search_key, $category_id, $subject_id, $section_id, $topic_id);
+			$this->data['all_question'] = $this->question->get_user_question(QUESTION_PER_PAGE, $offset, $search_key, $category_id, $subject_id, $section_id, $topic_id, $date);
 			$this->data['serial'] = $offset;
 			$this->data['total_rows'] = $config['total_rows'];
 			$result = $this->load->view("user-question-view", $this->data, true);
@@ -620,6 +621,7 @@ class Question extends MY_Controller
 	{
 		//		debug_r("ss");
 		$search_key = trim($this->input->post("search_key"));
+		$date = trim($this->input->post("date"));
 		$category_id = trim($this->input->post("category_id"));
 		$subject_id = trim($this->input->post("subject_id"));
 		$section_id = trim($this->input->post("section_id"));
@@ -629,7 +631,7 @@ class Question extends MY_Controller
 		$offset = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 		$this->load->library('pagination');
 		$config['base_url']    = base_url('question/user_question_report_view');
-		$config['total_rows']  = $this->question->get_user_question_report("", "", $category_id, $subject_id, $section_id, $topic_id, $search_key, $filter_by, $sorting, true);
+		$config['total_rows']  = $this->question->get_user_question_report("", "", $category_id, $subject_id, $section_id, $topic_id, $search_key, $filter_by, $sorting, $date, true);
 		$config['per_page']    = QUESTION_PER_PAGE;
 		$config['full_tag_open'] = '<ul class="pagination">';
 		$config['full_tag_close'] = '</ul>';
@@ -648,7 +650,7 @@ class Question extends MY_Controller
 		$config['attributes'] = array('class' => 'page-link');
 
 		$this->pagination->initialize($config);
-		$this->data['all_question_report'] = $this->question->get_user_question_report(QUESTION_PER_PAGE, $offset, $category_id, $subject_id, $section_id, $topic_id, $search_key, $filter_by, $sorting);
+		$this->data['all_question_report'] = $this->question->get_user_question_report(QUESTION_PER_PAGE, $offset, $category_id, $subject_id, $section_id, $topic_id, $search_key, $filter_by, $sorting, $date);
 		$this->data['serial'] = $offset;
 		$this->data['total_rows'] = $config['total_rows'];
 		$result = $this->load->view("user-question-report-view", $this->data, true);

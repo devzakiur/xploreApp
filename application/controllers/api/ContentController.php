@@ -80,7 +80,9 @@ class ContentController extends MY_ApiController
 	public function question_bookmark_post()
 	{
 		$this->form_validation->set_rules('question_id', 'Question Id', 'trim|xss_clean|required|callback_question_id');
+		$this->form_validation->set_rules('category_id', 'Category Id', 'trim|xss_clean|required');
 		if ($this->form_validation->run() === TRUE) {
+			$this->data['category_id'] = $this->input->post("category_id");
 			$this->data['question_id'] = $this->input->post("question_id");
 			$this->data['user_id'] = $this->id;
 			$check = $this->content->exits_check("question_bookmark", $this->data);
@@ -98,7 +100,9 @@ class ContentController extends MY_ApiController
 	public function question_unbookmark_post()
 	{
 		$this->form_validation->set_rules('question_id', 'Bookmark Question', 'trim|xss_clean|required');
+		$this->form_validation->set_rules('category_id', 'Category Id', 'trim|xss_clean|required');
 		if ($this->form_validation->run() === TRUE) {
+			$this->data['category_id'] = $this->input->post("category_id");
 			$this->data['question_id'] = $this->input->post("question_id");
 			$this->data['user_id'] = $this->id;
 			$check = $this->content->exits_check("question_bookmark", $this->data);
@@ -115,8 +119,8 @@ class ContentController extends MY_ApiController
 	}
 	public function question_id()
 	{
-		$email = $this->content->duplicate_check("question", "id", $this->input->post('question_id'));
-		if (!$email) {
+		$question = $this->content->duplicate_check("question", "id", $this->input->post('question_id'));
+		if (!$question) {
 			$this->form_validation->set_message('question_id', "Question Not Found");
 			return FALSE;
 		} else {
@@ -170,12 +174,13 @@ class ContentController extends MY_ApiController
 	public function get_all_favourite_question_post()
 	{
 		$page = $this->input->post("page");
+		$category_id = $this->input->post("category_id");
 		$subject_id = $this->input->post("subject_id");
 		$section_id = $this->input->post("section_id");
 		$topic_id = $this->input->post("topic_id");
 		$batch_id = $this->input->post("batch_id");
 		$difficulty = $this->input->post("difficulty");
-		$total_rows = $this->content->get_all_favourite_question("", "", $this->id, $subject_id, $section_id, $topic_id, $batch_id, $difficulty, true);
+		$total_rows = $this->content->get_all_favourite_question("", "", $category_id, $this->id, $subject_id, $section_id, $topic_id, $batch_id, $difficulty, true);
 		if ($total_rows > 0) {
 			$per_page = 10;
 			$total_page = ceil($total_rows / $per_page);
@@ -189,7 +194,7 @@ class ContentController extends MY_ApiController
 				$next_page = $page + 1;
 			}
 			$offset = ($page - 1) * $per_page;
-			$result = $this->content->get_all_favourite_question($per_page, $offset, $this->id, $subject_id, $section_id, $topic_id, $batch_id, $difficulty);
+			$result = $this->content->get_all_favourite_question($per_page, $offset, $category_id, $this->id, $subject_id, $section_id, $topic_id, $batch_id, $difficulty);
 			$data['data'] = $result;
 
 			$data['next_page'] = $next_page;
@@ -208,7 +213,7 @@ class ContentController extends MY_ApiController
 	public function get_recently_learn_get()
 	{
 		$category_id = $this->input->get("category_id");
-		$result = $this->content->get_recently_learn($this->id,$category_id);
+		$result = $this->content->get_recently_learn($this->id, $category_id);
 		$this->response([
 			'status' => true,
 			'status_code' => HTTP_OK,

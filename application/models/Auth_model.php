@@ -9,10 +9,14 @@ class Auth_model extends MY_Model
 	{
 		$this->db->select('');
 		$this->db->from('users');
-		if ($email != '')
+		if ($email != '' && $phone != '') {
 			$this->db->where('email', $email);
-		if ($phone != "")
 			$this->db->where('phone', $phone);
+		} else if ($email != '')
+			$this->db->where('email', $email);
+		else if ($phone != "") {
+			$this->db->where('phone', $phone);
+		}
 		$this->db->order_by('id', 'desc');
 		$this->db->limit(1);
 		return $this->db->get()->row();

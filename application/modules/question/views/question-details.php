@@ -33,14 +33,14 @@
  				<td>গ. <?= $option_3 ?></td>
  				<td> ঘ. <?= $option_4 ?></td>
  			</tr>
- 			<tr>
+ 			<!-- <tr>
  				<td>ঙ. <?= $option_5 ?></td>
  				<td>চ. <?= $option_6 ?></td>
  			</tr>
  			<tr>
  				<td>ছ. <?= $option_7 ?></td>
  				<td> জ. <?= $option_8 ?></td>
- 			</tr>
+ 			</tr> -->
  			<tr>
  				<td colspan="2"></td>
  			</tr>

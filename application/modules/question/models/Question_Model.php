@@ -80,7 +80,11 @@ class Question_Model extends MY_Model
 			$this->db->where('Q.created_by_admin', $created_by);
 		}
 		if ($search_key) {
-			$this->db->where("Q.title LIKE '%$search_key%' ");
+			// $this->db->where("Q.title LIKE %" . $search_key . "% ");
+			$this->db->like('Q.title', $search_key, "both");
+		}
+		if (!is_admin() && !is_super_admin() && !is_app_manager()) {
+			$this->db->where("Q.created_by_admin", logged_in_user_id());
 		}
 		if ($count) {
 			return $this->db->count_all_results();
@@ -90,6 +94,7 @@ class Question_Model extends MY_Model
 		} else {
 			$this->db->order_by('Q.id', 'desc');
 		}
+
 		$this->db->limit($per_page, $offset);
 		$result = $this->db->get()->result_array();
 		$data = array();
@@ -254,7 +259,7 @@ class Question_Model extends MY_Model
 		return $this->db->get()->result_array();
 	}
 
-	public function get_user_question($per_page = '', $offset = '', $search_key = null, $category_id = null, $subject_id = null, $section_id = null, $topic_id = null, $count = false)
+	public function get_user_question($per_page = '', $offset = '', $search_key = null, $category_id = null, $subject_id = null, $section_id = null, $topic_id = null, $date = null, $count = false)
 	{
 		$this->db->select('Q.id,Q.title,Q.answer,Q.created_at,U.id as user_id,U.name as user_name');
 		$this->db->distinct();
@@ -285,8 +290,13 @@ class Question_Model extends MY_Model
 			}
 		}
 		if ($search_key) {
-			$this->db->where("Q.title LIKE '%$search_key%' ");
-			$this->db->or_where("U.name LIKE '%$search_key%' ");
+			$this->db->like('Q.title', $search_key, "both");
+			$this->db->or_like('U.name', $search_key, "both");
+			// $this->db->where("Q.title LIKE '%$search_key%' ");
+			// $this->db->or_where("U.name LIKE '%$search_key%' ");
+		}
+		if ($date) {
+			$this->db->where("DATE(Q.created_at)", date("Y-m-d", strtotime($date)));
 		}
 		if ($count) {
 			return $this->db->count_all_results();
@@ -328,7 +338,7 @@ class Question_Model extends MY_Model
 		return $result;
 	}
 
-	public function get_user_question_report($per_page = '', $offset = '', $category_id = null, $subject_id = null, $section_id = null, $topic_id = null, $search_key = null, $filter_by = null, $sorting = 1, $count = false)
+	public function get_user_question_report($per_page = '', $offset = '', $category_id = null, $subject_id = null, $section_id = null, $topic_id = null, $search_key = null, $filter_by = null, $sorting = 1, $date = null, $count = false)
 	{
 		$this->db->select('QR.*,Q.title,U.name as user_name');
 		$this->db->distinct();
@@ -363,8 +373,11 @@ class Question_Model extends MY_Model
 			$this->db->where("QR.status", $filter_by);
 		}
 		if ($search_key) {
-			$this->db->where("Q.title LIKE '%$search_key%' ");
-			$this->db->or_where("U.name LIKE '%$search_key%' ");
+			$this->db->like('Q.title', $search_key, "both");
+			$this->db->or_like('U.name', $search_key, "both");
+		}
+		if ($date) {
+			$this->db->where("DATE(QR.created_at)", date("Y-m-d", strtotime($date)));
 		}
 		if ($count) {
 			return $this->db->count_all_results();
@@ -380,6 +393,7 @@ class Question_Model extends MY_Model
 		if ($result) {
 			foreach ($result as $key => $value) {
 				$data[$key]['id'] = $value['id'];
+				$data[$key]['created_at'] = date("Y-m-d", strtotime($value['created_at']));
 				$data[$key]['user_name'] = $value['user_name'];
 				$data[$key]['user_id'] = $value['user_id'];
 				$data[$key]['title'] = $value['title'];

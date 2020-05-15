@@ -58,9 +58,11 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-md-2 m-b-10">
-							</div>
-							<div class="col-md-2 m-b-10">
+							<div class="col-md-4 m-b-10">
+								<div class="form-group">
+									<label for="date">Date</label>
+									<input type="date" name="date" placeholder="<?= date("Y-m-d") ?>" id="date" class="form-control">
+								</div>
 							</div>
 							<div class="col-md-2 m-b-10">
 							</div>
@@ -91,6 +93,7 @@
 												<th class="text-center">Question Title</th>
 												<th class="text-center">Type</th>
 												<th class="text-center">Details</th>
+												<th class="text-center">Date</th>
 												<th class="text-center">Action</th>
 											</tr>
 										</thead>
@@ -153,7 +156,7 @@
 </style>
 <script>
 	$(document).ready(function() {
-		$("#filter_by").on("change", function() {
+		$("#filter_by,#date").on("change", function() {
 			get_view(false);
 			return false;
 		});
@@ -173,6 +176,7 @@
 		get_view(false, 0);
 
 		function get_view(page_url, sorting = 1) {
+			var date = $("#date").val();
 			var filter_by = $("#filter_by").val();
 			var category_id = $("#search_category_id").val();
 			var subject_id = $("#search_subject_id").val();
@@ -195,6 +199,7 @@
 					"section_id": section_id,
 					"topic_id": topic_id,
 					"sorting": sorting,
+					"date": date,
 				},
 				beforeSend: function() {
 					$("#question_loading").fadeIn(300);

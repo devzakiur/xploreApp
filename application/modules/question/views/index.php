@@ -54,7 +54,7 @@
 														<input type="text" name="option_d" placeholder="Option D" class="form-control" id="option_d">
 													</div>
 												</div>
-												<div class="col-sm-3">
+												<!-- <div class="col-sm-3">
 													<div class="form-group">
 														<label for="option_e">Option E</label>
 														<input type="text" name="option_e" placeholder="Option E" class="form-control" id="option_e">
@@ -77,7 +77,7 @@
 														<label for="option_h">Option H</label>
 														<input type="text" name="option_h" placeholder="Option H" class="form-control" id="option_h">
 													</div>
-												</div>
+												</div> -->
 												<div class="col-sm-3">
 													<div class="form-group">
 														<label for="answer">Answer</label><small class="req"> *</small>
@@ -87,11 +87,11 @@
 															<option value="2">Option B</option>
 															<option value="3">Option C</option>
 															<option value="4">Option D</option>
-															<option value="5">Option E</option>
+															<!-- <option value="5">Option E</option>
 															<option value="6">Option F</option>
 															<option value="7">Option G</option>
 															<option value="8">Option H</option>
-															<option value="9">All Correct</option>
+															<option value="9">All Correct</option> -->
 														</select>
 													</div>
 												</div>
@@ -290,7 +290,7 @@
 													<input type="text" value="<?= $single->option_3 ?>" name="option_c" placeholder="Option C" class="form-control" id="option_c">
 												</div>
 											</div>
-											<div class="col-sm-3">
+											<!-- <div class="col-sm-3">
 												<div class="form-group">
 													<label for="option_d">Option D</label>
 													<input type="text" value="<?= $single->option_4 ?>" name="option_d" placeholder="Option D" class="form-control" id="option_d">
@@ -319,7 +319,7 @@
 													<label for="option_h">Option H</label>
 													<input type="text" value="<?= $single->option_8 ?>" name="option_h" placeholder="Option H" class="form-control" id="option_h">
 												</div>
-											</div>
+											</div> -->
 											<div class="col-sm-3">
 												<div class="form-group">
 													<label for="answer">Answer</label><small class="req"> *</small>
@@ -329,11 +329,11 @@
 														<option <?php if ($single->answer == 2) echo "selected" ?> value="2">Option B</option>
 														<option <?php if ($single->answer == 3) echo "selected" ?> value="3">Option C</option>
 														<option <?php if ($single->answer == 4) echo "selected" ?> value="4">Option D</option>
-														<option <?php if ($single->answer == 5) echo "selected" ?> value="5">Option E</option>
+														<!-- <option <?php if ($single->answer == 5) echo "selected" ?> value="5">Option E</option>
 														<option <?php if ($single->answer == 6) echo "selected" ?> value="6">Option F</option>
 														<option <?php if ($single->answer == 7) echo "selected" ?> value="7">Option G</option>
 														<option <?php if ($single->answer == 8) echo "selected" ?> value="8">Option H</option>
-														<option <?php if ($single->answer == 9) echo "selected" ?> value="9">All Correct</option>
+														<option <?php if ($single->answer == 9) echo "selected" ?> value="9">All Correct</option> -->
 													</select>
 												</div>
 											</div>
@@ -1144,7 +1144,7 @@
 	</script>
 	<script>
 		$(document).ready(function() {
-			var maxField = 4; //Input fields increment limitation
+			var maxField = 10; //Input fields increment limitation
 			var addButton = $('#add_button'); //Add button selector
 			var wrapper = $('#bsc_part'); //Input field wrapper
 			var row = "";
@@ -1225,7 +1225,7 @@
 				var y = 2;
 			<?php endif; ?>
 			var x = 0;
-			var maxField = 4; //Input fields increment limitation
+			var maxField = 10; //Input fields increment limitation
 			var addButton = $('#category_add_button'); //Add button selector
 			var wrapper = $('#category_part'); //Input field wrapper
 			<?php if (isset($edit)) : ?>

@@ -20,6 +20,7 @@ class GameModel extends MY_Model
 		$this->db->group_by('Q.id');
 		$this->db->order_by('Q.difficulty', 'RANDOM');
 		$this->db->limit($question_limit);
+		$this->db->where('Q.status', 1);
 		$result = $this->db->get()->result_array();
 		$data = array();
 		if ($result) {
@@ -177,7 +178,7 @@ class GameModel extends MY_Model
 
 	public function get_individual_topic_performance($game_id, $limit = '')
 	{
-		$this->db->select("GRQ.topic_id,T.name as topic_name,COUNT(GRQ.topic_id) as question_per_topic,COUNT(IF(GRQ.answer_type = 'correct', 1, NULL)) 'correct_ans_by_topic',SUM(GRQ.game_time) as topic_game_time");
+		$this->db->select("GRQ.subject_id,GRQ.section_id,GRQ.topic_id,T.name as topic_name,COUNT(GRQ.topic_id) as question_per_topic,COUNT(IF(GRQ.answer_type = 'correct', 1, NULL)) 'correct_ans_by_topic',SUM(GRQ.game_time) as topic_game_time");
 		$this->db->from('game_result_question as GRQ');
 		$this->db->join('topic as T', 'GRQ.topic_id = T.id', 'left');
 		$this->db->group_by('GRQ.topic_id');
@@ -189,6 +190,8 @@ class GameModel extends MY_Model
 		$data = array();
 		if ($result) {
 			foreach ($result as $key => $value) {
+				$data[$key]['subject_id'] = $value['subject_id'];
+				$data[$key]['section_id'] = $value['section_id'];
 				$data[$key]['topic_id'] = $value['topic_id'];
 				$data[$key]['topic_name'] = $value['topic_name'];
 				$data[$key]['question_per_topic'] = $value['question_per_topic'];

@@ -105,9 +105,9 @@ class Library_Model extends MY_Model
 			$this->db->where('L.created_by', $created_by);
 		}
 		if ($search_key) {
-			$this->db->where("L.title LIKE '%$search_key%' ");
-			$this->db->or_where("T.name LIKE '%$search_key%' ");
-			$this->db->or_where("C.name LIKE '%$search_key%' ");
+			$this->db->like('L.title', $search_key, "both");
+			$this->db->or_like('T.name', $search_key, "both");
+			$this->db->or_like('C.name', $search_key, "both");
 		}
 		if ($count) {
 			return $this->db->count_all_results();

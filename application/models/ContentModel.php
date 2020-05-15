@@ -43,6 +43,7 @@ class ContentModel extends MY_Model
 			$this->db->order_by('Q.difficulty', 'RANDOM');
 			$this->db->limit($per_page);
 		}
+		$this->db->where('Q.status', 1);
 		$result = $this->db->get()->result_array();
 		$data = array();
 		if ($result) {
@@ -115,7 +116,8 @@ class ContentModel extends MY_Model
 				$this->db->where('SUBA.subject_id', $subject_id);
 			}
 		}
-		$this->db->order_by('id', 'desc');
+		$this->db->order_by('L.id', 'desc');
+		$this->db->where('L.status', 1);
 		$this->db->limit(1);
 		$result = $this->db->get()->row_array();
 		if ($result) {
@@ -124,6 +126,7 @@ class ContentModel extends MY_Model
 			$result['topic_id'] = $topic_id;
 			$result['details'] = html_entity_decode($result['details']);
 			$result['gist'] = html_entity_decode($result['gist']);
+			$result['library_link'] = html_entity_decode($result['library_link']);
 			$result['videos'] = $this->get_list("library_video", array("library_id" => $result['id']));
 			$result['images'] = $this->get_list("library_image", array("library_id" => $result['id']));
 			$result['recommended'] = $this->get_recommended($category_id, $subject_id, $topic_id);
@@ -144,6 +147,7 @@ class ContentModel extends MY_Model
 			$this->db->where('SA.subject_id', $subject_id);
 		if ($topic_id != '')
 			$this->db->where_not_in('TL.topic_id', $topic_id);
+		$this->db->where('L.status', 1);
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
@@ -178,7 +182,7 @@ class ContentModel extends MY_Model
 		$this->db->limit(5);
 		return $this->db->get()->result_array();
 	}
-	public function get_all_favourite_question($per_page = '', $offset = '', $user_id, $subject_id = '', $section_id = '', $topic_id = '', $batch_id = '', $difficulty = '', $count = false)
+	public function get_all_favourite_question($per_page = '', $offset = '', $category_id, $user_id, $subject_id = '', $section_id = '', $topic_id = '', $batch_id = '', $difficulty = '', $count = false)
 	{
 		$this->db->select('Q.id,Q.title,Q.answer,Q.difficulty,Q.picture,Q.answer_explain,Q.option_1,Q.option_2,Q.option_3,Q.option_4');
 		$this->db->from('question_bookmark as QB');
@@ -187,6 +191,9 @@ class ContentModel extends MY_Model
 			$this->db->join('question_batch_year as QBY', 'QBY.question_id = Q.id');
 			$this->db->where('QBY.batch_id', $batch_id);
 		}
+
+		if ($$category_id != '')
+			$this->db->where('QB.$category_id', $$category_id);
 
 		if ($subject_id != '')
 			$this->db->where('QB.subject_id', $subject_id);
