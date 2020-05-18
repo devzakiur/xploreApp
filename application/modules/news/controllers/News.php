@@ -197,8 +197,8 @@ class News extends MY_Controller
 			$this->data['edit'] = true;
 			$this->session->set_userdata('sub_menu', 'news');
 			$this->data['category'] = $this->news->get_list("news_category", array("status" => 1), "", "", "", "position", "asc");
-			$this->data['video_code'] = $this->news->get_list("news_video", array("news_id" => $id));
-			$this->data['image_slide'] = $this->news->get_list("news_image", array("news_id" => $id));
+			$this->data['video_code'] = $this->news->get_list("news_video", array("news_id" => $id), "", "", "", "id", "asc");
+			$this->data['image_slide'] = $this->news->get_list("news_image", array("news_id" => $id), "", "", "", "id", "asc");
 			$this->data['single'] = $single;
 			$this->layout->view('index', $this->data);
 		} else {

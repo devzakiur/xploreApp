@@ -9,7 +9,7 @@ class NofitifactionModel extends MY_Model
 	{
 		$this->db->select("N.*,C.name as category_name");
 		$this->db->from('notification as N');
-		$this->db->join('category as C', 'N.category_id = C.id', 'left');
+		$this->db->join('category as C', 'N.category_id = C.id');
 		if ($category_id != '') {
 			$this->db->where('N.category_id', $category_id);
 		}

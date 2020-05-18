@@ -296,6 +296,7 @@ class GameModel extends MY_Model
 		$this->db->join('section as SEC', 'GRQ.section_id = SEC.id');
 		$this->db->join('topic as T', 'GRQ.topic_id = T.id');
 		$this->db->join('question as Q', 'GRQ.question_id = Q.id');
+		$this->db->group_by('Q.id');
 		if ($batch_id != '') {
 			$this->db->join('question_batch_year as QBY', 'QBY.question_id = Q.id');
 			$this->db->where('QBY.batch_id', $batch_id);

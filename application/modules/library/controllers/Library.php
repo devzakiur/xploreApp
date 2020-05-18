@@ -286,8 +286,8 @@ class Library extends MY_Controller
 			$this->data['users'] = $this->library->get_user();
 			$this->data['category_list'] = $this->library->get_list("category", array("status=>1"), '', '', '', 'position', 'asc');
 			$this->data['category'] = $category;
-			$this->data['video_code'] = $this->library->get_list("library_video", array("library_id" => $id));
-			$this->data['image_slide'] = $this->library->get_list("library_image", array("library_id" => $id));
+			$this->data['video_code'] = $this->library->get_list("library_video", array("library_id" => $id), "", "", "", "id", "asc");
+			$this->data['image_slide'] = $this->library->get_list("library_image", array("library_id" => $id), "", "", "", "id", "asc");
 			$this->data['single'] = $single;
 			$this->layout->view('index', $this->data);
 		} else {

@@ -109,6 +109,9 @@ class Library_Model extends MY_Model
 			$this->db->or_like('T.name', $search_key, "both");
 			$this->db->or_like('C.name', $search_key, "both");
 		}
+		if (!is_admin() && !is_super_admin() && !is_app_manager()) {
+			$this->db->where("L.created_by", logged_in_user_id());
+		}
 		if ($count) {
 			return $this->db->count_all_results();
 		}

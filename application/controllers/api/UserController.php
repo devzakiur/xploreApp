@@ -403,7 +403,7 @@ class UserController extends RestController
 	{
 		$email = $this->user->exits_check("users", array("email" => $this->input->post('email'), "email_status" => 1));
 		if ($email) {
-			$this->form_validation->set_message('email', "Email Already Exits");
+			$this->form_validation->set_message('email', "Email already exists. Please login");
 			return FALSE;
 		} else {
 			return TRUE;
@@ -467,7 +467,7 @@ class UserController extends RestController
 		$config['upload_path']          = './uploads/users';
 		$config['allowed_types']        = 'gif|jpg|jpeg|png';
 		$config['file_name']            = $imageName;
-		$config['max_size']             = 500;
+		$config['max_size']             = 5120;
 		$this->load->library('upload');
 		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('picture')) {
@@ -477,18 +477,18 @@ class UserController extends RestController
 				'message' => [strip_tags($this->upload->display_errors())]
 			], RestController::HTTP_OK);
 		} else {
-			$this->load->library('image_lib');
-			$config['image_library']  = 'gd2';
-			$config['source_image'] = './uploads/users/' . $imageName;
-			$config['create_thumb']   = FALSE;
-			$config['maintain_ratio'] = TRUE;
-			$config['width']          = 300;
-			$config['height']         = 300;
-			$config['new_image']      = './uploads/users/' . $imageName;
-			$this->image_lib->initialize($config);
-			if ($this->image_lib->resize()) {
-				$this->image_lib->clear();
-			}
+			// $this->load->library('image_lib');
+			// $config['image_library']  = 'gd2';
+			// $config['source_image'] = './uploads/users/' . $imageName;
+			// $config['create_thumb']   = FALSE;
+			// $config['maintain_ratio'] = TRUE;
+			// $config['width']          = 300;
+			// $config['height']         = 300;
+			// $config['new_image']      = './uploads/users/' . $imageName;
+			// $this->image_lib->initialize($config);
+			// if ($this->image_lib->resize()) {
+			// 	$this->image_lib->clear();
+			// }
 			$prev_photo = $this->user->get_single("users", array("id" => $this->id))->picture;
 			@unlink($prev_photo);
 			return $imageName;

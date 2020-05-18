@@ -344,7 +344,7 @@ class ContentController extends MY_ApiController
 		$config['upload_path']          = './uploads/question';
 		$config['allowed_types']        = 'gif|jpg|jpeg|png';
 		$config['file_name']            = $imageName;
-		$config['max_size']             = 500;
+		$config['max_size']             = 5120;
 		$this->load->library('upload');
 		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('picture')) {
@@ -354,18 +354,18 @@ class ContentController extends MY_ApiController
 				'message' => [strip_tags($this->upload->display_errors())]
 			], RestController::HTTP_OK);
 		} else {
-			$this->load->library('image_lib');
-			$config['image_library']  = 'gd2';
-			$config['source_image'] = './uploads/question/' . $imageName;
-			$config['create_thumb']   = FALSE;
-			$config['maintain_ratio'] = TRUE;
-			$config['width']          = 300;
-			$config['height']         = 300;
-			$config['new_image']      = './uploads/question/' . $imageName;
-			$this->image_lib->initialize($config);
-			if ($this->image_lib->resize()) {
-				$this->image_lib->clear();
-			}
+			// $this->load->library('image_lib');
+			// $config['image_library']  = 'gd2';
+			// $config['source_image'] = './uploads/question/' . $imageName;
+			// $config['create_thumb']   = FALSE;
+			// $config['maintain_ratio'] = TRUE;
+			// $config['width']          = 300;
+			// $config['height']         = 300;
+			// $config['new_image']      = './uploads/question/' . $imageName;
+			// $this->image_lib->initialize($config);
+			// if ($this->image_lib->resize()) {
+			// 	$this->image_lib->clear();
+			// }
 			return $imageName;
 		}
 	}
