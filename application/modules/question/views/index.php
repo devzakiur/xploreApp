@@ -44,14 +44,14 @@
 												</div>
 												<div class="col-sm-3">
 													<div class="form-group">
-														<label for="option_c">Option C</label>
-														<input type="text" name="option_c" placeholder="Option C" class="form-control" id="option_c">
+														<label for="option_c">Option C</label><small class="req"> *</small>
+														<input type="text" required name="option_c" placeholder="Option C" class="form-control" id="option_c">
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<div class="form-group">
-														<label for="option_d">Option D</label>
-														<input type="text" name="option_d" placeholder="Option D" class="form-control" id="option_d">
+														<label for="option_d">Option D</label><small class="req"> *</small>
+														<input type="text" required name="option_d" placeholder="Option D" class="form-control" id="option_d">
 													</div>
 												</div>
 												<!-- <div class="col-sm-3">
@@ -286,14 +286,14 @@
 											</div>
 											<div class="col-sm-3">
 												<div class="form-group">
-													<label for="option_c">Option C</label>
-													<input type="text" value="<?= $single->option_3 ?>" name="option_c" placeholder="Option C" class="form-control" id="option_c">
+													<label for="option_c">Option C</label><small class="req"> *</small>
+													<input required type="text" value="<?= $single->option_3 ?>" name="option_c" placeholder="Option C" class="form-control" id="option_c">
 												</div>
 											</div>
 											<div class="col-sm-3">
 												<div class="form-group">
-													<label for="option_d">Option D</label>
-													<input type="text" value="<?= $single->option_4 ?>" name="option_d" placeholder="Option D" class="form-control" id="option_d">
+													<label for="option_d">Option D</label><small class="req"> *</small>
+													<input required type="text" value="<?= $single->option_4 ?>" name="option_d" placeholder="Option D" class="form-control" id="option_d">
 												</div>
 											</div>
 											<!--<div class="col-sm-3">
