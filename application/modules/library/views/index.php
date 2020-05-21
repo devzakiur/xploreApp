@@ -305,12 +305,13 @@
 														<?php endforeach; ?>
 													<?php else : ?>
 														<div class="col-sm-6">
-															<div class="col-sm-6">
-																<div class="form-group">
-																	<label for="video_title">Video Title</label>
-																	<input type="text" name="video_title[]" class="form-control" id="video_title" placeholder="Enter Title">
-																</div>
+															<div class="form-group">
+																<label for="video_title">Video Title</label>
+																<input type="text" name="video_title[]" class="form-control" id="video_title" placeholder="Enter Title">
 															</div>
+														</div>
+														<div class="col-sm-6">
+
 															<div class="form-group">
 																<label for="code">Video Url</label>
 																<div class="input-group">

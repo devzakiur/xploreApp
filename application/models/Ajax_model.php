@@ -8,7 +8,7 @@ class Ajax_model extends MY_Model
 	{
 		$this->db->select('S.id,S.name');
 		$this->db->from('subject_assign as SA');
-		$this->db->join('subject as S', 'SA.subject_id = S.id', 'left');
+		$this->db->join('subject as S', 'SA.subject_id = S.id');
 		$this->db->where('SA.category_id', $category_id);
 		$this->db->order_by('S.position', "asc");
 		$this->db->where('S.status', 1);
@@ -18,7 +18,7 @@ class Ajax_model extends MY_Model
 	{
 		$this->db->select('S.id,S.name');
 		$this->db->from('section_assign as SA');
-		$this->db->join('section as S', 'SA.section_id = S.id', 'left');
+		$this->db->join('section as S', 'SA.section_id = S.id');
 		$this->db->where('SA.subject_id', $subject_id);
 		$this->db->order_by('S.position', "asc");
 		$this->db->where('S.status', 1);
@@ -28,8 +28,8 @@ class Ajax_model extends MY_Model
 	{
 		$this->db->select('S.id,S.name');
 		$this->db->from('section_assign as SA');
-		$this->db->join('section as S', 'SA.section_id = S.id', 'left');
-		$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id', 'left');
+		$this->db->join('section as S', 'SA.section_id = S.id');
+		$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id');
 		$this->db->where('SUBA.category_id', $category_id);
 		$this->db->where('SA.subject_id', $subject_id);
 		$this->db->order_by('S.position', "asc");
@@ -40,7 +40,7 @@ class Ajax_model extends MY_Model
 	{
 		$this->db->select('T.id,T.name');
 		$this->db->from('topic_assign as TA');
-		$this->db->join('topic as T', 'TA.topic_id = T.id', 'left');
+		$this->db->join('topic as T', 'TA.topic_id = T.id');
 		$this->db->where('TA.section_id', $section_id);
 		$this->db->order_by('T.position', "asc");
 		$this->db->where('T.status', 1);

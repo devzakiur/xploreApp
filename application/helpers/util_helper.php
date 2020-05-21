@@ -184,6 +184,7 @@ if (!function_exists('setMessage')) {
 		return true;
 	}
 }
+
 if (!function_exists('active_link')) {
 
 	function set_Topmenu($top_menu_name)
@@ -490,5 +491,21 @@ if (!function_exists("get_performance_title")) {
 			$title = "Week Performance";
 		}
 		return $title;
+	}
+}
+if (!function_exists('formatMilliseconds')) {
+
+	function formatMilliseconds($milliseconds)
+	{
+		$seconds = floor($milliseconds / 1000);
+		$minutes = floor($seconds / 60);
+		$hours = floor($minutes / 60);
+		$milliseconds = $milliseconds % 1000;
+		$seconds = $seconds % 60;
+		$minutes = $minutes % 60;
+
+		$format = '%u:%02u:%02u';
+		$time = sprintf($format, $hours, $minutes, $seconds, $milliseconds);
+		return rtrim($time, '0');
 	}
 }

@@ -403,7 +403,7 @@ class UserController extends RestController
 	{
 		$email = $this->user->exits_check("users", array("email" => $this->input->post('email'), "email_status" => 1));
 		if ($email) {
-			$this->form_validation->set_message('email', "Email Already Exits");
+			$this->form_validation->set_message('email', "Email already exists. Please login");
 			return FALSE;
 		} else {
 			return TRUE;
@@ -467,7 +467,7 @@ class UserController extends RestController
 		$config['upload_path']          = './uploads/users';
 		$config['allowed_types']        = 'gif|jpg|jpeg|png';
 		$config['file_name']            = $imageName;
-		$config['max_size']             = 500;
+		$config['max_size']             = 5120;
 		$this->load->library('upload');
 		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('picture')) {
@@ -477,18 +477,18 @@ class UserController extends RestController
 				'message' => [strip_tags($this->upload->display_errors())]
 			], RestController::HTTP_OK);
 		} else {
-			$this->load->library('image_lib');
-			$config['image_library']  = 'gd2';
-			$config['source_image'] = './uploads/users/' . $imageName;
-			$config['create_thumb']   = FALSE;
-			$config['maintain_ratio'] = TRUE;
-			$config['width']          = 300;
-			$config['height']         = 300;
-			$config['new_image']      = './uploads/users/' . $imageName;
-			$this->image_lib->initialize($config);
-			if ($this->image_lib->resize()) {
-				$this->image_lib->clear();
-			}
+			// $this->load->library('image_lib');
+			// $config['image_library']  = 'gd2';
+			// $config['source_image'] = './uploads/users/' . $imageName;
+			// $config['create_thumb']   = FALSE;
+			// $config['maintain_ratio'] = TRUE;
+			// $config['width']          = 300;
+			// $config['height']         = 300;
+			// $config['new_image']      = './uploads/users/' . $imageName;
+			// $this->image_lib->initialize($config);
+			// if ($this->image_lib->resize()) {
+			// 	$this->image_lib->clear();
+			// }
 			$prev_photo = $this->user->get_single("users", array("id" => $this->id))->picture;
 			@unlink($prev_photo);
 			return $imageName;
@@ -533,6 +533,8 @@ class UserController extends RestController
 		$data['email'] = $this->input->post("email");
 		$data['gender'] = $this->input->post("gender");
 		$data['fb_id'] = $this->input->post("fb_id");
+		log_message('DEBUG', 'USER_INFO ' . $data['email']);
+		log_message('DEBUG', 'USER_INFO Phone ' . $data['phone']);
 		$user = get_users(array("fb_id" => $data['fb_id']), "token_key");
 		if ($user) {
 			$token_data = array(
@@ -555,7 +557,8 @@ class UserController extends RestController
 			$data['status'] = 1;
 			$data['toc'] = 1;
 			$exits = $this->user->login_check($data['email'], $data['phone']);
-			if ($exits) {
+
+			if ($exits != null) {
 				$id = $exits->id;
 				$this->user->update("users", array("fb_id" => $data['fb_id'], "token_key" => $data['token_key']), array("id" => $exits->id));
 			} else {

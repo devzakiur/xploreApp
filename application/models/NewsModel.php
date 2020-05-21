@@ -8,7 +8,7 @@ class NewsModel extends MY_Model
 	{
 		$this->db->select('N.*,NC.name as category_name');
 		$this->db->from('news as N');
-		$this->db->join('news_category as NC', 'N.category_id = NC.id', 'left');
+		$this->db->join('news_category as NC', 'N.category_id = NC.id');
 		if ($category_id != '') {
 			$this->db->where('N.category_id', $category_id);
 		}

@@ -16,24 +16,24 @@ class ContentModel extends MY_Model
 		}
 		if ($category_id != '') {
 			$this->db->where('TQ.category_id', $category_id);
-			$this->db->join('topics_questions TQ', 'Q.id = TQ.question_id', 'left');
+			$this->db->join('topics_questions TQ', 'Q.id = TQ.question_id');
 			if ($topic_id != '') {
-				$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id', 'left');
-				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id', 'left');
-				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id', 'left');
+				$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id');
+				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id');
+				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id');
 				$this->db->where_in('SUBA.subject_id', explode(",", $subject_id));
 				$this->db->where_in('SA.section_id', explode(",", $section_id));
 				$this->db->where_in('TQ.topic_id', explode(",", $topic_id));
 			} else if ($section_id != '') {
-				$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id', 'left');
-				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id', 'left');
-				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id', 'left');
+				$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id');
+				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id');
+				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id');
 				$this->db->where_in('SUBA.subject_id', explode(",", $subject_id));
 				$this->db->where_in('SA.section_id', explode(",", $section_id));
 			} else if ($subject_id != '') {
-				$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id', 'left');
-				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id', 'left');
-				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id', 'left');
+				$this->db->join('topic_assign as TA', 'TQ.topic_id = TA.topic_id');
+				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id');
+				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id');
 				$this->db->where_in('SUBA.subject_id', explode(",", $subject_id));
 			}
 		}
@@ -70,7 +70,7 @@ class ContentModel extends MY_Model
 	{
 		$this->db->select('S.id,S.name');
 		$this->db->from('section_assign as SA');
-		$this->db->join('section as S', 'SA.section_id = S.id', 'left');
+		$this->db->join('section as S', 'SA.section_id = S.id');
 		$this->db->where_in('SA.subject_id', explode(",", $subject_id));
 		$this->db->order_by('S.position', "asc");
 		return $this->db->get()->result_array();
@@ -79,7 +79,7 @@ class ContentModel extends MY_Model
 	{
 		$this->db->select('T.id,T.name');
 		$this->db->from('topic_assign as TA');
-		$this->db->join('topic as T', 'TA.topic_id = T.id', 'left');
+		$this->db->join('topic as T', 'TA.topic_id = T.id');
 		$this->db->where_in('TA.section_id', explode(",", $section_id));
 		$this->db->order_by('T.position', "asc");
 		return $this->db->get()->result_array();
@@ -90,29 +90,29 @@ class ContentModel extends MY_Model
 		$this->db->distinct();
 		$this->db->select('L.*,TL.topic_id');
 		$this->db->from('library as L');
-		$this->db->join('topic_library as TL', 'L.id = TL.library_id', 'left');
-		$this->db->join('category as C', 'TL.category_id = C.id', 'left');
-		$this->db->join('topic as T', 'TL.topic_id = T.id', 'left');
+		$this->db->join('topic_library as TL', 'L.id = TL.library_id');
+		$this->db->join('category as C', 'TL.category_id = C.id');
+		$this->db->join('topic as T', 'TL.topic_id = T.id');
 		$this->db->order_by('L.id', 'desc');
 		if ($category_id != '') {
 			$this->db->where('TL.category_id', $category_id);
 			if ($topic_id != '') {
-				$this->db->join('topic_assign as TA', 'TL.topic_id = TA.topic_id', 'left');
-				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id', 'left');
-				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id', 'left');
+				$this->db->join('topic_assign as TA', 'TL.topic_id = TA.topic_id');
+				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id');
+				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id');
 				$this->db->where('SUBA.subject_id', $subject_id);
 				$this->db->where('SA.section_id', $section_id);
 				$this->db->where('TL.topic_id', $topic_id);
 			} else if ($section_id != '') {
-				$this->db->join('topic_assign as TA', 'TL.topic_id = TA.topic_id', 'left');
-				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id', 'left');
-				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id', 'left');
+				$this->db->join('topic_assign as TA', 'TL.topic_id = TA.topic_id');
+				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id');
+				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id');
 				$this->db->where('SUBA.subject_id', $subject_id);
 				$this->db->where('SA.section_id', $section_id);
 			} else if ($subject_id != '') {
-				$this->db->join('topic_assign as TA', 'TL.topic_id = TA.topic_id', 'left');
-				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id', 'left');
-				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id', 'left');
+				$this->db->join('topic_assign as TA', 'TL.topic_id = TA.topic_id');
+				$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id');
+				$this->db->join('subject_assign as SUBA', 'SA.subject_id = SUBA.subject_id');
 				$this->db->where('SUBA.subject_id', $subject_id);
 			}
 		}
@@ -138,10 +138,10 @@ class ContentModel extends MY_Model
 	{
 		$this->db->select('L.id,L.title,TL.category_id,SA.subject_id,TL.topic_id,TA.section_id,S.name as subject_name');
 		$this->db->from('library as L');
-		$this->db->join('topic_library as TL', 'L.id = TL.library_id', 'left');
-		$this->db->join('topic_assign as TA', 'TL.topic_id = TA.topic_id', 'left');
-		$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id', 'left');
-		$this->db->join('subject as S', 'SA.subject_id = S.id', 'left');
+		$this->db->join('topic_library as TL', 'L.id = TL.library_id');
+		$this->db->join('topic_assign as TA', 'TL.topic_id = TA.topic_id');
+		$this->db->join('section_assign as SA', 'TA.section_id = SA.section_id');
+		$this->db->join('subject as S', 'SA.subject_id = S.id');
 		$this->db->where('TL.category_id', $category_id);
 		if ($subject_id != '')
 			$this->db->where('SA.subject_id', $subject_id);
@@ -157,10 +157,10 @@ class ContentModel extends MY_Model
 		$this->db->distinct();
 		$this->db->select('T.id as topic_id,C.name as category_name,S.name as subject_name,S.id as subject_id,SEC.name as section_name,SEC.id as section_id,T.name as topic_name');
 		$this->db->from('recently_learn as RL');
-		$this->db->join('category as C', 'RL.category_id = C.id', 'left');
-		$this->db->join('subject as S', 'RL.subject_id = S.id', 'left');
-		$this->db->join('section as SEC', 'RL.section_id = SEC.id', 'left');
-		$this->db->join('topic as T', 'RL.topic_id = T.id', 'left');
+		$this->db->join('category as C', 'RL.category_id = C.id');
+		$this->db->join('subject as S', 'RL.subject_id = S.id');
+		$this->db->join('section as SEC', 'RL.section_id = SEC.id');
+		$this->db->join('topic as T', 'RL.topic_id = T.id');
 		$this->db->order_by('RL.id', 'desc');
 		$this->db->where('RL.user_id', $user_id);
 		$this->db->where('RL.category_id', $category_id);
@@ -172,10 +172,10 @@ class ContentModel extends MY_Model
 	{
 		$this->db->select('T.id as topic_id,C.name as category_name,S.name as subject_name,S.id as subject_id,SEC.name as section_name,SEC.id as section_id,T.name as topic_name,SUM(RL.views) as total_views');
 		$this->db->from('recently_learn as RL');
-		$this->db->join('category as C', 'RL.category_id = C.id', 'left');
-		$this->db->join('subject as S', 'RL.subject_id = S.id', 'left');
-		$this->db->join('section as SEC', 'RL.section_id = SEC.id', 'left');
-		$this->db->join('topic as T', 'RL.topic_id = T.id', 'left');
+		$this->db->join('category as C', 'RL.category_id = C.id');
+		$this->db->join('subject as S', 'RL.subject_id = S.id');
+		$this->db->join('section as SEC', 'RL.section_id = SEC.id');
+		$this->db->join('topic as T', 'RL.topic_id = T.id');
 		$this->db->group_by('RL.topic_id');
 		$this->db->order_by('total_views', "desc");
 		$this->db->where('RL.category_id', $category_id);
@@ -192,8 +192,8 @@ class ContentModel extends MY_Model
 			$this->db->where('QBY.batch_id', $batch_id);
 		}
 
-		if ($$category_id != '')
-			$this->db->where('QB.$category_id', $$category_id);
+		if ($category_id != '')
+			$this->db->where('QB.category_id', $category_id);
 
 		if ($subject_id != '')
 			$this->db->where('QB.subject_id', $subject_id);

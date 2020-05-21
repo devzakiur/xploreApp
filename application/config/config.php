@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config[ 'base_url' ]    =    ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ?  "https" : "http");
-$config[ 'base_url' ]    .=  "://".$_SERVER['HTTP_HOST'];
-$config[ 'base_url' ]    .=  str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+$config['base_url']    =    ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ?  "https" : "http");
+$config['base_url']    .=  "://" . $_SERVER['HTTP_HOST'];
+$config['base_url']    .=  str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
 
 /**
  * web mail
@@ -152,7 +152,7 @@ $config['subclass_prefix'] = 'MY_';
 | Note: This will NOT disable or override the CodeIgniter-specific
 |	autoloading (application/config/autoload.php)
 */
-$config['composer_autoload'] = FCPATH."vendor/autoload.php";
+$config['composer_autoload'] = FCPATH . "vendor/autoload.php";
 
 /*
 |--------------------------------------------------------------------------
@@ -239,7 +239,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] =0;
+$config['log_threshold'] = 2;
 
 /*
 |--------------------------------------------------------------------------
@@ -539,14 +539,12 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 // modules location
 $config['modules_locations'] = array(
-    APPPATH.'modules/' => '../modules/',
+	APPPATH . 'modules/' => '../modules/',
 );
-spl_autoload_register(function($class)
-{
-    if(strpos($class, 'CI_') !== 0)
-    {
-        @include_once( APPPATH . 'core/'. $class . '.php' );
-    }
+spl_autoload_register(function ($class) {
+	if (strpos($class, 'CI_') !== 0) {
+		@include_once(APPPATH . 'core/' . $class . '.php');
+	}
 });
 
 define('VENDOR_URL', $config['base_url'] . 'assets/vendors/');
@@ -571,7 +569,7 @@ define('DELETE', 'can_delete');
 
 define('APP_NAME', 'Xplore');
 define('QUESTION_PER_PAGE', 10);
-define("USER_DATA",'id,email,name,display_name,phone,gender,dob,picture,cover_picture,email_status,phone_status,toc,status,category_id,subject_id,created_at as join_date,notification');
-define("NOT_MATCHED",455);
-define("Expired",408);
-define("BLOCKED",456);
+define("USER_DATA", 'id,email,name,display_name,phone,gender,dob,picture,cover_picture,email_status,phone_status,toc,status,category_id,subject_id,created_at as join_date,notification');
+define("NOT_MATCHED", 455);
+define("Expired", 408);
+define("BLOCKED", 456);
