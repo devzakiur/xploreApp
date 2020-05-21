@@ -290,13 +290,13 @@
 													<input type="text" value="<?= $single->option_3 ?>" name="option_c" placeholder="Option C" class="form-control" id="option_c">
 												</div>
 											</div>
-											<!-- <div class="col-sm-3">
+											<div class="col-sm-3">
 												<div class="form-group">
 													<label for="option_d">Option D</label>
 													<input type="text" value="<?= $single->option_4 ?>" name="option_d" placeholder="Option D" class="form-control" id="option_d">
 												</div>
 											</div>
-											<div class="col-sm-3">
+											<!--<div class="col-sm-3">
 												<div class="form-group">
 													<label for="option_e">Option E</label>
 													<input type="text" value="<?= $single->option_5 ?>" name="option_e" placeholder="Option E" class="form-control" id="option_e">

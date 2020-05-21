@@ -12,9 +12,9 @@ class GameModel extends MY_Model
 		$this->db->distinct();
 		$this->db->from('question as Q');
 		if ($category_id != '') {
-			$this->db->join('topics_questions TQ', 'Q.id = TQ.question_id', 'left');
-			$this->db->join('topic_assign TA', 'TQ.topic_id = TA.topic_id', 'left');
-			$this->db->join('section_assign SA', 'TA.section_id = SA.section_id', 'left');
+			$this->db->join('topics_questions TQ', 'Q.id = TQ.question_id');
+			$this->db->join('topic_assign TA', 'TQ.topic_id = TA.topic_id');
+			$this->db->join('section_assign SA', 'TA.section_id = SA.section_id');
 			$this->db->where('TQ.category_id', $category_id);
 		}
 		$this->db->group_by('Q.id');
@@ -50,7 +50,7 @@ class GameModel extends MY_Model
 	{
 		$this->db->select("GRQ.subject_id,S.name as subject_name,count(GRQ.subject_id) as question_per_subject,COUNT(IF(GRQ.answer_type = 'correct', 1, NULL)) 'correct_ans_by_subject',SUM(GRQ.game_time) as subject_game_time");
 		$this->db->from('game_result_question as GRQ');
-		$this->db->join('subject as S', 'GRQ.subject_id = S.id', 'left');
+		$this->db->join('subject as S', 'GRQ.subject_id = S.id');
 		$this->db->group_by('GRQ.subject_id');
 		$this->db->where('GRQ.game_table_id', $game_id);
 		if ($limit != '') {
@@ -77,7 +77,7 @@ class GameModel extends MY_Model
 	{
 		$this->db->select("GRQ.section_id,S.name as section_name,count(GRQ.section_id) as question_per_section,COUNT(IF(GRQ.answer_type = 'correct', 1, NULL)) 'correct_ans_by_section',SUM(GRQ.game_time) as section_game_time");
 		$this->db->from('game_result_question as GRQ');
-		$this->db->join('section as S', 'GRQ.section_id = S.id', 'left');
+		$this->db->join('section as S', 'GRQ.section_id = S.id');
 		$this->db->group_by('GRQ.section_id');
 		$this->db->where('GRQ.game_table_id', $game_id);
 		$this->db->where('GRQ.subject_id', $subject_id);
@@ -102,7 +102,7 @@ class GameModel extends MY_Model
 	{
 		$this->db->select("GRQ.topic_id,T.name as topic_name,COUNT(GRQ.topic_id) as question_per_topic,COUNT(IF(GRQ.answer_type = 'correct', 1, NULL)) 'correct_ans_by_topic',SUM(GRQ.game_time) as topic_game_time");
 		$this->db->from('game_result_question as GRQ');
-		$this->db->join('topic as T', 'GRQ.topic_id = T.id', 'left');
+		$this->db->join('topic as T', 'GRQ.topic_id = T.id');
 		$this->db->group_by('GRQ.topic_id');
 		$this->db->where('GRQ.game_table_id', $game_id);
 		$this->db->where('GRQ.subject_id', $subject_id);
@@ -128,7 +128,7 @@ class GameModel extends MY_Model
 	{
 		$this->db->select("GRQ.subject_id,S.name as subject_name,count(GRQ.subject_id) as question_per_subject,COUNT(IF(GRQ.answer_type = 'correct', 1, NULL)) 'correct_ans_by_subject',SUM(GRQ.game_time) as subject_game_time");
 		$this->db->from('game_result_question as GRQ');
-		$this->db->join('subject as S', 'GRQ.subject_id = S.id', 'left');
+		$this->db->join('subject as S', 'GRQ.subject_id = S.id');
 		$this->db->group_by('GRQ.subject_id');
 		$this->db->where('GRQ.game_table_id', $game_id);
 		if ($limit != '') {
@@ -154,7 +154,7 @@ class GameModel extends MY_Model
 	{
 		$this->db->select("GRQ.section_id,S.name as section_name,count(GRQ.section_id) as question_per_section,COUNT(IF(GRQ.answer_type = 'correct', 1, NULL)) 'correct_ans_by_section',SUM(GRQ.game_time) as section_game_time");
 		$this->db->from('game_result_question as GRQ');
-		$this->db->join('section as S', 'GRQ.section_id = S.id', 'left');
+		$this->db->join('section as S', 'GRQ.section_id = S.id');
 		$this->db->group_by('GRQ.section_id');
 		$this->db->where('GRQ.game_table_id', $game_id);
 		if ($limit != '') {
@@ -180,7 +180,7 @@ class GameModel extends MY_Model
 	{
 		$this->db->select("GRQ.subject_id,GRQ.section_id,GRQ.topic_id,T.name as topic_name,COUNT(GRQ.topic_id) as question_per_topic,COUNT(IF(GRQ.answer_type = 'correct', 1, NULL)) 'correct_ans_by_topic',SUM(GRQ.game_time) as topic_game_time");
 		$this->db->from('game_result_question as GRQ');
-		$this->db->join('topic as T', 'GRQ.topic_id = T.id', 'left');
+		$this->db->join('topic as T', 'GRQ.topic_id = T.id');
 		$this->db->group_by('GRQ.topic_id');
 		$this->db->where('GRQ.game_table_id', $game_id);
 		if ($limit != '') {
@@ -217,13 +217,13 @@ class GameModel extends MY_Model
 		SUM(GR.wrong_question) as total_wrong_question,
 		SUM(GR.unanswer_question) as total_unanswer_question,SUM(GR.get_point) as total_get_point,COUNT(GR.user_id) as total_game_played');
 		$this->db->from('game_result as GR');
-		$this->db->join('game_type as GT', 'GR.challenge_id = GT.id', 'left');
+		$this->db->join('game_type as GT', 'GR.challenge_id = GT.id');
 		$this->db->where('GR.user_id', $user_id);
 		$performance = $this->db->get()->row_array();
 
 		$this->db->select("GR.id as game_id,GT.name as challenge_name,GR.performance,GR.created_at");
 		$this->db->from('game_result as GR');
-		$this->db->join('game_type as GT', 'GR.challenge_id = GT.id', 'left');
+		$this->db->join('game_type as GT', 'GR.challenge_id = GT.id');
 		$this->db->order_by('GR.performance', 'desc');
 		$this->db->where('GR.user_id', $user_id);
 		$this->db->limit(1);
@@ -231,7 +231,7 @@ class GameModel extends MY_Model
 
 		$this->db->select("GR.id as game_id,GT.name as challenge_name,GR.performance,GR.created_at");
 		$this->db->from('game_result as GR');
-		$this->db->join('game_type as GT', 'GR.challenge_id = GT.id', 'left');
+		$this->db->join('game_type as GT', 'GR.challenge_id = GT.id');
 		$this->db->order_by('GR.performance', 'asc');
 		$this->db->where('GR.user_id', $user_id);
 		$this->db->limit(1);

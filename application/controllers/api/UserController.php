@@ -533,6 +533,8 @@ class UserController extends RestController
 		$data['email'] = $this->input->post("email");
 		$data['gender'] = $this->input->post("gender");
 		$data['fb_id'] = $this->input->post("fb_id");
+		log_message('DEBUG', 'USER_INFO ' . $data['email']);
+		log_message('DEBUG', 'USER_INFO Phone ' . $data['phone']);
 		$user = get_users(array("fb_id" => $data['fb_id']), "token_key");
 		if ($user) {
 			$token_data = array(
@@ -555,7 +557,8 @@ class UserController extends RestController
 			$data['status'] = 1;
 			$data['toc'] = 1;
 			$exits = $this->user->login_check($data['email'], $data['phone']);
-			if ($exits) {
+
+			if ($exits != null) {
 				$id = $exits->id;
 				$this->user->update("users", array("fb_id" => $data['fb_id'], "token_key" => $data['token_key']), array("id" => $exits->id));
 			} else {
